@@ -19,7 +19,6 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
-import org.compiere.model.MInvoice;
 import org.compiere.model.Query;
 
 /**
@@ -66,13 +65,18 @@ public class MCUSTSerialPortConfig extends X_CUST_SerialPortConfig implements
 	 * @param p_AD_User_ID
 	 * @param trxName
 	 * @return
-	 * @return MCUSTSerialPortConfig[]
+	 * @return List<MCUSTSerialPortConfig>
 	 */
-	public static MCUSTSerialPortConfig[] getSerialPortConfigOfUser(Properties ctx, int p_AD_User_ID, String trxName){
-		List<MInvoice> list = new Query(ctx, Table_Name, I_CUST_PortConfig_User.COLUMNNAME_AD_User_ID+"=?", trxName)
+	public static List<MCUSTSerialPortConfig> getSerialPortConfigOfUser(Properties ctx, int p_AD_User_ID, String trxName){
+		List<MCUSTSerialPortConfig> list = new Query(ctx, Table_Name, 
+				"EXISTS(SELECT 1 " +
+				"			FROM CUST_PortConfig_User pcu " +
+				"		WHERE pcu.CUST_SerialPortConfig_ID = CUST_SerialPortConfig.CUST_SerialPortConfig_ID " +
+				"		AND " + I_CUST_PortConfig_User.COLUMNNAME_AD_User_ID+"=?)", trxName)
 			.setParameters(p_AD_User_ID)
-			.list();
-		return list.toArray(new MCUSTSerialPortConfig[list.size()]);
+			.<MCUSTSerialPortConfig>list();
+		//	
+		return list;
 	}
 
 }
