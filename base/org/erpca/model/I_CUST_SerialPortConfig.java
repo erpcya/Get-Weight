@@ -110,6 +110,19 @@ public interface I_CUST_SerialPortConfig
 	/** Get Data Bits	  */
 	public String getDataBits();
 
+    /** Column name EndCharacter */
+    public static final String COLUMNNAME_EndCharacter = "EndCharacter";
+
+	/** Set End Character.
+	  * End Character example: ASCII (28)
+	  */
+	public void setEndCharacter (int EndCharacter);
+
+	/** Get End Character.
+	  * End Character example: ASCII (28)
+	  */
+	public int getEndCharacter();
+
     /** Column name FlowControl */
     public static final String COLUMNNAME_FlowControl = "FlowControl";
 
@@ -154,6 +167,42 @@ public interface I_CUST_SerialPortConfig
 	/** Get Parity	  */
 	public String getParity();
 
+    /** Column name PosEndCut */
+    public static final String COLUMNNAME_PosEndCut = "PosEndCut";
+
+	/** Set Position End (Cut)	  */
+	public void setPosEndCut (int PosEndCut);
+
+	/** Get Position End (Cut)	  */
+	public int getPosEndCut();
+
+    /** Column name PosEnd_SCut */
+    public static final String COLUMNNAME_PosEnd_SCut = "PosEnd_SCut";
+
+	/** Set Position End (Screen cut)	  */
+	public void setPosEnd_SCut (int PosEnd_SCut);
+
+	/** Get Position End (Screen cut)	  */
+	public int getPosEnd_SCut();
+
+    /** Column name PosStartCut */
+    public static final String COLUMNNAME_PosStartCut = "PosStartCut";
+
+	/** Set Position Start (Cut)	  */
+	public void setPosStartCut (int PosStartCut);
+
+	/** Get Position Start (Cut)	  */
+	public int getPosStartCut();
+
+    /** Column name PosStart_SCut */
+    public static final String COLUMNNAME_PosStart_SCut = "PosStart_SCut";
+
+	/** Set Position Start (Screen cut)	  */
+	public void setPosStart_SCut (int PosStart_SCut);
+
+	/** Get Position Start (Screen cut)	  */
+	public int getPosStart_SCut();
+
     /** Column name SerialPort */
     public static final String COLUMNNAME_SerialPort = "SerialPort";
 
@@ -163,6 +212,19 @@ public interface I_CUST_SerialPortConfig
 	/** Get Serial Port	  */
 	public String getSerialPort();
 
+    /** Column name StartCharacter */
+    public static final String COLUMNNAME_StartCharacter = "StartCharacter";
+
+	/** Set Start Character.
+	  * Start Character example: ASCII (3)
+	  */
+	public void setStartCharacter (int StartCharacter);
+
+	/** Get Start Character.
+	  * Start Character example: ASCII (3)
+	  */
+	public int getStartCharacter();
+
     /** Column name StopBits */
     public static final String COLUMNNAME_StopBits = "StopBits";
 
@@ -171,6 +233,15 @@ public interface I_CUST_SerialPortConfig
 
 	/** Get Stop Bits	  */
 	public String getStopBits();
+
+    /** Column name StrLength */
+    public static final String COLUMNNAME_StrLength = "StrLength";
+
+	/** Set String Length	  */
+	public void setStrLength (int StrLength);
+
+	/** Get String Length	  */
+	public int getStrLength();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

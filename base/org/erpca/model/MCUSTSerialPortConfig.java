@@ -16,7 +16,11 @@
 package org.erpca.model;
 
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.Properties;
+
+import org.compiere.model.MInvoice;
+import org.compiere.model.Query;
 
 /**
  * @author Yamel Senih
@@ -53,6 +57,22 @@ public class MCUSTSerialPortConfig extends X_CUST_SerialPortConfig implements
 	public MCUSTSerialPortConfig(Properties ctx, ResultSet rs, String trxName) {
 		super(ctx, rs, trxName);
 		// TODO Auto-generated constructor stub
+	}
+	
+	/**
+	 * Get Serial Port Configuration of User
+	 * @author Yamel Senih 26/03/2013, 01:34:37
+	 * @param ctx
+	 * @param p_AD_User_ID
+	 * @param trxName
+	 * @return
+	 * @return MCUSTSerialPortConfig[]
+	 */
+	public static MCUSTSerialPortConfig[] getSerialPortConfigOfUser(Properties ctx, int p_AD_User_ID, String trxName){
+		List<MInvoice> list = new Query(ctx, Table_Name, I_CUST_PortConfig_User.COLUMNNAME_AD_User_ID+"=?", trxName)
+			.setParameters(p_AD_User_ID)
+			.list();
+		return list.toArray(new MCUSTSerialPortConfig[list.size()]);
 	}
 
 }

@@ -31,7 +31,7 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20130325L;
+	private static final long serialVersionUID = 20130326L;
 
     /** Standard Constructor */
     public X_CUST_SerialPortConfig (Properties ctx, int CUST_SerialPortConfig_ID, String trxName)
@@ -44,14 +44,21 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
 			setCUST_SerialPortConfig_ID (0);
 			setDataBits (null);
 // 8
+			setEndCharacter (0);
 			setFlowControl (null);
 // 1
 			setName (null);
 			setParity (null);
 // 0
+			setPosEndCut (0);
+			setPosEnd_SCut (0);
+			setPosStartCut (0);
+			setPosStart_SCut (0);
 			setSerialPort (null);
+			setStartCharacter (0);
 			setStopBits (null);
 // 1
+			setStrLength (0);
         } */
     }
 
@@ -170,6 +177,26 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
 		return (String)get_Value(COLUMNNAME_DataBits);
 	}
 
+	/** Set End Character.
+		@param EndCharacter 
+		End Character example: ASCII (28)
+	  */
+	public void setEndCharacter (int EndCharacter)
+	{
+		set_Value (COLUMNNAME_EndCharacter, Integer.valueOf(EndCharacter));
+	}
+
+	/** Get End Character.
+		@return End Character example: ASCII (28)
+	  */
+	public int getEndCharacter () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_EndCharacter);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** FlowControl AD_Reference_ID=3000204 */
 	public static final int FLOWCONTROL_AD_Reference_ID=3000204;
 	/** None = 0 */
@@ -249,6 +276,74 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
 		return (String)get_Value(COLUMNNAME_Parity);
 	}
 
+	/** Set Position End (Cut).
+		@param PosEndCut Position End (Cut)	  */
+	public void setPosEndCut (int PosEndCut)
+	{
+		set_Value (COLUMNNAME_PosEndCut, Integer.valueOf(PosEndCut));
+	}
+
+	/** Get Position End (Cut).
+		@return Position End (Cut)	  */
+	public int getPosEndCut () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_PosEndCut);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Position End (Screen cut).
+		@param PosEnd_SCut Position End (Screen cut)	  */
+	public void setPosEnd_SCut (int PosEnd_SCut)
+	{
+		set_Value (COLUMNNAME_PosEnd_SCut, Integer.valueOf(PosEnd_SCut));
+	}
+
+	/** Get Position End (Screen cut).
+		@return Position End (Screen cut)	  */
+	public int getPosEnd_SCut () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_PosEnd_SCut);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Position Start (Cut).
+		@param PosStartCut Position Start (Cut)	  */
+	public void setPosStartCut (int PosStartCut)
+	{
+		set_Value (COLUMNNAME_PosStartCut, Integer.valueOf(PosStartCut));
+	}
+
+	/** Get Position Start (Cut).
+		@return Position Start (Cut)	  */
+	public int getPosStartCut () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_PosStartCut);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Position Start (Screen cut).
+		@param PosStart_SCut Position Start (Screen cut)	  */
+	public void setPosStart_SCut (int PosStart_SCut)
+	{
+		set_Value (COLUMNNAME_PosStart_SCut, Integer.valueOf(PosStart_SCut));
+	}
+
+	/** Get Position Start (Screen cut).
+		@return Position Start (Screen cut)	  */
+	public int getPosStart_SCut () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_PosStart_SCut);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Serial Port.
 		@param SerialPort Serial Port	  */
 	public void setSerialPort (String SerialPort)
@@ -261,6 +356,26 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
 	public String getSerialPort () 
 	{
 		return (String)get_Value(COLUMNNAME_SerialPort);
+	}
+
+	/** Set Start Character.
+		@param StartCharacter 
+		Start Character example: ASCII (3)
+	  */
+	public void setStartCharacter (int StartCharacter)
+	{
+		set_Value (COLUMNNAME_StartCharacter, Integer.valueOf(StartCharacter));
+	}
+
+	/** Get Start Character.
+		@return Start Character example: ASCII (3)
+	  */
+	public int getStartCharacter () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_StartCharacter);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** StopBits AD_Reference_ID=3000203 */
@@ -284,5 +399,22 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
 	public String getStopBits () 
 	{
 		return (String)get_Value(COLUMNNAME_StopBits);
+	}
+
+	/** Set String Length.
+		@param StrLength String Length	  */
+	public void setStrLength (int StrLength)
+	{
+		set_Value (COLUMNNAME_StrLength, Integer.valueOf(StrLength));
+	}
+
+	/** Get String Length.
+		@return String Length	  */
+	public int getStrLength () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_StrLength);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 }
