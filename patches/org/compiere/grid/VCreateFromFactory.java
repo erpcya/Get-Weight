@@ -23,6 +23,7 @@ import org.compiere.model.I_M_InOut;
 import org.compiere.model.I_M_RMA;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
+import org.erpca.apps.form.VGetWeightUI;
 
 public class VCreateFromFactory
 {
@@ -47,11 +48,13 @@ public class VCreateFromFactory
 	{
 		// Register defaults:
 		s_registeredClasses = new HashMap<Integer, Class<? extends ICreateFrom>>();
-		s_registeredClasses.put(I_C_Invoice.Table_ID, VCreateFromInvoiceUI.class);
+		s_registeredClasses.put(I_C_Invoice.Table_ID, VGetWeightUI.class);
 		
 		s_registeredClasses.put(I_C_BankStatement.Table_ID, VCreateFromStatementUI.class);
 		s_registeredClasses.put(I_M_InOut.Table_ID, VCreateFromShipmentUI.class);
 		s_registeredClasses.put(I_M_RMA.Table_ID, VCreateFromRMAUI.class);
+		//	Custom Create From
+		//s_registeredClasses.put(I_M_RMA.Table_ID, VCreateFromRMAUI.class);
 	}
 	
 	/**
