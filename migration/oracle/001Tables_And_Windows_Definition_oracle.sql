@@ -1,6 +1,6 @@
 -- Mar 24, 2013 10:29:52 PM VET
 -- Get weight from scale
-INSERT INTO AD_EntityType (AD_Client_ID,AD_EntityType_ID,AD_Org_ID,Created,CreatedBy,Description,EntityType,IsActive,Name,Processing,Updated,UpdatedBy) VALUES (0,3000200,0,TO_DATE('2013-03-24 22:29:39','YYYY-MM-DD HH24:MI:SS'),100,'E.R.P. Consultores y Asociados, C.A Spin Contribution','ECA03','Y','ERP C y A Spin Contribution','N',TO_DATE('2013-03-24 22:29:39','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_EntityType (AD_Client_ID,AD_EntityType_ID,AD_Org_ID,Created,CreatedBy,Description,EntityType,IsActive,Name,Processing,Updated,UpdatedBy,ModelPackage) VALUES (0,3000200,0,TO_DATE('2013-03-24 22:29:39','YYYY-MM-DD HH24:MI:SS'),100,'E.R.P. Consultores y Asociados, C.A Spin Contribution','ECA03','Y','ERP C y A Spin Contribution','N',TO_DATE('2013-03-24 22:29:39','YYYY-MM-DD HH24:MI:SS'),100,'org.erpca.model')
 ;
 
 -- Mar 24, 2013 10:55:17 PM VET
