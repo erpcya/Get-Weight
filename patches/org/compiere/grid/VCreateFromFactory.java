@@ -19,11 +19,14 @@ import java.util.logging.Level;
 import org.compiere.model.GridTab;
 import org.compiere.model.I_C_BankStatement;
 import org.compiere.model.I_C_Invoice;
+import org.compiere.model.I_C_Order;
+import org.compiere.model.I_C_OrderLine;
 import org.compiere.model.I_M_InOut;
 import org.compiere.model.I_M_RMA;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
-import org.erpca.apps.form.VGetWeightUI;
+
+import test.VTestGetWeightUI;
 
 public class VCreateFromFactory
 {
@@ -48,13 +51,13 @@ public class VCreateFromFactory
 	{
 		// Register defaults:
 		s_registeredClasses = new HashMap<Integer, Class<? extends ICreateFrom>>();
-		s_registeredClasses.put(I_C_Invoice.Table_ID, VGetWeightUI.class);
+		s_registeredClasses.put(I_C_Invoice.Table_ID, VCreateFromInvoiceUI.class);
 		
 		s_registeredClasses.put(I_C_BankStatement.Table_ID, VCreateFromStatementUI.class);
 		s_registeredClasses.put(I_M_InOut.Table_ID, VCreateFromShipmentUI.class);
 		s_registeredClasses.put(I_M_RMA.Table_ID, VCreateFromRMAUI.class);
 		//	Custom Create From
-		//s_registeredClasses.put(I_M_RMA.Table_ID, VCreateFromRMAUI.class);
+		s_registeredClasses.put(I_C_Order.Table_ID, VTestGetWeightUI.class);
 	}
 	
 	/**
