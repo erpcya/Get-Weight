@@ -57,7 +57,7 @@ public class VCreateFromFactory
 		s_registeredClasses.put(I_M_InOut.Table_ID, VCreateFromShipmentUI.class);
 		s_registeredClasses.put(I_M_RMA.Table_ID, VCreateFromRMAUI.class);
 		//	Custom Create From
-		s_registeredClasses.put(I_C_Order.Table_ID, VTestGetWeightUI.class);
+		
 	}
 	
 	/**
