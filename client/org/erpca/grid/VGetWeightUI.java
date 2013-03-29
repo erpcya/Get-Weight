@@ -13,9 +13,10 @@
  * Copyright (C) 2012-2013 E.R.P. Consultores y Asociados, S.A. All Rights Reserved. *
  * Contributor(s): Yamel Senih www.erpconsultoresyasociados.com                      *
  *************************************************************************************/
-package org.erpca.apps.form;
+package org.erpca.grid;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -49,7 +50,7 @@ import org.erpca.model.MCUSTSerialPortConfig;
  * @author Yamel Senih
  *
  */
-public class VGetWeightUI extends GetWeight implements ActionListener {
+public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 	
 	/**
 	 * *** Constructor de la Clase ***
@@ -98,12 +99,12 @@ public class VGetWeightUI extends GetWeight implements ActionListener {
 	}
 	
 	/** Window No		*/
-	private int 	p_WindowNo;
-	/**	Logger			*/
-	private CLogger log = CLogger.getCLogger(getClass());
+	protected int 		p_WindowNo;
 	/**	Dialog			*/
-	private CDialog dialog;
-	
+	protected CDialog 	dialog;
+	/**	Logger			*/
+	private CLogger 	log = CLogger.getCLogger(getClass());
+	//	
 	private ConfirmPanel 	confirmPanel = new ConfirmPanel(true);
 
 	/**
@@ -202,9 +203,11 @@ public class VGetWeightUI extends GetWeight implements ActionListener {
 					public void run(String trxName)
 					{
 						if (save(null, trxName))
-						{
+						{	
+							processValue(trxName);
 							dialog.dispose();
-						}
+						} else 
+							ADialog.error(p_WindowNo, dialog, "Error", getMessage());
 					}
 				});
 			}
@@ -212,19 +215,20 @@ public class VGetWeightUI extends GetWeight implements ActionListener {
 			{
 				ADialog.error(p_WindowNo, dialog, "Error", ex.getLocalizedMessage());
 			}
-			//Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
-			
 		}
 		//  Cancel
 		else if (e.getActionCommand().equals(ConfirmPanel.A_CANCEL))
 		{
 			dialog.dispose();
 		}
-		//	Serial Port Configuratio
+		//	Serial Port Configuration
 		else {
+			Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
 			setCurrentSPC(Integer.parseInt(e.getActionCommand()));
 			stopService();
-			if(!startService())
+			boolean ok = startService();
+			Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+			if(!ok)
 				ADialog.error(p_WindowNo, dialog, "Error", getMessage());
 		}
 	}
@@ -244,5 +248,14 @@ public class VGetWeightUI extends GetWeight implements ActionListener {
 	public void closeWindow() {
 		dialog.dispose();
 	}
+	
+	/**
+	 * Process Value in the child
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 15:12:28
+	 * @param trxName
+	 * @return
+	 * @return boolean
+	 */
+	public abstract boolean processValue(String trxName);
 	
 }

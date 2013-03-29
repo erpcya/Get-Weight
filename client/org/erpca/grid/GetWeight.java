@@ -13,7 +13,7 @@
  * Copyright (C) 2012-2013 E.R.P. Consultores y Asociados, S.A. All Rights Reserved. *
  * Contributor(s): Yamel Senih www.erpconsultoresyasociados.com                      *
  *************************************************************************************/
-package org.erpca.apps.form;
+package org.erpca.grid;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -269,7 +269,7 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 			return true;
 		}else{
 			message = Msg.translate(Env.getCtx(), "IncompleteStr");
-			weight = Env.ZERO;
+			//weight = Env.ZERO;
 			return false;
 		}
 	}	//	processStr
