@@ -22,16 +22,19 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 
 import javax.swing.BorderFactory;
 
 import org.compiere.apps.ADialog;
 import org.compiere.apps.AEnv;
+import org.compiere.apps.AppsAction;
 import org.compiere.apps.ConfirmPanel;
 import org.compiere.model.GridTab;
+import org.compiere.model.MSysConfig;
 import org.compiere.plaf.CompiereColor;
+import org.compiere.swing.CButton;
 import org.compiere.swing.CDialog;
 import org.compiere.swing.CPanel;
 import org.compiere.swing.CTextField;
@@ -40,6 +43,7 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Trx;
 import org.compiere.util.TrxRunnable;
+import org.erpca.model.MCUSTSerialPortConfig;
 
 /**
  * @author Yamel Senih
@@ -67,30 +71,29 @@ public class VGetWeightUI extends GetWeight implements ActionListener {
 
 			public void dispose(){
 				super.dispose();
-				try {
-					stopService();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				stopService();
 			}
 		};
 		
-		try
-		{
+		try {
+			loadSerialPortConfig();
 			if (!dynInit())
 				return;
-			jbInit();
-			startService();
+			
+			boolean sys = MSysConfig.getBooleanValue("OPEN_PORT_AUTOMATIC_IN_GETWEIGHT", false, 
+					Env.getAD_Client_ID(Env.getCtx()));
+			if(sys) {
+				if(!startService()) {
+					ADialog.error(p_WindowNo, Env.getWindow(p_WindowNo), "Error", getMessage());
+					return;
+				}
+			}
 			setInitOK(true);
+			AEnv.positionCenterWindow(Env.getWindow(p_WindowNo), dialog);
+		} catch (Exception e) {
+			ADialog.error(p_WindowNo, Env.getWindow(p_WindowNo), "Error", getMessage());
+			log.log(Level.SEVERE, getMessage());
 		}
-		catch(Exception e)
-		{
-			ADialog.error(p_WindowNo, dialog, "Error", e.getMessage() + " -- "+ e.getLocalizedMessage());
-			log.log(Level.SEVERE, "", e);
-			setInitOK(false);
-		}
-		AEnv.positionCenterWindow(Env.getWindow(p_WindowNo), dialog);
 		
 	}
 	
@@ -100,11 +103,6 @@ public class VGetWeightUI extends GetWeight implements ActionListener {
 	private CLogger log = CLogger.getCLogger(getClass());
 	/**	Dialog			*/
 	private CDialog dialog;
-	
-	//private int 	m_AD_User_ID = 0;
-	//private boolean m_initOK;
-	
-	//private int 	m_WindowNo;
 	
 	private ConfirmPanel 	confirmPanel = new ConfirmPanel(true);
 
@@ -119,11 +117,6 @@ public class VGetWeightUI extends GetWeight implements ActionListener {
 		jbInit();
 		
 		super.dynInit();
-		
-		/*if (getGridTab().getValue("C_BankStatement_ID") == null){
-			ADialog.error(0, dialog, "SaveErrorRowNotFound");
-			return false;
-		}*/
 		
 		confirmPanel.addActionListener(this);
 		dialog.setTitle(getTitle());
@@ -141,7 +134,7 @@ public class VGetWeightUI extends GetWeight implements ActionListener {
 	 */
 	private void jbInit() throws Exception {
 		//
-		
+		loadButtons();
 		CPanel displayPane = new CPanel();
 		GridBagLayout displayLayout = new GridBagLayout();
 		displayPane.setLayout(displayLayout);
@@ -177,6 +170,26 @@ public class VGetWeightUI extends GetWeight implements ActionListener {
 		weight = Env.ZERO;
 	}
 
+	/**
+	 * Load Options to choice as buttons
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 03:54:28
+	 * @return void
+	 * @throws Exception 
+	 */
+	private void loadButtons() throws Exception{
+		List<MCUSTSerialPortConfig> arraySPC = getArraySerialPortConfig();
+		if(arraySPC.size() == 0)
+			throw new Exception(Msg.translate(Env.getCtx(), "@PortNotConfiguredforUser@"));
+		//	
+		for(int i = 0; i < arraySPC.size(); i++){
+			MCUSTSerialPortConfig spc = arraySPC.get(i);
+			AppsAction aa = new AppsAction(String.valueOf(i), null, spc.getName());
+			aa.setDelegate(this);
+			CButton b = (CButton)aa.getButton(); 
+			confirmPanel.addComponent(b);
+		}
+		
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -206,6 +219,13 @@ public class VGetWeightUI extends GetWeight implements ActionListener {
 		else if (e.getActionCommand().equals(ConfirmPanel.A_CANCEL))
 		{
 			dialog.dispose();
+		}
+		//	Serial Port Configuratio
+		else {
+			setCurrentSPC(Integer.parseInt(e.getActionCommand()));
+			stopService();
+			if(!startService())
+				ADialog.error(p_WindowNo, dialog, "Error", getMessage());
 		}
 	}
 	
