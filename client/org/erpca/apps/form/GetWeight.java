@@ -86,6 +86,7 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 	@Override
 	public boolean save(IMiniTable miniTable, String trxName) {
 		log.fine("save(IMinitable, String)");
+		processStr();
 		return true;
 	}
 	
@@ -255,14 +256,21 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 	 * @return
 	 * @return String
 	 */
-	protected String processStr() {
+	protected boolean processStr() {
 		if(m_StrReaded.length() == currentSPC.getStrLength()){
-			weight = new BigDecimal(m_StrReaded.substring(currentSPC.getPosStartCut(), currentSPC.getPosEndCut()).trim());
-			fDisplay.setText(m_StrReaded.substring(currentSPC.getPosStart_SCut(), currentSPC.getPosEnd_SCut()));
-			return m_StrReaded.substring(currentSPC.getPosStartCut(), currentSPC.getPosEndCut()).trim();
+			String strWeight = m_StrReaded.substring(currentSPC.getPosStartCut(), currentSPC.getPosEndCut()).trim();
+			String strWeight_V = m_StrReaded.substring(currentSPC.getPosStart_SCut(), currentSPC.getPosEnd_SCut());
+			if(strWeight != null
+					&& strWeight.length() != 0)
+				weight = new BigDecimal(strWeight);
+			else
+				weight = Env.ZERO;
+			fDisplay.setText(strWeight_V);
+			return true;
 		}else{
-			log.warning(Msg.translate(Env.getCtx(), "Incomplete"));
-			return "0";
+			message = Msg.translate(Env.getCtx(), "IncompleteStr");
+			weight = Env.ZERO;
+			return false;
 		}
 	}	//	processStr
 
