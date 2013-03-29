@@ -22,23 +22,21 @@ import java.util.List;
 import java.util.TooManyListenersException;
 import java.util.logging.Level;
 
-import org.compiere.apps.ADialog;
-import org.compiere.grid.CreateFrom;
-import org.compiere.minigrid.IMiniTable;
-import org.compiere.model.GridTab;
-import org.compiere.swing.CLabel;
-import org.compiere.swing.CTextField;
-import org.compiere.util.AdempiereUserError;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.erpca.model.MCUSTSerialPortConfig;
-import org.erpca.util.SerialPortManager;
-
 import javax.comm.NoSuchPortException;
 import javax.comm.PortInUseException;
 import javax.comm.SerialPortEvent;
 import javax.comm.SerialPortEventListener;
 import javax.comm.UnsupportedCommOperationException;
+
+import org.compiere.grid.CreateFrom;
+import org.compiere.minigrid.IMiniTable;
+import org.compiere.model.GridTab;
+import org.compiere.swing.CLabel;
+import org.compiere.swing.CTextField;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+import org.erpca.model.MCUSTSerialPortConfig;
+import org.erpca.util.SerialPortManager;
 
 /**
  * @author Yamel Senih
@@ -55,79 +53,143 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 		super(gridTab);
 		log.info(gridTab.toString());
 	}	//	GetWeight
-
-	/* (non-Javadoc)
-	 * @see org.compiere.grid.CreateFrom#dynInit()
-	 */
+	
 	@Override
 	public boolean dynInit() throws Exception {
 		log.config("");
 		log.fine("dynInit()");
-		setTitle(Msg.translate(Env.getCtx(), "GetWeight") + " .. " + Msg.translate(Env.getCtx(), "CreateFrom"));
+		setTitle(Msg.translate(Env.getCtx(), "GetWeightFromScale") + " .. ");
 		return true;
 	}
 
-	private InputStream 			i_Stream 		= null;
-	private boolean 				started 			= false;
-	private boolean					read			= false;
-	private MCUSTSerialPortConfig 	m_currentSPC 	= null;
-	private StringBuffer			m_StrReaded		= new StringBuffer();
-	private SerialPortManager 		serialPort_M	= null;
+	private InputStream 				i_Stream 		= null;
+	private boolean 					started 		= false;
+	private boolean						read			= false;
+	private List<MCUSTSerialPortConfig> arraySPC		= null;
+	private MCUSTSerialPortConfig 		currentSPC 	= null;
+	private StringBuffer				m_StrReaded		= new StringBuffer();
+	private SerialPortManager 			serialPort_M	= null;
 	/**	Label Display				*/
 	public CLabel 			lDisplay 	= new CLabel();
 	/**	Display						*/
 	public CTextField 		fDisplay 	= new CTextField();
 	/**	Weight Result				*/
 	public BigDecimal 		weight		= Env.ZERO;
+	/**	Message						*/
+	public String			message 	= null;
 	
-	/* (non-Javadoc)
-	 * @see org.compiere.grid.CreateFrom#info()
-	 */
 	@Override
 	public void info() {
 
 	}
-
-	/* (non-Javadoc)
-	 * @see org.compiere.grid.CreateFrom#save(org.compiere.minigrid.IMiniTable, java.lang.String)
-	 */
+	
 	@Override
 	public boolean save(IMiniTable miniTable, String trxName) {
 		log.fine("save(IMinitable, String)");
-		return false;
+		return true;
 	}
 	
 	/**
 	 * Open the port and set Listeners
 	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 28/03/2013, 03:50:44
-	 * @throws NoSuchPortException
-	 * @throws PortInUseException
-	 * @throws UnsupportedCommOperationException
-	 * @throws IOException
-	 * @throws TooManyListenersException
-	 * @return void
-	 * @throws AdempiereUserError 
+	 * @return boolean
 	 */
-	protected void startService() throws NoSuchPortException, PortInUseException, 
-						UnsupportedCommOperationException, IOException, TooManyListenersException, AdempiereUserError{
-		//	User
-		int m_AD_User_ID = Env.getAD_User_ID(Env.getCtx());
-		
-		List<MCUSTSerialPortConfig> arraySPC = MCUSTSerialPortConfig.getSerialPortConfigOfUser(Env.getCtx(), m_AD_User_ID, null); 
-		
-		if(arraySPC.size() == 0)
-			throw new AdempiereUserError("@PortNotConfiguredforUser@");
-		
-		m_currentSPC = arraySPC.get(0);
-		
-		serialPort_M = new SerialPortManager(m_currentSPC);
-		serialPort_M.openPort();
-		i_Stream = serialPort_M.getInput();
-		serialPort_M.addPortListener(this);
-		serialPort_M.getSerialPort().notifyOnDataAvailable(true);
-		started = true;
+	protected boolean startService() {
+		//	verify if exists configuration
+		if(currentSPC == null){
+			message = Msg.translate(Env.getCtx(), "@PortNotConfiguredforUser@");
+			return false;
+		}
+		//	
+		try {
+			serialPort_M = new SerialPortManager(currentSPC);
+			serialPort_M.openPort();
+			i_Stream = serialPort_M.getInput();
+			serialPort_M.addPortListener(this);
+			serialPort_M.getSerialPort().notifyOnDataAvailable(true);
+			started = true;
+		} catch (NoSuchPortException e) {
+			message = Msg.translate(Env.getCtx(), "@NoSuchPortException@") + "\n" + e.getMessage();
+			//e.printStackTrace();
+		} catch (PortInUseException e) {
+			message = Msg.translate(Env.getCtx(), "@PortInUseException@") + "\n" + e.getMessage();
+			//e.printStackTrace();
+		} catch (UnsupportedCommOperationException e) {
+			message = Msg.translate(Env.getCtx(), "@UnsupportedCommOperationException@") + "\n" + e.getMessage();
+			//e.printStackTrace();
+		} catch (IOException e) {
+			message = Msg.translate(Env.getCtx(), "@IOException@") + "\n" + e.getMessage();
+			//e.printStackTrace();
+		} catch (TooManyListenersException e) {
+			stopService();
+			message = Msg.translate(Env.getCtx(), "@TooManyListenersException@") + "\n" + e.getMessage();
+			//e.printStackTrace();
+		} catch (NoClassDefFoundError e) {
+			message = Msg.translate(Env.getCtx(), "@NoClassDefFoundError@") + "\n" + e.getMessage();
+			//e.printStackTrace();
+		} catch (UnsatisfiedLinkError e) {
+			message = Msg.translate(Env.getCtx(), "@UnsatisfiedLinkError@") + "\n" + e.getMessage();
+			//e.printStackTrace();
+		} catch (Exception e) {
+			message = e.getMessage();
+			//e.printStackTrace();
+		}
+		return started;
 	}
 
+	/**
+	 * Get Operation Message
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 02:01:26
+	 * @return
+	 * @return String
+	 */
+	protected String getMessage(){
+		return message;
+	}
+	
+	/**
+	 * Load List Port
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 03:37:06
+	 * @return void
+	 */
+	protected void loadSerialPortConfig(){
+		//	User
+		int m_AD_User_ID = Env.getAD_User_ID(Env.getCtx());
+		arraySPC = MCUSTSerialPortConfig.getSerialPortConfigOfUser(Env.getCtx(), m_AD_User_ID, null); 
+		//	Set Current Serial Port Configuration
+		if(arraySPC.size() != 0)
+			currentSPC = arraySPC.get(0);
+	}
+	
+	/**
+	 * Set Current Serial Port Config
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 03:38:20
+	 * @param index
+	 * @return void
+	 */
+	protected void setCurrentSPC(int index){
+		currentSPC = arraySPC.get(index);
+	}
+	
+	/**
+	 * Get Array of Serial Port Configuration
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 02:10:47
+	 * @return
+	 * @return List<MCUSTSerialPortConfig>
+	 */
+	protected List<MCUSTSerialPortConfig> getArraySerialPortConfig(){
+		return arraySPC;
+	}
+	
+	/**
+	 * Get Current Serial Port Configuration
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 02:11:58
+	 * @return
+	 * @return MCUSTSerialPortConfig
+	 */
+	protected MCUSTSerialPortConfig getCurrentSerialPortConfig(){
+		return currentSPC;
+	}
 	
 	@Override
 	public void serialEvent(SerialPortEvent ev) {
@@ -146,7 +208,7 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 		try {
 			while(i_Stream.available() > 0) {
 				int bit = i_Stream.read();
-				if(bit == m_currentSPC.getStartCharacter() 
+				if(bit == currentSPC.getStartCharacter() 
 						&& read == false){
 					read = true;
 					m_StrReaded = new StringBuffer();
@@ -154,13 +216,14 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 				if(read)
 					m_StrReaded.append((char)bit);
 				if(read 
-						&& bit == m_currentSPC.getEndCharacter() 
-						&& m_StrReaded.length() == m_currentSPC.getStrLength()){
+						&& bit == currentSPC.getEndCharacter() 
+						&& m_StrReaded.length() == currentSPC.getStrLength()){
 					read = false;
 					processStr();
 				} 
 			}
         } catch( IOException e ) {
+        	message = Msg.translate(Env.getCtx(), "@IOException@") + "\n" + e.getMessage();
         	log.log(Level.SEVERE, "", e);
         }
 	}	//	readPort
@@ -168,14 +231,22 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 	/**
 	 * Stop Service and close port
 	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 28/03/2013, 03:55:32
-	 * @throws IOException
-	 * @return void
+	 * @return boolean
 	 */
-	protected void stopService() throws IOException{
+	protected boolean stopService() {
 		if(started){
-			serialPort_M.closePort();
-			started = false;
+			try {
+				serialPort_M.closePort();
+				started = false;
+			} catch (IOException e) {
+				message = Msg.translate(Env.getCtx(), "@IOException@") + "\n" + e.getMessage();
+				e.printStackTrace();
+			} catch (Exception e) {
+				message = e.getMessage();
+				e.printStackTrace();
+			}
 		}
+		return !started;
 	}	//	stopService
 	
 	/**
@@ -185,10 +256,10 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 	 * @return String
 	 */
 	protected String processStr() {
-		if(m_StrReaded.length() == m_currentSPC.getStrLength()){
-			weight = new BigDecimal(m_StrReaded.substring(m_currentSPC.getPosStartCut(), m_currentSPC.getPosEndCut()).trim());
-			fDisplay.setText(m_StrReaded.substring(m_currentSPC.getPosStart_SCut(), m_currentSPC.getPosEnd_SCut()));
-			return m_StrReaded.substring(m_currentSPC.getPosStartCut(), m_currentSPC.getPosEndCut()).trim();
+		if(m_StrReaded.length() == currentSPC.getStrLength()){
+			weight = new BigDecimal(m_StrReaded.substring(currentSPC.getPosStartCut(), currentSPC.getPosEndCut()).trim());
+			fDisplay.setText(m_StrReaded.substring(currentSPC.getPosStart_SCut(), currentSPC.getPosEnd_SCut()));
+			return m_StrReaded.substring(currentSPC.getPosStartCut(), currentSPC.getPosEndCut()).trim();
 		}else{
 			log.warning(Msg.translate(Env.getCtx(), "Incomplete"));
 			return "0";

@@ -71,7 +71,9 @@ public class MCUSTSerialPortConfig extends X_CUST_SerialPortConfig implements
 				"EXISTS(SELECT 1 " +
 				"			FROM CUST_PortConfig_User pcu " +
 				"		WHERE pcu.CUST_SerialPortConfig_ID = CUST_SerialPortConfig.CUST_SerialPortConfig_ID " +
+				"		AND pcu.IsActive = 'Y' " +
 				"		AND " + I_CUST_PortConfig_User.COLUMNNAME_AD_User_ID+"=?)", trxName)
+			.setOnlyActiveRecords(true)
 			.setParameters(p_AD_User_ID)
 			.<MCUSTSerialPortConfig>list();
 		//	
