@@ -19,14 +19,10 @@ import java.util.logging.Level;
 import org.compiere.model.GridTab;
 import org.compiere.model.I_C_BankStatement;
 import org.compiere.model.I_C_Invoice;
-import org.compiere.model.I_C_Order;
-import org.compiere.model.I_C_OrderLine;
 import org.compiere.model.I_M_InOut;
 import org.compiere.model.I_M_RMA;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
-
-import test.VTestGetWeightUI;
 
 public class VCreateFromFactory
 {
