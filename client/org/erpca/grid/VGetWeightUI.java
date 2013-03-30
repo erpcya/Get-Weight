@@ -81,7 +81,7 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 			if (!dynInit())
 				return;
 			
-			boolean sys = MSysConfig.getBooleanValue("OPEN_PORT_AUTOMATIC_IN_GETWEIGHT", false, 
+			boolean sys = MSysConfig.getBooleanValue("OPEN_PORT_AUTOMATIC_IN_GETWEIGHT", true, 
 					Env.getAD_Client_ID(Env.getCtx()));
 			if(sys) {
 				if(!startService()) {
