@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.Query;
 
 /**
@@ -118,6 +119,17 @@ public class MCUSTSerialPortConfig extends X_CUST_SerialPortConfig implements
 	 */
 	public int getParityAsInt(){
 		return Integer.parseInt(getParity());
+	}
+	
+	@Override
+	public boolean beforeSave(boolean isNew){
+		if(getPosStartCut() > getPosEndCut())
+			throw new AdempiereException("@PosStartCutOverPosEndCut@");
+		if(getPosStart_SCut() > getPosEnd_SCut())
+			throw new AdempiereException("@PosStart_SCutOverPosEnd_SCut@");
+		if(getStrLength() <= 0)
+			throw new AdempiereException("@StrLengthUnderZero@");
+		return true;
 	}
 	
 }
