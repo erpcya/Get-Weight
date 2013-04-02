@@ -21,15 +21,15 @@ import java.sql.Timestamp;
 import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Interface for CUST_PortConfig_User
+/** Generated Interface for CUST_PortConfig_Role
  *  @author Adempiere (generated) 
  *  @version Release 3.7.0LTS
  */
-public interface I_CUST_PortConfig_User 
+public interface I_CUST_PortConfig_Role 
 {
 
-    /** TableName=CUST_PortConfig_User */
-    public static final String Table_Name = "CUST_PortConfig_User";
+    /** TableName=CUST_PortConfig_Role */
+    public static final String Table_Name = "CUST_PortConfig_Role";
 
     /** AD_Table_ID=3000205 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
@@ -63,20 +63,20 @@ public interface I_CUST_PortConfig_User
 	  */
 	public int getAD_Org_ID();
 
-    /** Column name AD_User_ID */
-    public static final String COLUMNNAME_AD_User_ID = "AD_User_ID";
+    /** Column name AD_Role_ID */
+    public static final String COLUMNNAME_AD_Role_ID = "AD_Role_ID";
 
-	/** Set Usuario.
-	  * User within the system - Internal or Business Partner Contact
+	/** Set Role.
+	  * Responsibility Role
 	  */
-	public void setAD_User_ID (int AD_User_ID);
+	public void setAD_Role_ID (int AD_Role_ID);
 
-	/** Get Usuario.
-	  * User within the system - Internal or Business Partner Contact
+	/** Get Role.
+	  * Responsibility Role
 	  */
-	public int getAD_User_ID();
+	public int getAD_Role_ID();
 
-	public org.compiere.model.I_AD_User getAD_User() throws RuntimeException;
+	public org.compiere.model.I_AD_Role getAD_Role() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -107,7 +107,7 @@ public interface I_CUST_PortConfig_User
 	  */
 	public int getCUST_SerialPortConfig_ID();
 
-	public I_CUST_SerialPortConfig getCUST_SerialPortConfig() throws RuntimeException;
+	public org.erpca.model.I_CUST_SerialPortConfig getCUST_SerialPortConfig() throws RuntimeException;
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";

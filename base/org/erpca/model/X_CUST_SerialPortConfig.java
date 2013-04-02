@@ -31,7 +31,7 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20130328L;
+	private static final long serialVersionUID = 20130401L;
 
     /** Standard Constructor */
     public X_CUST_SerialPortConfig (Properties ctx, int CUST_SerialPortConfig_ID, String trxName)

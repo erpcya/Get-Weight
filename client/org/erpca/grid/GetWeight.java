@@ -155,8 +155,8 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 	 */
 	protected void loadSerialPortConfig(){
 		//	User
-		int m_AD_User_ID = Env.getAD_User_ID(Env.getCtx());
-		arraySPC = MCUSTSerialPortConfig.getSerialPortConfigOfUser(Env.getCtx(), m_AD_User_ID, null); 
+		int m_AD_Role_ID = Env.getAD_Role_ID(Env.getCtx());
+		arraySPC = MCUSTSerialPortConfig.getSerialPortConfigOfRole(Env.getCtx(), m_AD_Role_ID, null); 
 		//	Set Current Serial Port Configuration
 		if(arraySPC.size() != 0)
 			currentSPC = arraySPC.get(0);

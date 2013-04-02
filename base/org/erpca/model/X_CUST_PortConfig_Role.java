@@ -22,30 +22,30 @@ import java.util.Properties;
 import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Model for CUST_PortConfig_User
+/** Generated Model for CUST_PortConfig_Role
  *  @author Adempiere (generated) 
  *  @version Release 3.7.0LTS - $Id$ */
-public class X_CUST_PortConfig_User extends PO implements I_CUST_PortConfig_User, I_Persistent 
+public class X_CUST_PortConfig_Role extends PO implements I_CUST_PortConfig_Role, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20130328L;
+	private static final long serialVersionUID = 20130401L;
 
     /** Standard Constructor */
-    public X_CUST_PortConfig_User (Properties ctx, int CUST_PortConfig_User_ID, String trxName)
+    public X_CUST_PortConfig_Role (Properties ctx, int CUST_PortConfig_Role_ID, String trxName)
     {
-      super (ctx, CUST_PortConfig_User_ID, trxName);
-      /** if (CUST_PortConfig_User_ID == 0)
+      super (ctx, CUST_PortConfig_Role_ID, trxName);
+      /** if (CUST_PortConfig_Role_ID == 0)
         {
-			setAD_User_ID (0);
+			setAD_Role_ID (0);
 			setCUST_SerialPortConfig_ID (0);
         } */
     }
 
     /** Load Constructor */
-    public X_CUST_PortConfig_User (Properties ctx, ResultSet rs, String trxName)
+    public X_CUST_PortConfig_Role (Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -67,42 +67,42 @@ public class X_CUST_PortConfig_User extends PO implements I_CUST_PortConfig_User
 
     public String toString()
     {
-      StringBuffer sb = new StringBuffer ("X_CUST_PortConfig_User[")
+      StringBuffer sb = new StringBuffer ("X_CUST_PortConfig_Role[")
         .append(get_ID()).append("]");
       return sb.toString();
     }
 
-	public org.compiere.model.I_AD_User getAD_User() throws RuntimeException
+	public org.compiere.model.I_AD_Role getAD_Role() throws RuntimeException
     {
-		return (org.compiere.model.I_AD_User)MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-			.getPO(getAD_User_ID(), get_TrxName());	}
+		return (org.compiere.model.I_AD_Role)MTable.get(getCtx(), org.compiere.model.I_AD_Role.Table_Name)
+			.getPO(getAD_Role_ID(), get_TrxName());	}
 
-	/** Set Usuario.
-		@param AD_User_ID 
-		User within the system - Internal or Business Partner Contact
+	/** Set Role.
+		@param AD_Role_ID 
+		Responsibility Role
 	  */
-	public void setAD_User_ID (int AD_User_ID)
+	public void setAD_Role_ID (int AD_Role_ID)
 	{
-		if (AD_User_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_AD_User_ID, null);
+		if (AD_Role_ID < 0) 
+			set_ValueNoCheck (COLUMNNAME_AD_Role_ID, null);
 		else 
-			set_ValueNoCheck (COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
+			set_ValueNoCheck (COLUMNNAME_AD_Role_ID, Integer.valueOf(AD_Role_ID));
 	}
 
-	/** Get Usuario.
-		@return User within the system - Internal or Business Partner Contact
+	/** Get Role.
+		@return Responsibility Role
 	  */
-	public int getAD_User_ID () 
+	public int getAD_Role_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_AD_User_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_AD_Role_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
 	}
 
-	public I_CUST_SerialPortConfig getCUST_SerialPortConfig() throws RuntimeException
+	public org.erpca.model.I_CUST_SerialPortConfig getCUST_SerialPortConfig() throws RuntimeException
     {
-		return (I_CUST_SerialPortConfig)MTable.get(getCtx(), I_CUST_SerialPortConfig.Table_Name)
+		return (org.erpca.model.I_CUST_SerialPortConfig)MTable.get(getCtx(), org.erpca.model.I_CUST_SerialPortConfig.Table_Name)
 			.getPO(getCUST_SerialPortConfig_ID(), get_TrxName());	}
 
 	/** Set Serial Port Configuration.

@@ -971,7 +971,7 @@ UPDATE AD_Table SET AD_Window_ID=3000200,Updated=TO_DATE('2013-03-25 16:47:18','
 
 -- Mar 25, 2013 4:56:53 PM VET
 -- Get weight from scale
-INSERT INTO AD_Table (AccessLevel,AD_Client_ID,AD_Org_ID,AD_Table_ID,CopyColumnsFromTable,Created,CreatedBy,EntityType,ImportTable,IsActive,IsCentrallyMaintained,IsChangeLog,IsDeleteable,IsHighVolume,IsSecurityEnabled,IsView,LoadSeq,Name,ReplicationType,TableName,Updated,UpdatedBy) VALUES ('3',0,0,3000205,'N',TO_DATE('2013-03-25 16:56:51','YYYY-MM-DD HH24:MI:SS'),100,'ECA03','N','Y','Y','N','Y','N','N','N',0,'Port Configuration by User','L','CUST_PortConfig_User',TO_DATE('2013-03-25 16:56:51','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Table (AccessLevel,AD_Client_ID,AD_Org_ID,AD_Table_ID,CopyColumnsFromTable,Created,CreatedBy,EntityType,ImportTable,IsActive,IsCentrallyMaintained,IsChangeLog,IsDeleteable,IsHighVolume,IsSecurityEnabled,IsView,LoadSeq,Name,ReplicationType,TableName,Updated,UpdatedBy) VALUES ('3',0,0,3000205,'N',TO_DATE('2013-03-25 16:56:51','YYYY-MM-DD HH24:MI:SS'),100,'ECA03','N','Y','Y','N','Y','N','N','N',0,'Port Configuration by User','L','CUST_PortConfig_Role',TO_DATE('2013-03-25 16:56:51','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- Mar 25, 2013 4:56:53 PM VET
@@ -981,7 +981,7 @@ INSERT INTO AD_Table_Trl (AD_Language,AD_Table_ID, Name, IsTranslated,AD_Client_
 
 -- Mar 25, 2013 4:56:53 PM VET
 -- Get weight from scale
-INSERT INTO AD_Sequence (AD_Client_ID,AD_Org_ID,AD_Sequence_ID,Created,CreatedBy,CurrentNext,CurrentNextSys,Description,IncrementNo,IsActive,IsAudited,IsAutoSequence,IsTableID,Name,StartNewYear,StartNo,Updated,UpdatedBy) VALUES (0,0,3000201,TO_DATE('2013-03-25 16:56:53','YYYY-MM-DD HH24:MI:SS'),100,1000000,50000,'Table CUST_PortConfig_User',1,'Y','N','Y','Y','CUST_PortConfig_User','N',1000000,TO_DATE('2013-03-25 16:56:53','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Sequence (AD_Client_ID,AD_Org_ID,AD_Sequence_ID,Created,CreatedBy,CurrentNext,CurrentNextSys,Description,IncrementNo,IsActive,IsAudited,IsAutoSequence,IsTableID,Name,StartNewYear,StartNo,Updated,UpdatedBy) VALUES (0,0,3000201,TO_DATE('2013-03-25 16:56:53','YYYY-MM-DD HH24:MI:SS'),100,1000000,50000,'Table CUST_PortConfig_Role',1,'Y','N','Y','Y','CUST_PortConfig_Role','N',1000000,TO_DATE('2013-03-25 16:56:53','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- Mar 25, 2013 4:57:04 PM VET
@@ -1036,7 +1036,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- Mar 25, 2013 5:01:38 PM VET
 -- Get weight from scale
-INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,3000207,0,'CUST_PortConfig_User_ID',TO_DATE('2013-03-25 17:01:37','YYYY-MM-DD HH24:MI:SS'),100,'ECA03','Y','Port Configuration by User','Port Configuration by User',TO_DATE('2013-03-25 17:01:37','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,3000207,0,'CUST_PortConfig_Role_ID',TO_DATE('2013-03-25 17:01:37','YYYY-MM-DD HH24:MI:SS'),100,'ECA03','Y','Port Configuration by User','Port Configuration by User',TO_DATE('2013-03-25 17:01:37','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- Mar 25, 2013 5:01:38 PM VET
@@ -1046,7 +1046,7 @@ INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_
 
 -- Mar 25, 2013 5:01:38 PM VET
 -- Get weight from scale
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,3000219,3000207,0,13,3000205,'CUST_PortConfig_User_ID',TO_DATE('2013-03-25 17:01:37','YYYY-MM-DD HH24:MI:SS'),100,'ECA03',10,'Y','N','N','N','Y','Y','N','N','N','N','N','Port Configuration by User',0,TO_DATE('2013-03-25 17:01:37','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,3000219,3000207,0,13,3000205,'CUST_PortConfig_Role_ID',TO_DATE('2013-03-25 17:01:37','YYYY-MM-DD HH24:MI:SS'),100,'ECA03',10,'Y','N','N','N','Y','Y','N','N','N','N','N','Port Configuration by User',0,TO_DATE('2013-03-25 17:01:37','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- Mar 25, 2013 5:01:38 PM VET
@@ -1144,7 +1144,7 @@ UPDATE AD_Element_Trl SET Description='Configuración de Puerto Serie ejemplo: C
 
 -- Mar 25, 2013 5:07:26 PM VET
 -- Get weight from scale
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,3000224,138,0,19,3000205,'AD_User_ID',TO_DATE('2013-03-25 17:07:25','YYYY-MM-DD HH24:MI:SS'),100,'User within the system - Internal or Business Partner Contact','ECA03',10,'The User identifies a unique user in the system. This could be an internal user or a business partner contact','Y','Y','N','N','N','Y','N','Y','N','N','N','N','Y','Usuario',2,TO_DATE('2013-03-25 17:07:25','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,3000224,138,0,19,3000205,'AD_Role_ID',TO_DATE('2013-03-25 17:07:25','YYYY-MM-DD HH24:MI:SS'),100,'User within the system - Internal or Business Partner Contact','ECA03',10,'The User identifies a unique user in the system. This could be an internal user or a business partner contact','Y','Y','N','N','N','Y','N','Y','N','N','N','N','Y','Usuario',2,TO_DATE('2013-03-25 17:07:25','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- Mar 25, 2013 5:07:26 PM VET
@@ -1159,7 +1159,7 @@ UPDATE AD_Column SET IsParent='Y', IsUpdateable='N',Updated=TO_DATE('2013-03-25 
 
 -- Mar 25, 2013 5:09:49 PM VET
 -- Get weight from scale
-CREATE TABLE CUST_PortConfig_User (AD_Client_ID NUMBER(10) NOT NULL, AD_Org_ID NUMBER(10) NOT NULL, AD_User_ID NUMBER(10) NOT NULL, Created DATE NOT NULL, CreatedBy NUMBER(10) NOT NULL, CUST_SerialPortConfig_ID NUMBER(10) NOT NULL, IsActive CHAR(1) CHECK (IsActive IN ('Y','N')) NOT NULL, Updated DATE NOT NULL, UpdatedBy NUMBER(10) NOT NULL, CONSTRAINT CUST_PortConfig_User_Key PRIMARY KEY (AD_User_ID, CUST_SerialPortConfig_ID))
+CREATE TABLE CUST_PortConfig_Role (AD_Client_ID NUMBER(10) NOT NULL, AD_Org_ID NUMBER(10) NOT NULL, AD_Role_ID NUMBER(10) NOT NULL, Created DATE NOT NULL, CreatedBy NUMBER(10) NOT NULL, CUST_SerialPortConfig_ID NUMBER(10) NOT NULL, IsActive CHAR(1) CHECK (IsActive IN ('Y','N')) NOT NULL, Updated DATE NOT NULL, UpdatedBy NUMBER(10) NOT NULL, CONSTRAINT CUST_PortConfig_Role_Key PRIMARY KEY (AD_Role_ID, CUST_SerialPortConfig_ID))
 ;
 
 -- Mar 25, 2013 5:12:03 PM VET
