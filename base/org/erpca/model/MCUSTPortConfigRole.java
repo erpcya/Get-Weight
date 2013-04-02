@@ -22,8 +22,8 @@ import java.util.Properties;
  * @author Yamel Senih
  *
  */
-public class MCUSTPortConfigUser extends X_CUST_PortConfig_User implements
-		I_CUST_PortConfig_User {
+public class MCUSTPortConfigRole extends X_CUST_PortConfig_Role implements
+		I_CUST_PortConfig_Role {
 
 	/**
 	 * 
@@ -37,7 +37,7 @@ public class MCUSTPortConfigUser extends X_CUST_PortConfig_User implements
 	 * @param CUST_PortConfig_User_ID
 	 * @param trxName
 	 */
-	public MCUSTPortConfigUser(Properties ctx, int CUST_PortConfig_User_ID,
+	public MCUSTPortConfigRole(Properties ctx, int CUST_PortConfig_User_ID,
 			String trxName) {
 		super(ctx, CUST_PortConfig_User_ID, trxName);
 		// TODO Auto-generated constructor stub
@@ -50,7 +50,7 @@ public class MCUSTPortConfigUser extends X_CUST_PortConfig_User implements
 	 * @param rs
 	 * @param trxName
 	 */
-	public MCUSTPortConfigUser(Properties ctx, ResultSet rs, String trxName) {
+	public MCUSTPortConfigRole(Properties ctx, ResultSet rs, String trxName) {
 		super(ctx, rs, trxName);
 		// TODO Auto-generated constructor stub
 	}

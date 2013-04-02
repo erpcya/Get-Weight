@@ -139,7 +139,7 @@
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.adempiere.util.GenerateModel"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="&quot;/opt/Development/workspace/GetWeight/base/org/erpca/model/&quot;&#10;&quot;org.erpca.model&quot;&#10;&quot;'ECA03'&quot;&#10;&quot;'CUST_SerialPortConfig', 'CUST_PortConfig_User'&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="&quot;/opt/Development/workspace/GetWeight/base/org/erpca/model/&quot;&#10;&quot;org.erpca.model&quot;&#10;&quot;'ECA03'&quot;&#10;&quot;'CUST_SerialPortConfig', 'CUST_PortConfig_Role'&quot;"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="CustomWeight"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DPropertyFile=/opt/Development/ADempiere_Properties/GetWeight.properties&#13;&#10;-DADEMPIERE_HOME=/Applications/Adempiere&#13;&#10;-Xms128M&#13;&#10;-Xmx256M&#13;&#10;-Dorg.adempiere.server.embedded=true"/>
 </launchConfiguration>

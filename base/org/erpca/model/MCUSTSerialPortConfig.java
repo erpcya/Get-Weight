@@ -59,23 +59,23 @@ public class MCUSTSerialPortConfig extends X_CUST_SerialPortConfig implements
 	}
 	
 	/**
-	 * Get Serial Port Configuration of User
+	 * Get Serial Port Configuration of Role
 	 * @author Yamel Senih 26/03/2013, 01:34:37
 	 * @param ctx
-	 * @param p_AD_User_ID
+	 * @param p_AD_Role_ID
 	 * @param trxName
 	 * @return
 	 * @return List<MCUSTSerialPortConfig>
 	 */
-	public static List<MCUSTSerialPortConfig> getSerialPortConfigOfUser(Properties ctx, int p_AD_User_ID, String trxName){
+	public static List<MCUSTSerialPortConfig> getSerialPortConfigOfRole(Properties ctx, int p_AD_Role_ID, String trxName){
 		List<MCUSTSerialPortConfig> list = new Query(ctx, Table_Name, 
 				"EXISTS(SELECT 1 " +
-				"			FROM CUST_PortConfig_User pcu " +
-				"		WHERE pcu.CUST_SerialPortConfig_ID = CUST_SerialPortConfig.CUST_SerialPortConfig_ID " +
-				"		AND pcu.IsActive = 'Y' " +
-				"		AND " + I_CUST_PortConfig_User.COLUMNNAME_AD_User_ID+"=?)", trxName)
+				"			FROM CUST_PortConfig_Role pcr " +
+				"		WHERE pcr.CUST_SerialPortConfig_ID = CUST_SerialPortConfig.CUST_SerialPortConfig_ID " +
+				"		AND pcr.IsActive = 'Y' " +
+				"		AND " + I_CUST_PortConfig_Role.COLUMNNAME_AD_Role_ID+"=?)", trxName)
 			.setOnlyActiveRecords(true)
-			.setParameters(p_AD_User_ID)
+			.setParameters(p_AD_Role_ID)
 			.<MCUSTSerialPortConfig>list();
 		//	
 		return list;
