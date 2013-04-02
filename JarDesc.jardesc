@@ -13,10 +13,11 @@
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <javaElement handleIdentifier="=GetWeight/base"/>
         <file path="/GetWeight/JarDesc.jardesc"/>
+        <javaElement handleIdentifier="=GetWeight/client"/>
         <file path="/GetWeight/codetemplates.xml"/>
         <file path="/GetWeight/.classpath"/>
+        <javaElement handleIdentifier="=GetWeight/test"/>
         <file path="/GetWeight/.project"/>
         <file path="/GetWeight/GetWeight.launch"/>
-        <javaElement handleIdentifier="=GetWeight/patches"/>
     </selectedElements>
 </jardesc>
