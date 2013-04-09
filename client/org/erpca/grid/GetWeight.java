@@ -66,7 +66,7 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 	private boolean 					started 		= false;
 	private boolean						read			= false;
 	private List<MCUSTSerialPortConfig> arraySPC		= null;
-	private MCUSTSerialPortConfig 		currentSPC 	= null;
+	private MCUSTSerialPortConfig 		currentSPC 		= null;
 	private StringBuffer				m_StrReaded		= new StringBuffer();
 	private SerialPortManager 			serialPort_M	= null;
 	/**	Label Display				*/
