@@ -132,4 +132,22 @@ public class MCUSTSerialPortConfig extends X_CUST_SerialPortConfig implements
 		return true;
 	}
 	
+	public String toString(){
+		return    "ID=" + get_ID()
+				+ "\nName=" + getName()
+				+ "\nSeria lPort=" + getSerialPort()
+				+ "\nBauds=" + getBauds()
+				+ "\nParity=" + getParity()
+				+ "\nData Bits=" + getDataBits()
+				+ "\nStop Bits=" + getStopBits()
+				+ "\nFlow Control=" + getFlowControl()
+				+ "\nStr Lenght=" + getStrLength()
+				+ "\nStart Character=" + getStartCharacter()
+				+ "\nEnd Charater=" + getEndCharacter()
+				+ "\nPosition Start Cut=" + getPosStartCut()
+				+ "\nPosition End Cut=" + getPosEndCut()
+				+ "\nPosition Start Cut Screen=" + getPosEnd_SCut()
+				+ "\nPosition End Cut=" + getPosEnd_SCut();
+	}
+	
 }
