@@ -28,11 +28,11 @@ import javax.comm.SerialPortEvent;
 import javax.comm.SerialPortEventListener;
 import javax.comm.UnsupportedCommOperationException;
 
-import org.compiere.grid.CreateFrom;
-import org.compiere.minigrid.IMiniTable;
+import org.compiere.grid.ICreateFrom;
 import org.compiere.model.GridTab;
 import org.compiere.swing.CLabel;
 import org.compiere.swing.CTextField;
+import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.erpca.model.MCUSTSerialPortConfig;
@@ -42,26 +42,34 @@ import org.erpca.util.SerialPortManager;
  * @author Yamel Senih
  *
  */
-public class GetWeight extends CreateFrom implements SerialPortEventListener {
-
+public abstract class GetWeight implements ICreateFrom, SerialPortEventListener {
+	
 	/**
 	 * *** Constructor de la Clase ***
 	 * @author Yamel Senih 25/03/2013, 19:01:45
 	 * @param gridTab
 	 */
 	public GetWeight(GridTab gridTab) {
-		super(gridTab);
+		this.gridTab = gridTab;
 		log.info(gridTab.toString());
 	}	//	GetWeight
 	
-	@Override
+	/*@Override
 	public boolean dynInit() throws Exception {
 		log.config("");
 		log.fine("dynInit()");
 		setTitle(Msg.translate(Env.getCtx(), "GetWeightFromScale") + " .. ");
 		return true;
-	}
+	}*/
 
+	/**	Logger			*/
+	protected CLogger log = CLogger.getCLogger(getClass());
+	private String title;
+
+	private boolean initOK = false;
+	private GridTab gridTab;
+	
+	
 	private InputStream 				i_Stream 		= null;
 	private boolean 					started 		= false;
 	private boolean						read			= false;
@@ -78,14 +86,11 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 	/**	Message						*/
 	public String			message 	= null;
 	
-	@Override
-	public void info() {
-
-	}
+	public abstract boolean dynInit() throws Exception;
 	
-	@Override
-	public boolean save(IMiniTable miniTable, String trxName) {
-		log.fine("save(IMinitable, String)");
+	
+	public boolean save(String trxName) {
+		log.fine("save(String)");
 		processStr();
 		return true;
 	}
@@ -96,6 +101,7 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 	 * @return boolean
 	 */
 	protected boolean startService() {
+		log.fine("startService()");
 		//	verify if exists configuration
 		if(currentSPC == null){
 			message = Msg.translate(Env.getCtx(), "@PortNotConfiguredforUser@");
@@ -154,6 +160,7 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 	 * @return void
 	 */
 	protected void loadSerialPortConfig(){
+		log.fine("loadSerialPortConfig()");
 		//	User
 		int m_AD_Role_ID = Env.getAD_Role_ID(Env.getCtx());
 		arraySPC = MCUSTSerialPortConfig.getSerialPortConfigOfRole(Env.getCtx(), m_AD_Role_ID, null); 
@@ -196,6 +203,7 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 	public void serialEvent(SerialPortEvent ev) {
 		if(ev.getEventType() == SerialPortEvent.DATA_AVAILABLE){
 			//	Read Port
+			log.info("SerialPortEvent.DATA_AVAILABLE");
 			readPort();
 		}
 	}
@@ -206,6 +214,7 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 	 * @return void
 	 */
 	private void readPort(){
+		log.fine("readPort()");
 		try {
 			while(i_Stream.available() > 0) {
 				int bit = i_Stream.read();
@@ -235,6 +244,7 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 	 * @return boolean
 	 */
 	protected boolean stopService() {
+		log.fine("stopService()");
 		if(started){
 			try {
 				serialPort_M.closePort();
@@ -257,9 +267,14 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 	 * @return String
 	 */
 	protected boolean processStr() {
+		log.fine("processStr()");
 		if(m_StrReaded.length() == currentSPC.getStrLength()){
 			String strWeight = m_StrReaded.substring(currentSPC.getPosStartCut(), currentSPC.getPosEndCut()).trim();
 			String strWeight_V = m_StrReaded.substring(currentSPC.getPosStart_SCut(), currentSPC.getPosEnd_SCut());
+			//	Log
+			log.fine("strWeight=" + strWeight);
+			log.fine("strWeight_V=" + strWeight_V);
+			
 			if(strWeight != null
 					&& strWeight.length() != 0)
 				weight = new BigDecimal(strWeight);
@@ -269,9 +284,40 @@ public class GetWeight extends CreateFrom implements SerialPortEventListener {
 			return true;
 		}else{
 			message = Msg.translate(Env.getCtx(), "IncompleteStr");
-			//weight = Env.ZERO;
+			log.fine("message=" + message);
 			return false;
 		}
 	}	//	processStr
+
+	@Override
+	public boolean isInitOK() {
+		return initOK;
+	}
+
+	@Override
+	public void showWindow() {
+		
+	}
+
+	@Override
+	public void closeWindow() {
+		
+	}
+	
+	public void setInitOK(boolean initOK) {
+		this.initOK = initOK;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	public GridTab getGridTab() {
+		return gridTab;
+	}
 
 }

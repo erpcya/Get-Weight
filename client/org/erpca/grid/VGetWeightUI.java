@@ -59,7 +59,10 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 	 */
 	public VGetWeightUI(GridTab gridTab) {
 		super(gridTab);
+		log.fine("VGetWeightUI()");
 		log.info(getGridTab().toString());
+		
+		setTitle(Msg.translate(Env.getCtx(), "GetWeightFromScale") + " .. ");
 		
 		p_WindowNo = getGridTab().getWindowNo();
 		
@@ -112,12 +115,11 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 	 *  @throws Exception if Lookups cannot be initialized
 	 *  @return true if initialized
 	 */
+	@Override
 	public boolean dynInit() throws Exception {
-		log.config("");
+		log.config("dynInit()");
 		
 		jbInit();
-		
-		super.dynInit();
 		
 		confirmPanel.addActionListener(this);
 		dialog.setTitle(getTitle());
@@ -134,6 +136,8 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 	 * @return void
 	 */
 	private void jbInit() throws Exception {
+		log.info("jbInit()");
+		
 		//
 		loadButtons();
 		CPanel displayPane = new CPanel();
@@ -178,6 +182,7 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 	 * @throws Exception 
 	 */
 	private void loadButtons() throws Exception{
+		log.info("loadButtons()");
 		List<MCUSTSerialPortConfig> arraySPC = getArraySerialPortConfig();
 		if(arraySPC.size() == 0)
 			throw new Exception(Msg.translate(Env.getCtx(), "@PortNotConfiguredforUser@"));
@@ -188,22 +193,26 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 			aa.setDelegate(this);
 			CButton b = (CButton)aa.getButton(); 
 			confirmPanel.addComponent(b);
+			log.fine("MCUSTSerialPortConfig " + spc.toString());
 		}
 		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		log.info("actionPerformed(ActionEvent e) " + e);
 		if (e.getActionCommand().equals(ConfirmPanel.A_OK))
 		{
+			log.fine("Action Comand OK");
 			try
 			{
 				Trx.run(new TrxRunnable()
 				{
 					public void run(String trxName)
 					{
-						if (save(null, trxName))
+						if (save(trxName))
 						{	
+							log.fine("save(" + trxName + ")");
 							processValue(trxName);
 							dialog.dispose();
 						} else 
@@ -219,10 +228,12 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 		//  Cancel
 		else if (e.getActionCommand().equals(ConfirmPanel.A_CANCEL))
 		{
+			log.fine("Action Comand CANCEL");
 			dialog.dispose();
 		}
 		//	Serial Port Configuration
 		else {
+			log.fine("Action Comand Any");
 			Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
 			setCurrentSPC(Integer.parseInt(e.getActionCommand()));
 			stopService();
@@ -231,14 +242,6 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 			if(!ok)
 				ADialog.error(p_WindowNo, dialog, "Error", getMessage());
 		}
-	}
-	
-	/**
-	 * 
-	 */
-	public void info(){
-		/*DecimalFormat format = DisplayType.getNumberFormat(DisplayType.Amount);
-		dialog.setStatusLine(0, Msg.getMsg(Env.getCtx(), "Sum") + "  " + format.format(Env.ZERO));*/
 	}
 	
 	public void showWindow() {
