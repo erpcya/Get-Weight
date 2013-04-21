@@ -31,7 +31,7 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20130401L;
+	private static final long serialVersionUID = 20130420L;
 
     /** Standard Constructor */
     public X_CUST_SerialPortConfig (Properties ctx, int CUST_SerialPortConfig_ID, String trxName)
@@ -90,30 +90,30 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
       return sb.toString();
     }
 
-	/** Bauds AD_Reference_ID=3000200 */
-	public static final int BAUDS_AD_Reference_ID=3000200;
-	/** 75 = 75 */
-	public static final String BAUDS_75 = "75";
+	/** Bauds AD_Reference_ID=53482 */
+	public static final int BAUDS_AD_Reference_ID=53482;
 	/** 110 = 110 */
 	public static final String BAUDS_110 = "110";
-	/** 300 = 300 */
-	public static final String BAUDS_300 = "300";
-	/** 1200 = 1200 */
-	public static final String BAUDS_1200 = "1200";
-	/** 2400 = 2400 */
-	public static final String BAUDS_2400 = "2400";
-	/** 4800 = 4800 */
-	public static final String BAUDS_4800 = "4800";
-	/** 9600 = 9600 */
-	public static final String BAUDS_9600 = "9600";
-	/** 19200 = 19200 */
-	public static final String BAUDS_19200 = "19200";
-	/** 38400 = 38400 */
-	public static final String BAUDS_38400 = "38400";
-	/** 57600 = 57600 */
-	public static final String BAUDS_57600 = "57600";
 	/** 115200 = 115200 */
 	public static final String BAUDS_115200 = "115200";
+	/** 1200 = 1200 */
+	public static final String BAUDS_1200 = "1200";
+	/** 19200 = 19200 */
+	public static final String BAUDS_19200 = "19200";
+	/** 2400 = 2400 */
+	public static final String BAUDS_2400 = "2400";
+	/** 300 = 300 */
+	public static final String BAUDS_300 = "300";
+	/** 38400 = 38400 */
+	public static final String BAUDS_38400 = "38400";
+	/** 4800 = 4800 */
+	public static final String BAUDS_4800 = "4800";
+	/** 57600 = 57600 */
+	public static final String BAUDS_57600 = "57600";
+	/** 75 = 75 */
+	public static final String BAUDS_75 = "75";
+	/** 9600 = 9600 */
+	public static final String BAUDS_9600 = "9600";
 	/** Set Bauds.
 		@param Bauds Bauds	  */
 	public void setBauds (String Bauds)
@@ -152,8 +152,8 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
 		return ii.intValue();
 	}
 
-	/** DataBits AD_Reference_ID=3000201 */
-	public static final int DATABITS_AD_Reference_ID=3000201;
+	/** DataBits AD_Reference_ID=53483 */
+	public static final int DATABITS_AD_Reference_ID=53483;
 	/** 5 = 5 */
 	public static final String DATABITS_5 = "5";
 	/** 6 = 6 */
@@ -197,8 +197,8 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
 		return ii.intValue();
 	}
 
-	/** FlowControl AD_Reference_ID=3000204 */
-	public static final int FLOWCONTROL_AD_Reference_ID=3000204;
+	/** FlowControl AD_Reference_ID=53484 */
+	public static final int FLOWCONTROL_AD_Reference_ID=53484;
 	/** None = 0 */
 	public static final String FLOWCONTROL_None = "0";
 	/** RTSCTS IN = 1 */
@@ -249,8 +249,8 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
         return new KeyNamePair(get_ID(), getName());
     }
 
-	/** Parity AD_Reference_ID=3000202 */
-	public static final int PARITY_AD_Reference_ID=3000202;
+	/** Parity AD_Reference_ID=53485 */
+	public static final int PARITY_AD_Reference_ID=53485;
 	/** None = 0 */
 	public static final String PARITY_None = "0";
 	/** Odd = 1 */
@@ -378,8 +378,8 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
 		return ii.intValue();
 	}
 
-	/** StopBits AD_Reference_ID=3000203 */
-	public static final int STOPBITS_AD_Reference_ID=3000203;
+	/** StopBits AD_Reference_ID=53486 */
+	public static final int STOPBITS_AD_Reference_ID=53486;
 	/** 1 = 1 */
 	public static final String STOPBITS_1 = "1";
 	/** 2 = 2 */

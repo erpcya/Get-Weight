@@ -31,7 +31,7 @@ public class X_CUST_PortConfig_Role extends PO implements I_CUST_PortConfig_Role
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20130401L;
+	private static final long serialVersionUID = 20130420L;
 
     /** Standard Constructor */
     public X_CUST_PortConfig_Role (Properties ctx, int CUST_PortConfig_Role_ID, String trxName)
