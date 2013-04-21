@@ -31,7 +31,7 @@ public interface I_CUST_SerialPortConfig
     /** TableName=CUST_SerialPortConfig */
     public static final String Table_Name = "CUST_SerialPortConfig";
 
-    /** AD_Table_ID=3000204 */
+    /** AD_Table_ID=53457 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);

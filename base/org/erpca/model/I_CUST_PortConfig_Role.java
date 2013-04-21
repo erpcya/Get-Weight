@@ -31,7 +31,7 @@ public interface I_CUST_PortConfig_Role
     /** TableName=CUST_PortConfig_Role */
     public static final String Table_Name = "CUST_PortConfig_Role";
 
-    /** AD_Table_ID=3000205 */
+    /** AD_Table_ID=53459 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
