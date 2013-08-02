@@ -15,7 +15,7 @@
  * or via info@compiere.org or http://www.compiere.org/license.html           *
  *****************************************************************************/
 /** Generated Model - DO NOT CHANGE */
-package org.erpca.model;
+package org.spin.model;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -100,9 +100,9 @@ public class X_CUST_PortConfig_Role extends PO implements I_CUST_PortConfig_Role
 		return ii.intValue();
 	}
 
-	public org.erpca.model.I_CUST_SerialPortConfig getCUST_SerialPortConfig() throws RuntimeException
+	public org.spin.model.I_CUST_SerialPortConfig getCUST_SerialPortConfig() throws RuntimeException
     {
-		return (org.erpca.model.I_CUST_SerialPortConfig)MTable.get(getCtx(), org.erpca.model.I_CUST_SerialPortConfig.Table_Name)
+		return (org.spin.model.I_CUST_SerialPortConfig)MTable.get(getCtx(), org.spin.model.I_CUST_SerialPortConfig.Table_Name)
 			.getPO(getCUST_SerialPortConfig_ID(), get_TrxName());	}
 
 	/** Set Serial Port Configuration.

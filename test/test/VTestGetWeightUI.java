@@ -20,7 +20,7 @@ import org.compiere.apps.ADialog;
 import org.compiere.model.GridTab;
 import org.compiere.model.MOrderLine;
 import org.compiere.util.Env;
-import org.erpca.grid.VGetWeightUI;
+import org.spin.grid.VGetWeightUI;
 
 /**
  * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a>

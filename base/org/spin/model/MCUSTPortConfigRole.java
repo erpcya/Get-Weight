@@ -13,7 +13,7 @@
  * Copyright (C) 2012-2013 E.R.P. Consultores y Asociados, S.A. All Rights Reserved. *
  * Contributor(s): Yamel Senih www.erpconsultoresyasociados.com                      *
  *************************************************************************************/
-package org.erpca.model;
+package org.spin.model;
 
 import java.sql.ResultSet;
 import java.util.Properties;

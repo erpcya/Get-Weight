@@ -13,7 +13,7 @@
  * Copyright (C) 2012-2013 E.R.P. Consultores y Asociados, S.A. All Rights Reserved. *
  * Contributor(s): Yamel Senih www.erpconsultoresyasociados.com                      *
  *************************************************************************************/
-package org.erpca.grid;
+package org.spin.grid;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -44,7 +44,7 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Trx;
 import org.compiere.util.TrxRunnable;
-import org.erpca.model.MCUSTSerialPortConfig;
+import org.spin.model.MCUSTSerialPortConfig;
 
 /**
  * @author Yamel Senih
