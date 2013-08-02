@@ -13,7 +13,7 @@
  * Copyright (C) 2012-2013 E.R.P. Consultores y Asociados, S.A. All Rights Reserved. *
  * Contributor(s): Yamel Senih www.erpconsultoresyasociados.com                      *
  *************************************************************************************/
-package org.erpca.grid;
+package org.spin.grid;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,8 +35,8 @@ import org.compiere.swing.CTextField;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
-import org.erpca.model.MCUSTSerialPortConfig;
-import org.erpca.util.SerialPortManager;
+import org.spin.model.MCUSTSerialPortConfig;
+import org.spin.util.SerialPortManager;
 
 /**
  * @author Yamel Senih

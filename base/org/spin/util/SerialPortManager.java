@@ -14,7 +14,7 @@
  * All Rights Reserved.                                                       *
  * Contributor(s): Yamel Senih www.erpconsultoresyasociados.com               *
  *****************************************************************************/
-package org.erpca.util;
+package org.spin.util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +32,7 @@ import javax.comm.UnsupportedCommOperationException;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.Adempiere;
 import org.compiere.util.CLogger;
-import org.erpca.model.MCUSTSerialPortConfig;
+import org.spin.model.MCUSTSerialPortConfig;
 
 /**
  * @author Yamel Senih

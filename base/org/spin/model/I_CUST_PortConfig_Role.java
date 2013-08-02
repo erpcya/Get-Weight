@@ -14,7 +14,7 @@
  * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA 95054, USA        *
  * or via info@compiere.org or http://www.compiere.org/license.html           *
  *****************************************************************************/
-package org.erpca.model;
+package org.spin.model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -107,7 +107,7 @@ public interface I_CUST_PortConfig_Role
 	  */
 	public int getCUST_SerialPortConfig_ID();
 
-	public org.erpca.model.I_CUST_SerialPortConfig getCUST_SerialPortConfig() throws RuntimeException;
+	public org.spin.model.I_CUST_SerialPortConfig getCUST_SerialPortConfig() throws RuntimeException;
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
