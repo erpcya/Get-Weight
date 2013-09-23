@@ -21,15 +21,15 @@ import java.sql.Timestamp;
 import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Interface for CUST_PortConfig_Role
+/** Generated Interface for FTA_WeightScale_Role
  *  @author Adempiere (generated) 
  *  @version Release 3.7.0LTS
  */
-public interface I_CUST_PortConfig_Role 
+public interface I_FTA_WeightScale_Role 
 {
 
-    /** TableName=CUST_PortConfig_Role */
-    public static final String Table_Name = "CUST_PortConfig_Role";
+    /** TableName=FTA_WeightScale_Role */
+    public static final String Table_Name = "FTA_WeightScale_Role";
 
     /** AD_Table_ID=53459 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
@@ -94,20 +94,16 @@ public interface I_CUST_PortConfig_Role
 	  */
 	public int getCreatedBy();
 
-    /** Column name CUST_SerialPortConfig_ID */
-    public static final String COLUMNNAME_CUST_SerialPortConfig_ID = "CUST_SerialPortConfig_ID";
+    /** Column name FTA_WeightScale_ID */
+    public static final String COLUMNNAME_FTA_WeightScale_ID = "FTA_WeightScale_ID";
 
-	/** Set Serial Port Configuration.
-	  * Serial Port Configuration example: COM1 or tty01, 9600...
-	  */
-	public void setCUST_SerialPortConfig_ID (int CUST_SerialPortConfig_ID);
+	/** Set Weight Scale	  */
+	public void setFTA_WeightScale_ID (int FTA_WeightScale_ID);
 
-	/** Get Serial Port Configuration.
-	  * Serial Port Configuration example: COM1 or tty01, 9600...
-	  */
-	public int getCUST_SerialPortConfig_ID();
+	/** Get Weight Scale	  */
+	public int getFTA_WeightScale_ID();
 
-	public org.spin.model.I_CUST_SerialPortConfig getCUST_SerialPortConfig() throws RuntimeException;
+	public org.spin.model.I_FTA_WeightScale getFTA_WeightScale() throws RuntimeException;
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";

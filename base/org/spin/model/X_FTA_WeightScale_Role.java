@@ -22,30 +22,30 @@ import java.util.Properties;
 import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Model for CUST_PortConfig_Role
+/** Generated Model for FTA_WeightScale_Role
  *  @author Adempiere (generated) 
  *  @version Release 3.7.0LTS - $Id$ */
-public class X_CUST_PortConfig_Role extends PO implements I_CUST_PortConfig_Role, I_Persistent 
+public class X_FTA_WeightScale_Role extends PO implements I_FTA_WeightScale_Role, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20130420L;
+	private static final long serialVersionUID = 20130923L;
 
     /** Standard Constructor */
-    public X_CUST_PortConfig_Role (Properties ctx, int CUST_PortConfig_Role_ID, String trxName)
+    public X_FTA_WeightScale_Role (Properties ctx, int FTA_WeightScale_Role_ID, String trxName)
     {
-      super (ctx, CUST_PortConfig_Role_ID, trxName);
-      /** if (CUST_PortConfig_Role_ID == 0)
+      super (ctx, FTA_WeightScale_Role_ID, trxName);
+      /** if (FTA_WeightScale_Role_ID == 0)
         {
 			setAD_Role_ID (0);
-			setCUST_SerialPortConfig_ID (0);
+			setFTA_WeightScale_ID (0);
         } */
     }
 
     /** Load Constructor */
-    public X_CUST_PortConfig_Role (Properties ctx, ResultSet rs, String trxName)
+    public X_FTA_WeightScale_Role (Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -67,7 +67,7 @@ public class X_CUST_PortConfig_Role extends PO implements I_CUST_PortConfig_Role
 
     public String toString()
     {
-      StringBuffer sb = new StringBuffer ("X_CUST_PortConfig_Role[")
+      StringBuffer sb = new StringBuffer ("X_FTA_WeightScale_Role[")
         .append(get_ID()).append("]");
       return sb.toString();
     }
@@ -100,29 +100,26 @@ public class X_CUST_PortConfig_Role extends PO implements I_CUST_PortConfig_Role
 		return ii.intValue();
 	}
 
-	public org.spin.model.I_CUST_SerialPortConfig getCUST_SerialPortConfig() throws RuntimeException
+	public org.spin.model.I_FTA_WeightScale getFTA_WeightScale() throws RuntimeException
     {
-		return (org.spin.model.I_CUST_SerialPortConfig)MTable.get(getCtx(), org.spin.model.I_CUST_SerialPortConfig.Table_Name)
-			.getPO(getCUST_SerialPortConfig_ID(), get_TrxName());	}
+		return (org.spin.model.I_FTA_WeightScale)MTable.get(getCtx(), org.spin.model.I_FTA_WeightScale.Table_Name)
+			.getPO(getFTA_WeightScale_ID(), get_TrxName());	}
 
-	/** Set Serial Port Configuration.
-		@param CUST_SerialPortConfig_ID 
-		Serial Port Configuration example: COM1 or tty01, 9600...
-	  */
-	public void setCUST_SerialPortConfig_ID (int CUST_SerialPortConfig_ID)
+	/** Set Weight Scale.
+		@param FTA_WeightScale_ID Weight Scale	  */
+	public void setFTA_WeightScale_ID (int FTA_WeightScale_ID)
 	{
-		if (CUST_SerialPortConfig_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_CUST_SerialPortConfig_ID, null);
+		if (FTA_WeightScale_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_FTA_WeightScale_ID, null);
 		else 
-			set_ValueNoCheck (COLUMNNAME_CUST_SerialPortConfig_ID, Integer.valueOf(CUST_SerialPortConfig_ID));
+			set_ValueNoCheck (COLUMNNAME_FTA_WeightScale_ID, Integer.valueOf(FTA_WeightScale_ID));
 	}
 
-	/** Get Serial Port Configuration.
-		@return Serial Port Configuration example: COM1 or tty01, 9600...
-	  */
-	public int getCUST_SerialPortConfig_ID () 
+	/** Get Weight Scale.
+		@return Weight Scale	  */
+	public int getFTA_WeightScale_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_CUST_SerialPortConfig_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_FTA_WeightScale_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -133,6 +130,6 @@ public class X_CUST_PortConfig_Role extends PO implements I_CUST_PortConfig_Role
       */
     public KeyNamePair getKeyNamePair() 
     {
-        return new KeyNamePair(get_ID(), String.valueOf(getCUST_SerialPortConfig_ID()));
+        return new KeyNamePair(get_ID(), String.valueOf(getFTA_WeightScale_ID()));
     }
 }

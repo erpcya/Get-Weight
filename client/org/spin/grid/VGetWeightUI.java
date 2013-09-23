@@ -44,7 +44,7 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Trx;
 import org.compiere.util.TrxRunnable;
-import org.spin.model.MCUSTSerialPortConfig;
+import org.spin.model.MFTASerialPortConfig;
 
 /**
  * @author Yamel Senih
@@ -183,12 +183,12 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 	 */
 	private void loadButtons() throws Exception{
 		log.info("loadButtons()");
-		List<MCUSTSerialPortConfig> arraySPC = getArraySerialPortConfig();
+		List<MFTASerialPortConfig> arraySPC = getArraySerialPortConfig();
 		if(arraySPC.size() == 0)
 			throw new Exception(Msg.translate(Env.getCtx(), "@PortNotConfiguredforUser@"));
 		//	
 		for(int i = 0; i < arraySPC.size(); i++){
-			MCUSTSerialPortConfig spc = arraySPC.get(i);
+			MFTASerialPortConfig spc = arraySPC.get(i);
 			AppsAction aa = new AppsAction(String.valueOf(i), null, spc.getName());
 			aa.setDelegate(this);
 			CButton b = (CButton)aa.getButton(); 

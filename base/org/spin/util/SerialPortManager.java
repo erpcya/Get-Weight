@@ -32,7 +32,7 @@ import javax.comm.UnsupportedCommOperationException;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.Adempiere;
 import org.compiere.util.CLogger;
-import org.spin.model.MCUSTSerialPortConfig;
+import org.spin.model.MFTASerialPortConfig;
 
 /**
  * @author Yamel Senih
@@ -44,12 +44,12 @@ public class SerialPortManager {
 	 * *** Constructor de la Clase ***
 	 * @author Yamel Senih 28/03/2013, 02:40:50
 	 */
-	public SerialPortManager(MCUSTSerialPortConfig s_portConfig) {
+	public SerialPortManager(MFTASerialPortConfig s_portConfig) {
 		this.s_portConfig = s_portConfig;
 	}
 
 	/**	Serial Port Config					*/
-	private MCUSTSerialPortConfig 	s_portConfig = null;
+	private MFTASerialPortConfig 	s_portConfig = null;
 	/**	Port Identifier						*/
 	private CommPortIdentifier 		PortID;
 	/**	Port List							*/

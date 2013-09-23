@@ -22,8 +22,8 @@ import java.util.Properties;
  * @author Yamel Senih
  *
  */
-public class MCUSTPortConfigRole extends X_CUST_PortConfig_Role implements
-		I_CUST_PortConfig_Role {
+public class MFTAWeightScaleRole extends X_FTA_WeightScale_Role implements
+		I_FTA_WeightScale_Role {
 
 	/**
 	 * 
@@ -37,10 +37,9 @@ public class MCUSTPortConfigRole extends X_CUST_PortConfig_Role implements
 	 * @param CUST_PortConfig_User_ID
 	 * @param trxName
 	 */
-	public MCUSTPortConfigRole(Properties ctx, int CUST_PortConfig_User_ID,
+	public MFTAWeightScaleRole(Properties ctx, int CUST_PortConfig_User_ID,
 			String trxName) {
 		super(ctx, CUST_PortConfig_User_ID, trxName);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -50,9 +49,8 @@ public class MCUSTPortConfigRole extends X_CUST_PortConfig_Role implements
 	 * @param rs
 	 * @param trxName
 	 */
-	public MCUSTPortConfigRole(Properties ctx, ResultSet rs, String trxName) {
+	public MFTAWeightScaleRole(Properties ctx, ResultSet rs, String trxName) {
 		super(ctx, rs, trxName);
-		// TODO Auto-generated constructor stub
 	}
 
 }
