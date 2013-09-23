@@ -226,8 +226,8 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 				if(read)
 					m_StrReaded.append((char)bit);
 				if(read 
-						&& bit == currentSPC.getEndCharacter() 
-						&& m_StrReaded.length() == currentSPC.getStrLength()){
+						&& (bit == currentSPC.getEndCharacter() 
+						|| m_StrReaded.length() == currentSPC.getStrLength())){
 					read = false;
 					processStr();
 				} 
