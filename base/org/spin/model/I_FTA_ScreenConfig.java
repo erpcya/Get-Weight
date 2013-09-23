@@ -21,17 +21,17 @@ import java.sql.Timestamp;
 import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Interface for CUST_SerialPortConfig
+/** Generated Interface for FTA_ScreenConfig
  *  @author Adempiere (generated) 
  *  @version Release 3.7.0LTS
  */
-public interface I_CUST_SerialPortConfig 
+public interface I_FTA_ScreenConfig 
 {
 
-    /** TableName=CUST_SerialPortConfig */
-    public static final String Table_Name = "CUST_SerialPortConfig";
+    /** TableName=FTA_ScreenConfig */
+    public static final String Table_Name = "FTA_ScreenConfig";
 
-    /** AD_Table_ID=53457 */
+    /** AD_Table_ID=53593 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -63,15 +63,6 @@ public interface I_CUST_SerialPortConfig
 	  */
 	public int getAD_Org_ID();
 
-    /** Column name Bauds */
-    public static final String COLUMNNAME_Bauds = "Bauds";
-
-	/** Set Bauds	  */
-	public void setBauds (String Bauds);
-
-	/** Get Bauds	  */
-	public String getBauds();
-
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -88,28 +79,6 @@ public interface I_CUST_SerialPortConfig
 	  */
 	public int getCreatedBy();
 
-    /** Column name CUST_SerialPortConfig_ID */
-    public static final String COLUMNNAME_CUST_SerialPortConfig_ID = "CUST_SerialPortConfig_ID";
-
-	/** Set Serial Port Configuration.
-	  * Serial Port Configuration example: COM1 or tty01, 9600...
-	  */
-	public void setCUST_SerialPortConfig_ID (int CUST_SerialPortConfig_ID);
-
-	/** Get Serial Port Configuration.
-	  * Serial Port Configuration example: COM1 or tty01, 9600...
-	  */
-	public int getCUST_SerialPortConfig_ID();
-
-    /** Column name DataBits */
-    public static final String COLUMNNAME_DataBits = "DataBits";
-
-	/** Set Data Bits	  */
-	public void setDataBits (String DataBits);
-
-	/** Get Data Bits	  */
-	public String getDataBits();
-
     /** Column name EndCharacter */
     public static final String COLUMNNAME_EndCharacter = "EndCharacter";
 
@@ -123,14 +92,14 @@ public interface I_CUST_SerialPortConfig
 	  */
 	public int getEndCharacter();
 
-    /** Column name FlowControl */
-    public static final String COLUMNNAME_FlowControl = "FlowControl";
+    /** Column name FTA_ScreenConfig_ID */
+    public static final String COLUMNNAME_FTA_ScreenConfig_ID = "FTA_ScreenConfig_ID";
 
-	/** Set Flow Control	  */
-	public void setFlowControl (String FlowControl);
+	/** Set Screen Configuration	  */
+	public void setFTA_ScreenConfig_ID (int FTA_ScreenConfig_ID);
 
-	/** Get Flow Control	  */
-	public String getFlowControl();
+	/** Get Screen Configuration	  */
+	public int getFTA_ScreenConfig_ID();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -157,15 +126,6 @@ public interface I_CUST_SerialPortConfig
 	  * Alphanumeric identifier of the entity
 	  */
 	public String getName();
-
-    /** Column name Parity */
-    public static final String COLUMNNAME_Parity = "Parity";
-
-	/** Set Parity	  */
-	public void setParity (String Parity);
-
-	/** Get Parity	  */
-	public String getParity();
 
     /** Column name PosEndCut */
     public static final String COLUMNNAME_PosEndCut = "PosEndCut";
@@ -203,15 +163,6 @@ public interface I_CUST_SerialPortConfig
 	/** Get Position Start (Screen cut)	  */
 	public int getPosStart_SCut();
 
-    /** Column name SerialPort */
-    public static final String COLUMNNAME_SerialPort = "SerialPort";
-
-	/** Set Serial Port	  */
-	public void setSerialPort (String SerialPort);
-
-	/** Get Serial Port	  */
-	public String getSerialPort();
-
     /** Column name StartCharacter */
     public static final String COLUMNNAME_StartCharacter = "StartCharacter";
 
@@ -224,15 +175,6 @@ public interface I_CUST_SerialPortConfig
 	  * Start Character example: ASCII (3)
 	  */
 	public int getStartCharacter();
-
-    /** Column name StopBits */
-    public static final String COLUMNNAME_StopBits = "StopBits";
-
-	/** Set Stop Bits	  */
-	public void setStopBits (String StopBits);
-
-	/** Get Stop Bits	  */
-	public String getStopBits();
 
     /** Column name StrLength */
     public static final String COLUMNNAME_StrLength = "StrLength";

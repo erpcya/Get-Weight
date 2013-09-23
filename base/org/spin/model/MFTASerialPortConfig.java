@@ -27,8 +27,8 @@ import org.compiere.model.Query;
  * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a>
  *
  */
-public class MCUSTSerialPortConfig extends X_CUST_SerialPortConfig implements
-		I_CUST_SerialPortConfig {
+public class MFTASerialPortConfig extends X_FTA_SerialPortConfig implements
+		I_FTA_SerialPortConfig {
 	
 	/**
 	 * 
@@ -42,7 +42,7 @@ public class MCUSTSerialPortConfig extends X_CUST_SerialPortConfig implements
 	 * @param CUST_SerialPortConfig_ID
 	 * @param trxName
 	 */
-	public MCUSTSerialPortConfig(Properties ctx, int CUST_SerialPortConfig_ID,
+	public MFTASerialPortConfig(Properties ctx, int CUST_SerialPortConfig_ID,
 			String trxName) {
 		super(ctx, CUST_SerialPortConfig_ID, trxName);
 	}
@@ -54,7 +54,7 @@ public class MCUSTSerialPortConfig extends X_CUST_SerialPortConfig implements
 	 * @param rs
 	 * @param trxName
 	 */
-	public MCUSTSerialPortConfig(Properties ctx, ResultSet rs, String trxName) {
+	public MFTASerialPortConfig(Properties ctx, ResultSet rs, String trxName) {
 		super(ctx, rs, trxName);
 	}
 	
@@ -67,16 +67,17 @@ public class MCUSTSerialPortConfig extends X_CUST_SerialPortConfig implements
 	 * @return
 	 * @return List<MCUSTSerialPortConfig>
 	 */
-	public static List<MCUSTSerialPortConfig> getSerialPortConfigOfRole(Properties ctx, int p_AD_Role_ID, String trxName){
-		List<MCUSTSerialPortConfig> list = new Query(ctx, Table_Name, 
+	public static List<MFTASerialPortConfig> getSerialPortConfigOfRole(Properties ctx, int p_AD_Role_ID, String trxName){
+		List<MFTASerialPortConfig> list = new Query(ctx, Table_Name, 
 				"EXISTS(SELECT 1 " +
 				"			FROM CUST_PortConfig_Role pcr " +
 				"		WHERE pcr.CUST_SerialPortConfig_ID = CUST_SerialPortConfig.CUST_SerialPortConfig_ID " +
-				"		AND pcr.IsActive = 'Y' " +
-				"		AND " + I_CUST_PortConfig_Role.COLUMNNAME_AD_Role_ID+"=?)", trxName)
+				"		AND pcr.IsActive = 'Y' " 
+				//+"		AND " + I_CUST_PortConfig_Role.COLUMNNAME_AD_Role_ID+"=?)"
+				, trxName)
 			.setOnlyActiveRecords(true)
 			.setParameters(p_AD_Role_ID)
-			.<MCUSTSerialPortConfig>list();
+			.<MFTASerialPortConfig>list();
 		//	
 		return list;
 	}
@@ -121,17 +122,6 @@ public class MCUSTSerialPortConfig extends X_CUST_SerialPortConfig implements
 		return Integer.parseInt(getParity());
 	}
 	
-	@Override
-	public boolean beforeSave(boolean isNew){
-		if(getPosStartCut() > getPosEndCut())
-			throw new AdempiereException("@PosStartCutOverPosEndCut@");
-		if(getPosStart_SCut() > getPosEnd_SCut())
-			throw new AdempiereException("@PosStart_SCutOverPosEnd_SCut@");
-		if(getStrLength() <= 0)
-			throw new AdempiereException("@StrLengthUnderZero@");
-		return true;
-	}
-	
 	public String toString(){
 		return    "ID=" + get_ID()
 				+ "\nName=" + getName()
@@ -140,14 +130,7 @@ public class MCUSTSerialPortConfig extends X_CUST_SerialPortConfig implements
 				+ "\nParity=" + getParity()
 				+ "\nData Bits=" + getDataBits()
 				+ "\nStop Bits=" + getStopBits()
-				+ "\nFlow Control=" + getFlowControl()
-				+ "\nStr Lenght=" + getStrLength()
-				+ "\nStart Character=" + getStartCharacter()
-				+ "\nEnd Charater=" + getEndCharacter()
-				+ "\nPosition Start Cut=" + getPosStartCut()
-				+ "\nPosition End Cut=" + getPosEndCut()
-				+ "\nPosition Start Cut Screen=" + getPosEnd_SCut()
-				+ "\nPosition End Cut=" + getPosEnd_SCut();
+				+ "\nFlow Control=" + getFlowControl();
 	}
 	
 }

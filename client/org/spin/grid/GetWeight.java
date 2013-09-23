@@ -35,7 +35,7 @@ import org.compiere.swing.CTextField;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
-import org.spin.model.MCUSTSerialPortConfig;
+import org.spin.model.MFTASerialPortConfig;
 import org.spin.util.SerialPortManager;
 
 /**
@@ -73,8 +73,8 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	private InputStream 				i_Stream 		= null;
 	private boolean 					started 		= false;
 	private boolean						read			= false;
-	private List<MCUSTSerialPortConfig> arraySPC		= null;
-	private MCUSTSerialPortConfig 		currentSPC 		= null;
+	private List<MFTASerialPortConfig> arraySPC		= null;
+	private MFTASerialPortConfig 		currentSPC 		= null;
 	private StringBuffer				m_StrReaded		= new StringBuffer();
 	private SerialPortManager 			serialPort_M	= null;
 	/**	Label Display				*/
@@ -163,7 +163,7 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 		log.fine("loadSerialPortConfig()");
 		//	User
 		int m_AD_Role_ID = Env.getAD_Role_ID(Env.getCtx());
-		arraySPC = MCUSTSerialPortConfig.getSerialPortConfigOfRole(Env.getCtx(), m_AD_Role_ID, null); 
+		arraySPC = MFTASerialPortConfig.getSerialPortConfigOfRole(Env.getCtx(), m_AD_Role_ID, null); 
 		//	Set Current Serial Port Configuration
 		if(arraySPC.size() != 0)
 			currentSPC = arraySPC.get(0);
@@ -185,7 +185,7 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	 * @return
 	 * @return List<MCUSTSerialPortConfig>
 	 */
-	protected List<MCUSTSerialPortConfig> getArraySerialPortConfig(){
+	protected List<MFTASerialPortConfig> getArraySerialPortConfig(){
 		return arraySPC;
 	}
 	
@@ -195,7 +195,7 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	 * @return
 	 * @return MCUSTSerialPortConfig
 	 */
-	protected MCUSTSerialPortConfig getCurrentSerialPortConfig(){
+	protected MFTASerialPortConfig getCurrentSerialPortConfig(){
 		return currentSPC;
 	}
 	

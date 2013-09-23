@@ -22,48 +22,36 @@ import java.util.Properties;
 import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Model for CUST_SerialPortConfig
+/** Generated Model for FTA_ScreenConfig
  *  @author Adempiere (generated) 
  *  @version Release 3.7.0LTS - $Id$ */
-public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConfig, I_Persistent 
+public class X_FTA_ScreenConfig extends PO implements I_FTA_ScreenConfig, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20130420L;
+	private static final long serialVersionUID = 20130923L;
 
     /** Standard Constructor */
-    public X_CUST_SerialPortConfig (Properties ctx, int CUST_SerialPortConfig_ID, String trxName)
+    public X_FTA_ScreenConfig (Properties ctx, int FTA_ScreenConfig_ID, String trxName)
     {
-      super (ctx, CUST_SerialPortConfig_ID, trxName);
-      /** if (CUST_SerialPortConfig_ID == 0)
+      super (ctx, FTA_ScreenConfig_ID, trxName);
+      /** if (FTA_ScreenConfig_ID == 0)
         {
-			setBauds (null);
-// 9600
-			setCUST_SerialPortConfig_ID (0);
-			setDataBits (null);
-// 8
 			setEndCharacter (0);
-			setFlowControl (null);
-// 1
+			setFTA_ScreenConfig_ID (0);
 			setName (null);
-			setParity (null);
-// 0
-			setPosEndCut (0);
 			setPosEnd_SCut (0);
 			setPosStartCut (0);
 			setPosStart_SCut (0);
-			setSerialPort (null);
 			setStartCharacter (0);
-			setStopBits (null);
-// 1
 			setStrLength (0);
         } */
     }
 
     /** Load Constructor */
-    public X_CUST_SerialPortConfig (Properties ctx, ResultSet rs, String trxName)
+    public X_FTA_ScreenConfig (Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -85,97 +73,10 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
 
     public String toString()
     {
-      StringBuffer sb = new StringBuffer ("X_CUST_SerialPortConfig[")
+      StringBuffer sb = new StringBuffer ("X_FTA_ScreenConfig[")
         .append(get_ID()).append("]");
       return sb.toString();
     }
-
-	/** Bauds AD_Reference_ID=53482 */
-	public static final int BAUDS_AD_Reference_ID=53482;
-	/** 110 = 110 */
-	public static final String BAUDS_110 = "110";
-	/** 115200 = 115200 */
-	public static final String BAUDS_115200 = "115200";
-	/** 1200 = 1200 */
-	public static final String BAUDS_1200 = "1200";
-	/** 19200 = 19200 */
-	public static final String BAUDS_19200 = "19200";
-	/** 2400 = 2400 */
-	public static final String BAUDS_2400 = "2400";
-	/** 300 = 300 */
-	public static final String BAUDS_300 = "300";
-	/** 38400 = 38400 */
-	public static final String BAUDS_38400 = "38400";
-	/** 4800 = 4800 */
-	public static final String BAUDS_4800 = "4800";
-	/** 57600 = 57600 */
-	public static final String BAUDS_57600 = "57600";
-	/** 75 = 75 */
-	public static final String BAUDS_75 = "75";
-	/** 9600 = 9600 */
-	public static final String BAUDS_9600 = "9600";
-	/** Set Bauds.
-		@param Bauds Bauds	  */
-	public void setBauds (String Bauds)
-	{
-
-		set_Value (COLUMNNAME_Bauds, Bauds);
-	}
-
-	/** Get Bauds.
-		@return Bauds	  */
-	public String getBauds () 
-	{
-		return (String)get_Value(COLUMNNAME_Bauds);
-	}
-
-	/** Set Serial Port Configuration.
-		@param CUST_SerialPortConfig_ID 
-		Serial Port Configuration example: COM1 or tty01, 9600...
-	  */
-	public void setCUST_SerialPortConfig_ID (int CUST_SerialPortConfig_ID)
-	{
-		if (CUST_SerialPortConfig_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_CUST_SerialPortConfig_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_CUST_SerialPortConfig_ID, Integer.valueOf(CUST_SerialPortConfig_ID));
-	}
-
-	/** Get Serial Port Configuration.
-		@return Serial Port Configuration example: COM1 or tty01, 9600...
-	  */
-	public int getCUST_SerialPortConfig_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_CUST_SerialPortConfig_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** DataBits AD_Reference_ID=53483 */
-	public static final int DATABITS_AD_Reference_ID=53483;
-	/** 5 = 5 */
-	public static final String DATABITS_5 = "5";
-	/** 6 = 6 */
-	public static final String DATABITS_6 = "6";
-	/** 7 = 7 */
-	public static final String DATABITS_7 = "7";
-	/** 8 = 8 */
-	public static final String DATABITS_8 = "8";
-	/** Set Data Bits.
-		@param DataBits Data Bits	  */
-	public void setDataBits (String DataBits)
-	{
-
-		set_Value (COLUMNNAME_DataBits, DataBits);
-	}
-
-	/** Get Data Bits.
-		@return Data Bits	  */
-	public String getDataBits () 
-	{
-		return (String)get_Value(COLUMNNAME_DataBits);
-	}
 
 	/** Set End Character.
 		@param EndCharacter 
@@ -197,31 +98,24 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
 		return ii.intValue();
 	}
 
-	/** FlowControl AD_Reference_ID=53484 */
-	public static final int FLOWCONTROL_AD_Reference_ID=53484;
-	/** None = 0 */
-	public static final String FLOWCONTROL_None = "0";
-	/** RTSCTS IN = 1 */
-	public static final String FLOWCONTROL_RTSCTSIN = "1";
-	/** RTSCTS OUT = 2 */
-	public static final String FLOWCONTROL_RTSCTSOUT = "2";
-	/** XON/XOFF IN = 4 */
-	public static final String FLOWCONTROL_XONXOFFIN = "4";
-	/** XON/XOFF OUT = 8 */
-	public static final String FLOWCONTROL_XONXOFFOUT = "8";
-	/** Set Flow Control.
-		@param FlowControl Flow Control	  */
-	public void setFlowControl (String FlowControl)
+	/** Set Screen Configuration.
+		@param FTA_ScreenConfig_ID Screen Configuration	  */
+	public void setFTA_ScreenConfig_ID (int FTA_ScreenConfig_ID)
 	{
-
-		set_Value (COLUMNNAME_FlowControl, FlowControl);
+		if (FTA_ScreenConfig_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_FTA_ScreenConfig_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_FTA_ScreenConfig_ID, Integer.valueOf(FTA_ScreenConfig_ID));
 	}
 
-	/** Get Flow Control.
-		@return Flow Control	  */
-	public String getFlowControl () 
+	/** Get Screen Configuration.
+		@return Screen Configuration	  */
+	public int getFTA_ScreenConfig_ID () 
 	{
-		return (String)get_Value(COLUMNNAME_FlowControl);
+		Integer ii = (Integer)get_Value(COLUMNNAME_FTA_ScreenConfig_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Name.
@@ -248,33 +142,6 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
     {
         return new KeyNamePair(get_ID(), getName());
     }
-
-	/** Parity AD_Reference_ID=53485 */
-	public static final int PARITY_AD_Reference_ID=53485;
-	/** None = 0 */
-	public static final String PARITY_None = "0";
-	/** Odd = 1 */
-	public static final String PARITY_Odd = "1";
-	/** Even = 2 */
-	public static final String PARITY_Even = "2";
-	/** Mark = 3 */
-	public static final String PARITY_Mark = "3";
-	/** Space = 4 */
-	public static final String PARITY_Space = "4";
-	/** Set Parity.
-		@param Parity Parity	  */
-	public void setParity (String Parity)
-	{
-
-		set_Value (COLUMNNAME_Parity, Parity);
-	}
-
-	/** Get Parity.
-		@return Parity	  */
-	public String getParity () 
-	{
-		return (String)get_Value(COLUMNNAME_Parity);
-	}
 
 	/** Set Position End (Cut).
 		@param PosEndCut Position End (Cut)	  */
@@ -344,20 +211,6 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
 		return ii.intValue();
 	}
 
-	/** Set Serial Port.
-		@param SerialPort Serial Port	  */
-	public void setSerialPort (String SerialPort)
-	{
-		set_Value (COLUMNNAME_SerialPort, SerialPort);
-	}
-
-	/** Get Serial Port.
-		@return Serial Port	  */
-	public String getSerialPort () 
-	{
-		return (String)get_Value(COLUMNNAME_SerialPort);
-	}
-
 	/** Set Start Character.
 		@param StartCharacter 
 		Start Character example: ASCII (3)
@@ -376,29 +229,6 @@ public class X_CUST_SerialPortConfig extends PO implements I_CUST_SerialPortConf
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** StopBits AD_Reference_ID=53486 */
-	public static final int STOPBITS_AD_Reference_ID=53486;
-	/** 1 = 1 */
-	public static final String STOPBITS_1 = "1";
-	/** 2 = 2 */
-	public static final String STOPBITS_2 = "2";
-	/** 1.5 = 3 */
-	public static final String STOPBITS_15 = "3";
-	/** Set Stop Bits.
-		@param StopBits Stop Bits	  */
-	public void setStopBits (String StopBits)
-	{
-
-		set_Value (COLUMNNAME_StopBits, StopBits);
-	}
-
-	/** Get Stop Bits.
-		@return Stop Bits	  */
-	public String getStopBits () 
-	{
-		return (String)get_Value(COLUMNNAME_StopBits);
 	}
 
 	/** Set String Length.
