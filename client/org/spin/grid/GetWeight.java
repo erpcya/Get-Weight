@@ -35,7 +35,10 @@ import org.compiere.swing.CTextField;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.spin.model.MFTAScreenConfig;
 import org.spin.model.MFTASerialPortConfig;
+import org.spin.model.MFTAWeightScale;
+import org.spin.model.MFTAWeightScaleRole;
 import org.spin.util.SerialPortManager;
 
 /**
@@ -53,14 +56,6 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 		this.gridTab = gridTab;
 		log.info(gridTab.toString());
 	}	//	GetWeight
-	
-	/*@Override
-	public boolean dynInit() throws Exception {
-		log.config("");
-		log.fine("dynInit()");
-		setTitle(Msg.translate(Env.getCtx(), "GetWeightFromScale") + " .. ");
-		return true;
-	}*/
 
 	/**	Logger			*/
 	protected CLogger log = CLogger.getCLogger(getClass());
@@ -70,11 +65,13 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	private GridTab gridTab;
 	
 	
-	private InputStream 				i_Stream 		= null;
-	private boolean 					started 		= false;
-	private boolean						read			= false;
-	private List<MFTASerialPortConfig> arraySPC		= null;
-	private MFTASerialPortConfig 		currentSPC 		= null;
+	private InputStream 				i_Stream 				= null;
+	private boolean 					started 				= false;
+	private boolean						read					= false;
+	private List<MFTAWeightScale> 		arrayWS					= null;
+	private MFTASerialPortConfig 		currentSerialPortConfig = null;
+	private MFTAScreenConfig 			currentScreenConfig		= null;
+	private MFTAWeightScale 			currentWeightScale		= null;
 	private StringBuffer				m_StrReaded		= new StringBuffer();
 	private SerialPortManager 			serialPort_M	= null;
 	/**	Label Display				*/
@@ -103,13 +100,13 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	protected boolean startService() {
 		log.fine("startService()");
 		//	verify if exists configuration
-		if(currentSPC == null){
-			message = Msg.translate(Env.getCtx(), "@PortNotConfiguredforUser@");
+		if(currentSerialPortConfig == null){
+			message = Msg.translate(Env.getCtx(), "@PortNotConfiguredForUser@");
 			return false;
 		}
 		//	
 		try {
-			serialPort_M = new SerialPortManager(currentSPC);
+			serialPort_M = new SerialPortManager(currentSerialPortConfig);
 			serialPort_M.openPort();
 			i_Stream = serialPort_M.getInput();
 			serialPort_M.addPortListener(this);
@@ -155,48 +152,53 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	}
 	
 	/**
-	 * Load List Port
+	 * Load List Weight Scale
 	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 03:37:06
 	 * @return void
 	 */
-	protected void loadSerialPortConfig(){
+	protected void loadWeightScale(){
 		log.fine("loadSerialPortConfig()");
 		//	User
 		int m_AD_Role_ID = Env.getAD_Role_ID(Env.getCtx());
-		arraySPC = MFTASerialPortConfig.getSerialPortConfigOfRole(Env.getCtx(), m_AD_Role_ID, null); 
+		arrayWS = MFTAWeightScaleRole.getWeightScaleOfRole(Env.getCtx(), m_AD_Role_ID, null); 
 		//	Set Current Serial Port Configuration
-		if(arraySPC.size() != 0)
-			currentSPC = arraySPC.get(0);
+		if(arrayWS.size() != 0){
+			currentWeightScale = arrayWS.get(0);
+			currentSerialPortConfig = arrayWS.get(0).getSerialPortConfig();
+			currentScreenConfig = arrayWS.get(0).getScreenConfig();
+		}
 	}
 	
 	/**
-	 * Set Current Serial Port Config
+	 * Set Current Weight Scale
 	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 03:38:20
 	 * @param index
 	 * @return void
 	 */
-	protected void setCurrentSPC(int index){
-		currentSPC = arraySPC.get(index);
+	protected void setCurrentWeightScale(int index){
+		currentWeightScale = arrayWS.get(index);
+		currentSerialPortConfig = arrayWS.get(index).getSerialPortConfig();
+		currentScreenConfig = arrayWS.get(index).getScreenConfig();
 	}
 	
 	/**
 	 * Get Array of Serial Port Configuration
 	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 02:10:47
 	 * @return
-	 * @return List<MCUSTSerialPortConfig>
+	 * @return List<MFTAWeightScale>
 	 */
-	protected List<MFTASerialPortConfig> getArraySerialPortConfig(){
-		return arraySPC;
+	protected List<MFTAWeightScale> getArrayWeightScale(){
+		return arrayWS;
 	}
 	
 	/**
 	 * Get Current Serial Port Configuration
 	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 02:11:58
 	 * @return
-	 * @return MCUSTSerialPortConfig
+	 * @return MFTAWeightScale
 	 */
-	protected MFTASerialPortConfig getCurrentSerialPortConfig(){
-		return currentSPC;
+	protected MFTAWeightScale getCurrentWeightScale(){
+		return currentWeightScale;
 	}
 	
 	@Override
@@ -218,7 +220,7 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 		try {
 			while(i_Stream.available() > 0) {
 				int bit = i_Stream.read();
-				if(bit == currentSPC.getStartCharacter() 
+				if(bit == currentScreenConfig.getStartCharacter() 
 						&& read == false){
 					read = true;
 					m_StrReaded = new StringBuffer();
@@ -226,8 +228,8 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 				if(read)
 					m_StrReaded.append((char)bit);
 				if(read 
-						&& (bit == currentSPC.getEndCharacter() 
-						|| m_StrReaded.length() == currentSPC.getStrLength())){
+						&& (bit == currentScreenConfig.getEndCharacter() 
+						|| m_StrReaded.length() == currentScreenConfig.getStrLength())){
 					read = false;
 					processStr();
 				} 
@@ -268,9 +270,9 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	 */
 	protected boolean processStr() {
 		log.fine("processStr()");
-		if(m_StrReaded.length() == currentSPC.getStrLength()){
-			String strWeight = m_StrReaded.substring(currentSPC.getPosStartCut(), currentSPC.getPosEndCut()).trim();
-			String strWeight_V = m_StrReaded.substring(currentSPC.getPosStart_SCut(), currentSPC.getPosEnd_SCut());
+		if(m_StrReaded.length() == currentScreenConfig.getStrLength()){
+			String strWeight = m_StrReaded.substring(currentScreenConfig.getPosStartCut(), currentScreenConfig.getPosEndCut()).trim();
+			String strWeight_V = m_StrReaded.substring(currentScreenConfig.getPosStart_SCut(), currentScreenConfig.getPosEnd_SCut());
 			//	Log
 			log.fine("strWeight=" + strWeight);
 			log.fine("strWeight_V=" + strWeight_V);
@@ -283,7 +285,7 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 			fDisplay.setText(strWeight_V);
 			return true;
 		}else{
-			message = Msg.translate(Env.getCtx(), "IncompleteStr");
+			message = Msg.translate(Env.getCtx(), "@IncompleteStr@");
 			log.fine("message=" + message);
 			return false;
 		}
