@@ -60,7 +60,7 @@ public class MFTAWeightScale extends X_FTA_WeightScale {
 	 * @return MFTASerialPortConfig
 	 */
 	public MFTASerialPortConfig getSerialPortConfig(){
-		return (MFTASerialPortConfig) getFTA_ScreenConfig();
+		return (MFTASerialPortConfig) getFTA_SerialPortConfig();
 	}
 	
 	/**

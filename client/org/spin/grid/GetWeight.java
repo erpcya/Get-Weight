@@ -113,26 +113,26 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 			serialPort_M.getSerialPort().notifyOnDataAvailable(true);
 			started = true;
 		} catch (NoSuchPortException e) {
-			message = Msg.translate(Env.getCtx(), "@NoSuchPortException@") + "\n" + e.getMessage();
+			message = Msg.translate(Env.getCtx(), "NoSuchPortException") + "\n" + e.getMessage();
 			//e.printStackTrace();
 		} catch (PortInUseException e) {
-			message = Msg.translate(Env.getCtx(), "@PortInUseException@") + "\n" + e.getMessage();
+			message = Msg.translate(Env.getCtx(), "PortInUseException") + "\n" + e.getMessage();
 			//e.printStackTrace();
 		} catch (UnsupportedCommOperationException e) {
-			message = Msg.translate(Env.getCtx(), "@UnsupportedCommOperationException@") + "\n" + e.getMessage();
+			message = Msg.translate(Env.getCtx(), "UnsupportedCommOperationException") + "\n" + e.getMessage();
 			//e.printStackTrace();
 		} catch (IOException e) {
-			message = Msg.translate(Env.getCtx(), "@IOException@") + "\n" + e.getMessage();
+			message = Msg.translate(Env.getCtx(), "IOException") + "\n" + e.getMessage();
 			//e.printStackTrace();
 		} catch (TooManyListenersException e) {
 			stopService();
-			message = Msg.translate(Env.getCtx(), "@TooManyListenersException@") + "\n" + e.getMessage();
+			message = Msg.translate(Env.getCtx(), "TooManyListenersException") + "\n" + e.getMessage();
 			//e.printStackTrace();
 		} catch (NoClassDefFoundError e) {
-			message = Msg.translate(Env.getCtx(), "@NoClassDefFoundError@") + "\n" + e.getMessage();
+			message = Msg.translate(Env.getCtx(), "NoClassDefFoundError") + "\n" + e.getMessage();
 			//e.printStackTrace();
 		} catch (UnsatisfiedLinkError e) {
-			message = Msg.translate(Env.getCtx(), "@UnsatisfiedLinkError@") + "\n" + e.getMessage();
+			message = Msg.translate(Env.getCtx(), "UnsatisfiedLinkError") + "\n" + e.getMessage();
 			//e.printStackTrace();
 		} catch (Exception e) {
 			message = e.getMessage();
@@ -235,7 +235,7 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 				} 
 			}
         } catch( IOException e ) {
-        	message = Msg.translate(Env.getCtx(), "@IOException@") + "\n" + e.getMessage();
+        	message = Msg.translate(Env.getCtx(), "IOException") + "\n" + e.getMessage();
         	log.log(Level.SEVERE, "", e);
         }
 	}	//	readPort
@@ -252,7 +252,7 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 				serialPort_M.closePort();
 				started = false;
 			} catch (IOException e) {
-				message = Msg.translate(Env.getCtx(), "@IOException@") + "\n" + e.getMessage();
+				message = Msg.translate(Env.getCtx(), "IOException") + "\n" + e.getMessage();
 				e.printStackTrace();
 			} catch (Exception e) {
 				message = e.getMessage();
@@ -285,7 +285,7 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 			fDisplay.setText(strWeight_V);
 			return true;
 		}else{
-			message = Msg.translate(Env.getCtx(), "@IncompleteStr@");
+			message = Msg.translate(Env.getCtx(), "IncompleteStr");
 			log.fine("message=" + message);
 			return false;
 		}
