@@ -16,7 +16,10 @@
 package org.spin.model;
 
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.Properties;
+
+import org.compiere.model.Query;
 
 /**
  * @author Yamel Senih
@@ -53,4 +56,29 @@ public class MFTAWeightScaleRole extends X_FTA_WeightScale_Role implements
 		super(ctx, rs, trxName);
 	}
 
+	
+	/**
+	 * Get Serial Weight Scale from Role
+	 * @author Yamel Senih 26/03/2013, 01:34:37
+	 * @param ctx
+	 * @param p_AD_Role_ID
+	 * @param trxName
+	 * @return
+	 * @return List<MFTAWeightScale>
+	 */
+	public static List<MFTAWeightScale> getWeightScaleOfRole(Properties ctx, int p_AD_Role_ID, String trxName){
+		List<MFTAWeightScale> list = new Query(ctx, I_FTA_WeightScale.Table_Name, 
+				"EXISTS(SELECT 1 " +
+				"			FROM " + Table_Name + " wsr " +
+				"		WHERE wsr.FTA_WeightScale_ID = FTA_WeightScale.FTA_WeightScale_ID " +
+				"		AND wsr.IsActive = 'Y' " +
+				"		AND wsr.AD_Role_ID=?)"
+				, trxName)
+			.setOnlyActiveRecords(true)
+			.setParameters(p_AD_Role_ID)
+			.<MFTAWeightScale>list();
+		//	
+		return list;
+	}
+	
 }

@@ -17,11 +17,7 @@
 package org.spin.model;
 
 import java.sql.ResultSet;
-import java.util.List;
 import java.util.Properties;
-
-import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.Query;
 
 /**
  * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a>
@@ -56,30 +52,6 @@ public class MFTASerialPortConfig extends X_FTA_SerialPortConfig implements
 	 */
 	public MFTASerialPortConfig(Properties ctx, ResultSet rs, String trxName) {
 		super(ctx, rs, trxName);
-	}
-	
-	/**
-	 * Get Serial Port Configuration of Role
-	 * @author Yamel Senih 26/03/2013, 01:34:37
-	 * @param ctx
-	 * @param p_AD_Role_ID
-	 * @param trxName
-	 * @return
-	 * @return List<MCUSTSerialPortConfig>
-	 */
-	public static List<MFTASerialPortConfig> getSerialPortConfigOfRole(Properties ctx, int p_AD_Role_ID, String trxName){
-		List<MFTASerialPortConfig> list = new Query(ctx, Table_Name, 
-				"EXISTS(SELECT 1 " +
-				"			FROM CUST_PortConfig_Role pcr " +
-				"		WHERE pcr.CUST_SerialPortConfig_ID = CUST_SerialPortConfig.CUST_SerialPortConfig_ID " +
-				"		AND pcr.IsActive = 'Y' " 
-				//+"		AND " + I_CUST_PortConfig_Role.COLUMNNAME_AD_Role_ID+"=?)"
-				, trxName)
-			.setOnlyActiveRecords(true)
-			.setParameters(p_AD_Role_ID)
-			.<MFTASerialPortConfig>list();
-		//	
-		return list;
 	}
 
 	/**

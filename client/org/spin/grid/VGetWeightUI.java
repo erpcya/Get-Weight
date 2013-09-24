@@ -44,7 +44,7 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Trx;
 import org.compiere.util.TrxRunnable;
-import org.spin.model.MFTASerialPortConfig;
+import org.spin.model.MFTAWeightScale;
 
 /**
  * @author Yamel Senih
@@ -80,7 +80,7 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 		};
 		
 		try {
-			loadSerialPortConfig();
+			loadWeightScale();
 			if (!dynInit())
 				return;
 			
@@ -183,17 +183,17 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 	 */
 	private void loadButtons() throws Exception{
 		log.info("loadButtons()");
-		List<MFTASerialPortConfig> arraySPC = getArraySerialPortConfig();
-		if(arraySPC.size() == 0)
-			throw new Exception(Msg.translate(Env.getCtx(), "@PortNotConfiguredforUser@"));
+		List<MFTAWeightScale> arrayWS = getArrayWeightScale();
+		if(arrayWS.size() == 0)
+			throw new Exception(Msg.translate(Env.getCtx(), "@WeightScaleNotConfigForUser@"));
 		//	
-		for(int i = 0; i < arraySPC.size(); i++){
-			MFTASerialPortConfig spc = arraySPC.get(i);
-			AppsAction aa = new AppsAction(String.valueOf(i), null, spc.getName());
+		for(int i = 0; i < arrayWS.size(); i++){
+			MFTAWeightScale weightScale = arrayWS.get(i);
+			AppsAction aa = new AppsAction(String.valueOf(i), null, weightScale.getName());
 			aa.setDelegate(this);
 			CButton b = (CButton)aa.getButton(); 
 			confirmPanel.addComponent(b);
-			log.fine("MCUSTSerialPortConfig " + spc.toString());
+			log.fine("MFTAWeightScale " + weightScale.toString());
 		}
 		
 	}
@@ -235,7 +235,7 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 		else {
 			log.fine("Action Comand Any");
 			Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
-			setCurrentSPC(Integer.parseInt(e.getActionCommand()));
+			setCurrentWeightScale(Integer.parseInt(e.getActionCommand()));
 			stopService();
 			boolean ok = startService();
 			Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);

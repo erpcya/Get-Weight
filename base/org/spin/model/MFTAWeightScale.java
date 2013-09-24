@@ -52,5 +52,25 @@ public class MFTAWeightScale extends X_FTA_WeightScale {
 	public MFTAWeightScale(Properties ctx, ResultSet rs, String trxName) {
 		super(ctx, rs, trxName);
 	}
+	
+	/**
+	 * Get Serial Port Configuration
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 24/09/2013, 10:54:37
+	 * @return
+	 * @return MFTASerialPortConfig
+	 */
+	public MFTASerialPortConfig getSerialPortConfig(){
+		return (MFTASerialPortConfig) getFTA_ScreenConfig();
+	}
+	
+	/**
+	 * Get Screen Configuration
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 24/09/2013, 11:04:41
+	 * @return
+	 * @return MFTAScreenConfig
+	 */
+	public MFTAScreenConfig getScreenConfig(){
+		return (MFTAScreenConfig) getFTA_ScreenConfig();
+	}
 
 }
