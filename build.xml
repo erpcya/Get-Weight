@@ -12,9 +12,9 @@
     <property name="client" value="client"/>
     <property name="test" value="test"/>
     <property name="build.dir" value="build"/>
-    <property name="dist.dir" value="${get-weight.trunk}/packages/${project-name}/lib"/>
+    <property name="dist.dir" value="${project.trunk}/packages/${project-name}/lib"/>
     <property name="build.dir" value="build"/>
-    <property name="jar.path" value="${get-weight.trunk}/packages/${project-name}/lib"/>
+    <property name="jar.path" value="${project.trunk}/packages/${project-name}/lib"/>
     <property name="jar.name" value="${project-name}"/>
 
     <!-- set path to include the necessary jar files for javac -->
