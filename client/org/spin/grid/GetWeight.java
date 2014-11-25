@@ -225,13 +225,19 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 					read = true;
 					m_StrReaded = new StringBuffer();
 				}
-				if(read)
+				if(read) {
 					m_StrReaded.append((char)bit);
+					log.fine("Char Readed = " + (char)bit + " Ascii Readed = " + (int)bit);
+				}
 				if(read 
 						&& (bit == currentScreenConfig.getEndCharacter() 
 						|| m_StrReaded.length() == currentScreenConfig.getStrLength())){
 					read = false;
-					processStr();
+					try {
+						processStr();
+					} catch (Exception e) {
+						log.warning("Error in processStr(): " + e.getLocalizedMessage());
+					}
 				} 
 			}
         } catch( IOException e ) {
