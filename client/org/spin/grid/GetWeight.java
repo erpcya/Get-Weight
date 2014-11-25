@@ -72,8 +72,9 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	private MFTASerialPortConfig 		currentSerialPortConfig = null;
 	private MFTAScreenConfig 			currentScreenConfig		= null;
 	private MFTAWeightScale 			currentWeightScale		= null;
-	private StringBuffer				m_StrReaded		= new StringBuffer();
-	private SerialPortManager 			serialPort_M	= null;
+	private StringBuffer				m_StrReaded				= new StringBuffer();
+	private StringBuffer				m_AsciiReaded			= new StringBuffer();
+	private SerialPortManager 			serialPort_M			= null;
 	/**	Label Display				*/
 	public CLabel 			lDisplay 	= new CLabel();
 	/**	Display						*/
@@ -224,10 +225,11 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 						&& read == false){
 					read = true;
 					m_StrReaded = new StringBuffer();
+					m_AsciiReaded = new StringBuffer();
 				}
 				if(read) {
 					m_StrReaded.append((char)bit);
-					log.fine("Char Readed = " + (char)bit + " Ascii Readed = " + (int)bit);
+					m_AsciiReaded.append("[" + (int)bit + "]");
 				}
 				if(read 
 						&& (bit == currentScreenConfig.getEndCharacter() 
@@ -276,6 +278,7 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	 */
 	protected boolean processStr() {
 		log.fine("processStr()");
+		log.fine("Ascii Readed = {" + m_AsciiReaded.toString() + "}");
 		if(m_StrReaded.length() == currentScreenConfig.getStrLength()){
 			String strWeight = m_StrReaded.substring(currentScreenConfig.getPosStartCut(), currentScreenConfig.getPosEndCut()).trim();
 			String strWeight_V = m_StrReaded.substring(currentScreenConfig.getPosStart_SCut(), currentScreenConfig.getPosEnd_SCut());
