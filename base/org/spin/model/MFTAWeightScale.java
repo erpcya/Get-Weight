@@ -17,7 +17,11 @@
 package org.spin.model;
 
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.Properties;
+
+import org.compiere.model.Query;
+import org.compiere.util.DB;
 
 /**
  * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a>
@@ -71,6 +75,40 @@ public class MFTAWeightScale extends X_FTA_WeightScale {
 	 */
 	public MFTAScreenConfig getScreenConfig(){
 		return (MFTAScreenConfig) getFTA_ScreenConfig();
+	}
+	
+	/**
+	 * Get Weight Scale from Organization
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 11/12/2014, 11:14:09
+	 * @param ctx
+	 * @param p_AD_Org_ID
+	 * @param trxName
+	 * @return
+	 * @return List<MFTAWeightScale>
+	 */
+	public static List<MFTAWeightScale> getWeightScaleOfOrg(Properties ctx, int p_AD_Org_ID, String trxName) {
+		List<MFTAWeightScale> list = new Query(ctx, I_FTA_WeightScale.Table_Name, "AD_Org_ID = ?", trxName)
+			.setOnlyActiveRecords(true)
+			.setParameters(p_AD_Org_ID)
+			.<MFTAWeightScale>list();
+		//	
+		return list;
+	}
+	
+	/**
+	 * Verify if the Organization have a weight scale
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 11/12/2014, 11:16:48
+	 * @param p_AD_Org_ID
+	 * @param trxName
+	 * @return
+	 * @return boolean
+	 */
+	public static boolean isWeightScaleOrg(int p_AD_Org_ID, String trxName) {
+		int m_FTA_WeightScale_ID = DB.getSQLValue(trxName, 
+				"SELECT FTA_WeightScale_ID FROM FTA_WeightScale WHERE AD_Org_ID = ?", 
+				p_AD_Org_ID);
+		//	Verify
+		return (m_FTA_WeightScale_ID > 0);
 	}
 
 }
