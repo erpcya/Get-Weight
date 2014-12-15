@@ -87,9 +87,9 @@ public class MFTAWeightScale extends X_FTA_WeightScale {
 	 * @return List<MFTAWeightScale>
 	 */
 	public static List<MFTAWeightScale> getWeightScaleOfOrg(Properties ctx, int p_AD_Org_ID, String trxName) {
-		List<MFTAWeightScale> list = new Query(ctx, I_FTA_WeightScale.Table_Name, "AD_Org_ID = ?", trxName)
+		List<MFTAWeightScale> list = new Query(ctx, I_FTA_WeightScale.Table_Name, "AD_Org_ID = ? AND IsActive = ?", trxName)
 			.setOnlyActiveRecords(true)
-			.setParameters(p_AD_Org_ID)
+			.setParameters(p_AD_Org_ID, true)
 			.<MFTAWeightScale>list();
 		//	
 		return list;
@@ -105,7 +105,10 @@ public class MFTAWeightScale extends X_FTA_WeightScale {
 	 */
 	public static boolean isWeightScaleOrg(int p_AD_Org_ID, String trxName) {
 		int m_FTA_WeightScale_ID = DB.getSQLValue(trxName, 
-				"SELECT FTA_WeightScale_ID FROM FTA_WeightScale WHERE AD_Org_ID = ?", 
+				"SELECT FTA_WeightScale_ID "
+				+ "FROM FTA_WeightScale "
+				+ "WHERE AD_Org_ID = ? "
+				+ "AND IsActive = 'Y'", 
 				p_AD_Org_ID);
 		//	Verify
 		return (m_FTA_WeightScale_ID > 0);
