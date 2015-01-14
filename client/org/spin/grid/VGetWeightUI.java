@@ -200,35 +200,29 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		log.info("actionPerformed(ActionEvent e) " + e);
-		if (e.getActionCommand().equals(ConfirmPanel.A_OK))
-		{
+		if (e.getActionCommand().equals(ConfirmPanel.A_OK)) {
 			log.fine("Action Comand OK");
-			try
-			{
-				Trx.run(new TrxRunnable()
-				{
-					public void run(String trxName)
-					{
-						if (save(trxName))
-						{	
-							log.fine("save(" + trxName + ")");
-							processValue(trxName);
-							log.fine("Stop Service After processing the value");
-							stopService();
-							dialog.dispose();
-						} else {
-							log.fine("In Case of Error I stop the connection to the port");
-							stopService();
-							ADialog.error(p_WindowNo, dialog, "Error", getMessage());
-						}
-					}
-				});
-			}
-			catch (Exception ex)
-			{
+			try {
+//				Trx.run(new TrxRunnable()
+//				{
+//					public void run(String trxName)
+//					{
+//						
+//					}
+//				});
+				if (processWeight()) {	
+					processValue(null);
+					log.fine("Stop Service After processing the value");
+					dialog.dispose();
+				} else {
+					log.fine("In Case of Error I stop the connection to the port");
+					ADialog.error(p_WindowNo, dialog, "Error", getMessage());
+				}
+			} catch (Exception ex) {
 				log.fine("In Case of Error I stop the connection to the port");
+				ADialog.error(p_WindowNo, dialog, "Error", ex.getMessage());
+			} finally {
 				stopService();
-				ADialog.error(p_WindowNo, dialog, "Error", ex.getLocalizedMessage());
 			}
 		}
 		//  Cancel
@@ -251,10 +245,12 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 		}
 	}
 	
+	@Override
 	public void showWindow() {
 		dialog.setVisible(true);
 	}
 	
+	@Override
 	public void closeWindow() {
 		log.fine("Closed Window");
 		stopService();
