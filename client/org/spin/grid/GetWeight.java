@@ -143,6 +143,8 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 		} catch (Exception e) {
 			message = e.getMessage();
 			log.log(Level.SEVERE, "", e);
+		}finally {
+			stopService();
 		}
 		return started;
 	}
@@ -251,7 +253,9 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
         } catch( IOException e ) {
         	message = Msg.translate(Env.getCtx(), "IOException") + "\n" + e.getMessage();
         	log.log(Level.SEVERE, "IOException", e);
-        }
+        }finally {
+			stopService();
+		}
 	}	//	readPort
 	
 	/**
@@ -273,6 +277,8 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 			} catch (Exception e) {
 				message = e.getMessage();
 				log.log(Level.SEVERE, "", e);
+			}finally {
+				stopService();
 			}
 		}
 		return !started;

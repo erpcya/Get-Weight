@@ -42,8 +42,6 @@ import org.compiere.swing.CTextField;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
-import org.compiere.util.Trx;
-import org.compiere.util.TrxRunnable;
 import org.spin.model.MFTAWeightScale;
 
 /**
