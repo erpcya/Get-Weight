@@ -75,7 +75,6 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 
 			public void dispose(){
 				super.dispose();
-				stopService();
 			}
 		};
 		
@@ -214,14 +213,21 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 						{	
 							log.fine("save(" + trxName + ")");
 							processValue(trxName);
+							log.fine("Stop Service After processing the value");
+							stopService();
 							dialog.dispose();
-						} else 
+						} else {
+							log.fine("In Case of Error I stop the connection to the port");
+							stopService();
 							ADialog.error(p_WindowNo, dialog, "Error", getMessage());
+						}
 					}
 				});
 			}
 			catch (Exception ex)
 			{
+				log.fine("In Case of Error I stop the connection to the port");
+				stopService();
 				ADialog.error(p_WindowNo, dialog, "Error", ex.getLocalizedMessage());
 			}
 		}
@@ -229,6 +235,7 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 		else if (e.getActionCommand().equals(ConfirmPanel.A_CANCEL))
 		{
 			log.fine("Action Comand CANCEL");
+			stopService();
 			dialog.dispose();
 		}
 		//	Serial Port Configuration
@@ -249,6 +256,8 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 	}
 	
 	public void closeWindow() {
+		log.fine("Closed Window");
+		stopService();
 		dialog.dispose();
 	}
 	

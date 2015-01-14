@@ -237,6 +237,7 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 					read = false;
 					try {
 						processStr();
+						
 					} catch (Exception e) {
 						log.warning("Error in processStr(): " + e.getLocalizedMessage());
 					}
@@ -255,10 +256,14 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	 */
 	protected boolean stopService() {
 		log.fine("stopService()");
+		System.out.println("stopService()");
+		
 		if(started){
+			log.fine("Port Started " + started);
 			try {
 				serialPort_M.closePort();
 				started = false;
+				log.fine("Port Started " + started);
 			} catch (IOException e) {
 				message = Msg.translate(Env.getCtx(), "IOException") + "\n" + e.getMessage();
 				e.printStackTrace();
@@ -280,8 +285,10 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 		log.fine("processStr()");
 		log.fine("Ascii Readed = {" + m_AsciiReaded.toString() + "}");
 		if(m_StrReaded.length() == currentScreenConfig.getStrLength()){
+			log.fine("Lenght String " + m_StrReaded.length());
 			String strWeight = m_StrReaded.substring(currentScreenConfig.getPosStartCut(), currentScreenConfig.getPosEndCut()).trim();
 			String strWeight_V = m_StrReaded.substring(currentScreenConfig.getPosStart_SCut(), currentScreenConfig.getPosEnd_SCut());
+
 			//	Log
 			log.fine("strWeight=" + strWeight);
 			log.fine("strWeight_V=" + strWeight_V);
