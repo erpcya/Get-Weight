@@ -86,13 +86,8 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	
 	public abstract boolean dynInit() throws Exception;
 	
-	/**
-	 * Process Weight
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 14/1/2015, 14:15:51
-	 * @return
-	 * @return boolean
-	 */
-	public boolean processWeight() {
+	
+	public boolean save(String trxName) {
 		log.fine("save(String)");
 		processStr();
 		return true;
@@ -120,31 +115,29 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 			started = true;
 		} catch (NoSuchPortException e) {
 			message = Msg.translate(Env.getCtx(), "NoSuchPortException") + "\n" + e.getMessage();
-			log.log(Level.SEVERE, "NoSuchPortException", e);
+			//e.printStackTrace();
 		} catch (PortInUseException e) {
 			message = Msg.translate(Env.getCtx(), "PortInUseException") + "\n" + e.getMessage();
-			log.log(Level.SEVERE, "PortInUseException", e);
+			//e.printStackTrace();
 		} catch (UnsupportedCommOperationException e) {
 			message = Msg.translate(Env.getCtx(), "UnsupportedCommOperationException") + "\n" + e.getMessage();
-			log.log(Level.SEVERE, "UnsupportedCommOperationException", e);
+			//e.printStackTrace();
 		} catch (IOException e) {
 			message = Msg.translate(Env.getCtx(), "IOException") + "\n" + e.getMessage();
-			log.log(Level.SEVERE, "IOException", e);
+			//e.printStackTrace();
 		} catch (TooManyListenersException e) {
 			stopService();
 			message = Msg.translate(Env.getCtx(), "TooManyListenersException") + "\n" + e.getMessage();
-			log.log(Level.SEVERE, "TooManyListenersException", e);
+			//e.printStackTrace();
 		} catch (NoClassDefFoundError e) {
 			message = Msg.translate(Env.getCtx(), "NoClassDefFoundError") + "\n" + e.getMessage();
-			log.log(Level.SEVERE, "NoClassDefFoundError", e);
+			//e.printStackTrace();
 		} catch (UnsatisfiedLinkError e) {
 			message = Msg.translate(Env.getCtx(), "UnsatisfiedLinkError") + "\n" + e.getMessage();
-			log.log(Level.SEVERE, "UnsatisfiedLinkError", e);
+			//e.printStackTrace();
 		} catch (Exception e) {
 			message = e.getMessage();
-			log.log(Level.SEVERE, "", e);
-		}finally {
-			stopService();
+			//e.printStackTrace();
 		}
 		return started;
 	}
@@ -246,16 +239,14 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 						processStr();
 						
 					} catch (Exception e) {
-						log.warning("Error in processStr(): " + e.getMessage());
+						log.warning("Error in processStr(): " + e.getLocalizedMessage());
 					}
 				} 
 			}
         } catch( IOException e ) {
         	message = Msg.translate(Env.getCtx(), "IOException") + "\n" + e.getMessage();
-        	log.log(Level.SEVERE, "IOException", e);
-        }finally {
-			stopService();
-		}
+        	log.log(Level.SEVERE, "", e);
+        }
 	}	//	readPort
 	
 	/**
@@ -270,15 +261,13 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 			try {
 				serialPort_M.closePort();
 				started = false;
-				log.fine("Port Stoped " + started);
+				log.fine("Port Started " + started);
 			} catch (IOException e) {
 				message = Msg.translate(Env.getCtx(), "IOException") + "\n" + e.getMessage();
-				log.log(Level.SEVERE, "IOException", e);
+				e.printStackTrace();
 			} catch (Exception e) {
 				message = e.getMessage();
-				log.log(Level.SEVERE, "", e);
-			}finally {
-				stopService();
+				e.printStackTrace();
 			}
 		}
 		return !started;
