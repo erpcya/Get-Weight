@@ -178,6 +178,10 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	 */
 	protected void setCurrentWeightScale(int index){
 		currentWeightScale = arrayWS.get(index);
+		//	Dixon Martinez 2015-02-03
+		//	Set value of Weight Scale
+		Env.setContext(currentWeightScale.getCtx(), "FTA_WeightScale_ID", currentWeightScale.get_ID());
+		//	End Dixon Martinez
 		currentSerialPortConfig = arrayWS.get(index).getSerialPortConfig();
 		currentScreenConfig = arrayWS.get(index).getScreenConfig();
 	}
