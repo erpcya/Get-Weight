@@ -2,7 +2,7 @@
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <stringAttribute key="bad_container_name" value="\arhipac-f"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/adempiere_360/base/src/org/adempiere/util/GenerateModel.java"/>
+<listEntry value="/adempiere_370/base/src/org/adempiere/util/GenerateModel.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -138,7 +138,7 @@
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.adempiere.util.GenerateModel"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="&quot;/opt/Development/workspace/Get-Weight/base/org/spin/model/&quot;&#10;&quot;org.spin.model&quot;&#10;&quot;'ECA02'&quot;&#10;&quot;'FTA_ScreenConfig', 'FTA_SerialPortConfig', 'FTA_WeightScale', 'FTA_WeightScale_Role'&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="&quot;/opt/Development/workspace/Get-Weight/base/org/spin/model/&quot;&#10;&quot;org.spin.model&quot;&#10;&quot;'ECA02'&quot;&#10;&quot;'FTA_ScreenConfig', 'FTA_SerialPortConfig', 'FTA_WeightScale', 'FTA_WeightScale_Role', 'FTA_WS_Warehouse'&quot;"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Get-Weight"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DPropertyFile=/opt/Development/ADempiere_Properties/Get-Weight.properties&#13;&#10;-DADEMPIERE_HOME=/Applications/Adempiere&#13;&#10;-Xms128M&#13;&#10;-Xmx256M&#13;&#10;-Dorg.adempiere.server.embedded=true"/>
 </launchConfiguration>

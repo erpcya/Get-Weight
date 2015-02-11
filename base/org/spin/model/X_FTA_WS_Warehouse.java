@@ -22,10 +22,10 @@ import java.util.Properties;
 import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Model for FTA_WeightScale_Role
+/** Generated Model for FTA_WS_Warehouse
  *  @author Adempiere (generated) 
  *  @version Release 3.7.0LTS (1252452765) - $Id$ */
-public class X_FTA_WeightScale_Role extends PO implements I_FTA_WeightScale_Role, I_Persistent 
+public class X_FTA_WS_Warehouse extends PO implements I_FTA_WS_Warehouse, I_Persistent 
 {
 
 	/**
@@ -34,18 +34,18 @@ public class X_FTA_WeightScale_Role extends PO implements I_FTA_WeightScale_Role
 	private static final long serialVersionUID = 20150210L;
 
     /** Standard Constructor */
-    public X_FTA_WeightScale_Role (Properties ctx, int FTA_WeightScale_Role_ID, String trxName)
+    public X_FTA_WS_Warehouse (Properties ctx, int FTA_WS_Warehouse_ID, String trxName)
     {
-      super (ctx, FTA_WeightScale_Role_ID, trxName);
-      /** if (FTA_WeightScale_Role_ID == 0)
+      super (ctx, FTA_WS_Warehouse_ID, trxName);
+      /** if (FTA_WS_Warehouse_ID == 0)
         {
-			setAD_Role_ID (0);
 			setFTA_WeightScale_ID (0);
+			setM_Warehouse_ID (0);
         } */
     }
 
     /** Load Constructor */
-    public X_FTA_WeightScale_Role (Properties ctx, ResultSet rs, String trxName)
+    public X_FTA_WS_Warehouse (Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -67,38 +67,10 @@ public class X_FTA_WeightScale_Role extends PO implements I_FTA_WeightScale_Role
 
     public String toString()
     {
-      StringBuffer sb = new StringBuffer ("X_FTA_WeightScale_Role[")
+      StringBuffer sb = new StringBuffer ("X_FTA_WS_Warehouse[")
         .append(get_ID()).append("]");
       return sb.toString();
     }
-
-	public org.compiere.model.I_AD_Role getAD_Role() throws RuntimeException
-    {
-		return (org.compiere.model.I_AD_Role)MTable.get(getCtx(), org.compiere.model.I_AD_Role.Table_Name)
-			.getPO(getAD_Role_ID(), get_TrxName());	}
-
-	/** Set Role.
-		@param AD_Role_ID 
-		Responsibility Role
-	  */
-	public void setAD_Role_ID (int AD_Role_ID)
-	{
-		if (AD_Role_ID < 0) 
-			set_ValueNoCheck (COLUMNNAME_AD_Role_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_AD_Role_ID, Integer.valueOf(AD_Role_ID));
-	}
-
-	/** Get Role.
-		@return Responsibility Role
-	  */
-	public int getAD_Role_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_AD_Role_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
 
 	public org.spin.model.I_FTA_WeightScale getFTA_WeightScale() throws RuntimeException
     {
@@ -132,4 +104,32 @@ public class X_FTA_WeightScale_Role extends PO implements I_FTA_WeightScale_Role
     {
         return new KeyNamePair(get_ID(), String.valueOf(getFTA_WeightScale_ID()));
     }
+
+	public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException
+    {
+		return (org.compiere.model.I_M_Warehouse)MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
+			.getPO(getM_Warehouse_ID(), get_TrxName());	}
+
+	/** Set Warehouse.
+		@param M_Warehouse_ID 
+		Storage Warehouse and Service Point
+	  */
+	public void setM_Warehouse_ID (int M_Warehouse_ID)
+	{
+		if (M_Warehouse_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_M_Warehouse_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_M_Warehouse_ID, Integer.valueOf(M_Warehouse_ID));
+	}
+
+	/** Get Warehouse.
+		@return Storage Warehouse and Service Point
+	  */
+	public int getM_Warehouse_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Warehouse_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
 }

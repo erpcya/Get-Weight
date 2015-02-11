@@ -23,7 +23,7 @@ import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for FTA_SerialPortConfig
  *  @author Adempiere (generated) 
- *  @version Release 3.7.0LTS
+ *  @version Release 3.7.0LTS (1252452765)
  */
 public interface I_FTA_SerialPortConfig 
 {

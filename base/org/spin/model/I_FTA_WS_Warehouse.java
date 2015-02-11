@@ -21,17 +21,17 @@ import java.sql.Timestamp;
 import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Interface for FTA_WeightScale_Role
+/** Generated Interface for FTA_WS_Warehouse
  *  @author Adempiere (generated) 
  *  @version Release 3.7.0LTS (1252452765)
  */
-public interface I_FTA_WeightScale_Role 
+public interface I_FTA_WS_Warehouse 
 {
 
-    /** TableName=FTA_WeightScale_Role */
-    public static final String Table_Name = "FTA_WeightScale_Role";
+    /** TableName=FTA_WS_Warehouse */
+    public static final String Table_Name = "FTA_WS_Warehouse";
 
-    /** AD_Table_ID=53459 */
+    /** AD_Table_ID=53940 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -62,21 +62,6 @@ public interface I_FTA_WeightScale_Role
 	  * Organizational entity within client
 	  */
 	public int getAD_Org_ID();
-
-    /** Column name AD_Role_ID */
-    public static final String COLUMNNAME_AD_Role_ID = "AD_Role_ID";
-
-	/** Set Role.
-	  * Responsibility Role
-	  */
-	public void setAD_Role_ID (int AD_Role_ID);
-
-	/** Get Role.
-	  * Responsibility Role
-	  */
-	public int getAD_Role_ID();
-
-	public org.compiere.model.I_AD_Role getAD_Role() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -117,6 +102,21 @@ public interface I_FTA_WeightScale_Role
 	  * The record is active in the system
 	  */
 	public boolean isActive();
+
+    /** Column name M_Warehouse_ID */
+    public static final String COLUMNNAME_M_Warehouse_ID = "M_Warehouse_ID";
+
+	/** Set Warehouse.
+	  * Storage Warehouse and Service Point
+	  */
+	public void setM_Warehouse_ID (int M_Warehouse_ID);
+
+	/** Get Warehouse.
+	  * Storage Warehouse and Service Point
+	  */
+	public int getM_Warehouse_ID();
+
+	public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

@@ -24,14 +24,14 @@ import org.compiere.util.KeyNamePair;
 
 /** Generated Model for FTA_WeightScale
  *  @author Adempiere (generated) 
- *  @version Release 3.7.0LTS - $Id$ */
+ *  @version Release 3.7.0LTS (1252452765) - $Id$ */
 public class X_FTA_WeightScale extends PO implements I_FTA_WeightScale, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20130923L;
+	private static final long serialVersionUID = 20150210L;
 
     /** Standard Constructor */
     public X_FTA_WeightScale (Properties ctx, int FTA_WeightScale_ID, String trxName)
@@ -40,6 +40,7 @@ public class X_FTA_WeightScale extends PO implements I_FTA_WeightScale, I_Persis
       /** if (FTA_WeightScale_ID == 0)
         {
 			setC_UOM_ID (0);
+// -1
 			setFTA_ScreenConfig_ID (0);
 			setFTA_SerialPortConfig_ID (0);
 			setFTA_WeightScale_ID (0);

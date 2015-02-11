@@ -24,14 +24,14 @@ import org.compiere.util.KeyNamePair;
 
 /** Generated Model for FTA_ScreenConfig
  *  @author Adempiere (generated) 
- *  @version Release 3.7.0LTS - $Id$ */
+ *  @version Release 3.7.0LTS (1252452765) - $Id$ */
 public class X_FTA_ScreenConfig extends PO implements I_FTA_ScreenConfig, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20130923L;
+	private static final long serialVersionUID = 20150210L;
 
     /** Standard Constructor */
     public X_FTA_ScreenConfig (Properties ctx, int FTA_ScreenConfig_ID, String trxName)
@@ -39,9 +39,9 @@ public class X_FTA_ScreenConfig extends PO implements I_FTA_ScreenConfig, I_Pers
       super (ctx, FTA_ScreenConfig_ID, trxName);
       /** if (FTA_ScreenConfig_ID == 0)
         {
-			setEndCharacter (0);
 			setFTA_ScreenConfig_ID (0);
 			setName (null);
+			setPosEndCut (0);
 			setPosEnd_SCut (0);
 			setPosStartCut (0);
 			setPosStart_SCut (0);
