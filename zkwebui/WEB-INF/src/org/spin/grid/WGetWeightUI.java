@@ -16,7 +16,6 @@
 package org.spin.grid;
 
 
-import java.util.List;
 import java.util.logging.Level;
 
 import org.adempiere.webui.apps.AEnv;
@@ -37,11 +36,10 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Trx;
 import org.compiere.util.TrxRunnable;
-import org.spin.model.MFTAWeightScale;
+import org.spin.model.MADDevice;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Center;
 import org.zkoss.zkex.zul.North;
 import org.zkoss.zkex.zul.South;
 
@@ -201,13 +199,14 @@ public class WGetWeightUI extends WGetWeight implements EventListener {
 	 */
 	private void loadButtons() throws Exception{
 		log.info("loadButtons()");
-		List<MFTAWeightScale> arrayWS = getArrayWeightScale();
+		MADDevice[] arrayWS = getArrayWeightScale();
 //		System.out.println(arrayWS.size()+"sd");
-		if(arrayWS.size() == 0)
+		if(arrayWS == null
+				|| arrayWS.length == 0)
 			throw new Exception(Msg.translate(Env.getCtx(), "@WeightScaleNotConfigForUser@"));
 		//	
-		for(int i = 0; i < arrayWS.size(); i++){
-			MFTAWeightScale weightScale = arrayWS.get(i);
+		for(int i = 0; i < arrayWS.length; i++){
+			MADDevice weightScale = arrayWS[i];
 			Button aa = new Button(weightScale.getName());
 			aa.setLabel(weightScale.getName());
 			aa.setName(weightScale.getName());

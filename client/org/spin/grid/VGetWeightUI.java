@@ -23,7 +23,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import java.util.logging.Level;
 
 import javax.swing.BorderFactory;
@@ -44,7 +43,7 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Trx;
 import org.compiere.util.TrxRunnable;
-import org.spin.model.MFTAWeightScale;
+import org.spin.model.MADDevice;
 
 /**
  * @author Yamel Senih
@@ -182,12 +181,13 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 	 */
 	private void loadButtons() throws Exception{
 		log.info("loadButtons()");
-		List<MFTAWeightScale> arrayWS = getArrayWeightScale();
-		if(arrayWS.size() == 0)
+		MADDevice[] arrayWS = getArrayWeightScale();
+		if(arrayWS == null
+				|| arrayWS.length == 0)
 			throw new Exception(Msg.translate(Env.getCtx(), "@WeightScaleNotConfigForUser@"));
 		//	
-		for(int i = 0; i < arrayWS.size(); i++){
-			MFTAWeightScale weightScale = arrayWS.get(i);
+		for(int i = 0; i < arrayWS.length; i++){
+			MADDevice weightScale = arrayWS[i];
 			AppsAction aa = new AppsAction(String.valueOf(i), null, weightScale.getName());
 			aa.setDelegate(this);
 			CButton b = (CButton)aa.getButton(); 

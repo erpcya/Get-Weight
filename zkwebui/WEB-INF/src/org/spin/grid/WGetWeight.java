@@ -15,34 +15,27 @@
  *************************************************************************************/
 package org.spin.grid;
 
+import gnu.io.NoSuchPortException;
+import gnu.io.PortInUseException;
+import gnu.io.SerialPortEvent;
+import gnu.io.SerialPortEventListener;
+import gnu.io.UnsupportedCommOperationException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.TooManyListenersException;
 import java.util.logging.Level;
 
-import javax.comm.NoSuchPortException;
-import javax.comm.PortInUseException;
-import javax.comm.SerialPortEvent;
-import javax.comm.SerialPortEventListener;
-import javax.comm.UnsupportedCommOperationException;
-
 import org.adempiere.webui.component.Label;
 import org.adempiere.webui.component.Textbox;
-import org.compiere.grid.CreateFrom;
 import org.compiere.grid.ICreateFrom;
-import org.compiere.minigrid.IMiniTable;
 import org.compiere.model.GridTab;
-import org.compiere.swing.CLabel;
-import org.compiere.swing.CTextField;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
-import org.spin.model.MFTAScreenConfig;
-import org.spin.model.MFTASerialPortConfig;
-import org.spin.model.MFTAWeightScale;
-import org.spin.model.MFTAWeightScaleRole;
+import org.spin.model.I_AD_Device;
+import org.spin.model.MADDevice;
 import org.spin.util.SerialPortManager;
 
 /**
@@ -72,10 +65,8 @@ public class WGetWeight implements ICreateFrom, SerialPortEventListener {
 	private InputStream 				i_Stream 				= null;
 	private boolean 					started 				= false;
 	private boolean						read					= false;
-	private List<MFTAWeightScale> 		arrayWS					= null;
-	private MFTASerialPortConfig 		currentSerialPortConfig = null;
-	private MFTAScreenConfig 			currentScreenConfig		= null;
-	private MFTAWeightScale 			currentWeightScale		= null;
+	private MADDevice[] 				arrayWS					= null;
+	private MADDevice 					currentDevice 			= null;
 	private StringBuffer				m_StrReaded				= new StringBuffer();
 	private StringBuffer				m_AsciiReaded			= new StringBuffer();
 	private SerialPortManager 			serialPort_M			= null;
@@ -109,14 +100,14 @@ public class WGetWeight implements ICreateFrom, SerialPortEventListener {
 	protected boolean startService() {
 		log.fine("startService()");
 		//	verify if exists configuration
-		if(currentSerialPortConfig == null){
+		if(currentDevice == null){
 			message = Msg.translate(Env.getCtx(), "@PortNotConfiguredForUser@");
 			return false;
 		}
 		//	
 		try {
-			serialPort_M = new SerialPortManager(currentSerialPortConfig);
-			serialPort_M.openPort();
+			serialPort_M = new SerialPortManager(currentDevice);
+			serialPort_M.connect();
 			i_Stream = serialPort_M.getInput();
 			serialPort_M.addPortListener(this);
 			serialPort_M.getSerialPort().notifyOnDataAvailable(true);
@@ -167,14 +158,22 @@ public class WGetWeight implements ICreateFrom, SerialPortEventListener {
 	 */
 	protected void loadWeightScale(){
 		log.fine("loadSerialPortConfig()");
-		//	User
-		int m_AD_Role_ID = Env.getAD_Role_ID(Env.getCtx());
-		arrayWS = MFTAWeightScaleRole.getWeightScaleOfRole(Env.getCtx(), m_AD_Role_ID, null); 
+		arrayWS = MADDevice.getDeviceList(Env.getCtx(), 
+				I_AD_Device.COLUMNNAME_AD_Org_ID + " = " + Env.getAD_Org_ID(Env.getCtx()), null); 
 		//	Set Current Serial Port Configuration
-		if(arrayWS.size() != 0){
-			currentWeightScale = arrayWS.get(0);
-			currentSerialPortConfig = arrayWS.get(0).getSerialPortConfig();
-			currentScreenConfig = arrayWS.get(0).getScreenConfig();
+		setDevice(0);
+	}
+	
+	/**
+	 * Set device
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 18, 2016, 4:29:32 PM
+	 * @param index
+	 * @return void
+	 */
+	private void setDevice(int index) {
+		if(arrayWS != null
+				&& arrayWS.length != 0) {
+			currentDevice = arrayWS[0];
 		}
 	}
 	
@@ -185,18 +184,20 @@ public class WGetWeight implements ICreateFrom, SerialPortEventListener {
 	 * @return void
 	 */
 	protected void setCurrentWeightScale(int index){
-		currentWeightScale = arrayWS.get(index);
-		currentSerialPortConfig = arrayWS.get(index).getSerialPortConfig();
-		currentScreenConfig = arrayWS.get(index).getScreenConfig();
+		setDevice(index);
+		//	Dixon Martinez 2015-02-03
+		//	Set value of Weight Scale
+		Env.setContext(currentDevice.getCtx(), "AD_Device_ID", currentDevice.get_ID());
+		//	End Dixon Martinez
 	}
 	
 	/**
 	 * Get Array of Serial Port Configuration
 	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 02:10:47
 	 * @return
-	 * @return List<MFTAWeightScale>
+	 * @return MADDevice[]
 	 */
-	protected List<MFTAWeightScale> getArrayWeightScale(){
+	protected MADDevice[] getArrayWeightScale(){
 		return arrayWS;
 	}
 	
@@ -206,8 +207,8 @@ public class WGetWeight implements ICreateFrom, SerialPortEventListener {
 	 * @return
 	 * @return MFTAWeightScale
 	 */
-	protected MFTAWeightScale getCurrentWeightScale(){
-		return currentWeightScale;
+	protected MADDevice getCurrentWeightScale(){
+		return currentDevice;
 	}
 	
 	@Override
@@ -229,7 +230,7 @@ public class WGetWeight implements ICreateFrom, SerialPortEventListener {
 		try {
 			while(i_Stream.available() > 0) {
 				int bit = i_Stream.read();
-				if(bit == currentScreenConfig.getStartCharacter() 
+				if(bit == serialPort_M.getStartCharacter() 
 						&& read == false){
 					read = true;
 					m_StrReaded = new StringBuffer();
@@ -240,8 +241,8 @@ public class WGetWeight implements ICreateFrom, SerialPortEventListener {
 					m_AsciiReaded.append("[" + (int)bit + "]");
 				}
 				if(read 
-						&& (bit == currentScreenConfig.getEndCharacter() 
-						|| m_StrReaded.length() == currentScreenConfig.getStrLength())){
+						&& (bit == serialPort_M.getEndCharacter() 
+						|| m_StrReaded.length() == serialPort_M.getStrLength())){
 					read = false;
 					try {
 						processStr();
@@ -265,7 +266,7 @@ public class WGetWeight implements ICreateFrom, SerialPortEventListener {
 		log.fine("stopService()");
 		if(started){
 			try {
-				serialPort_M.closePort();
+				serialPort_M.close();
 				started = false;
 			} catch (IOException e) {
 				message = Msg.translate(Env.getCtx(), "IOException") + "\n" + e.getMessage();
@@ -287,9 +288,9 @@ public class WGetWeight implements ICreateFrom, SerialPortEventListener {
 	protected boolean processStr() {
 		log.fine("processStr()");
 		log.fine("Ascii Readed = {" + m_AsciiReaded.toString() + "}");
-		if(m_StrReaded.length() == currentScreenConfig.getStrLength()){
-			String strWeight = m_StrReaded.substring(currentScreenConfig.getPosStartCut(), currentScreenConfig.getPosEndCut()).trim();
-			String strWeight_V = m_StrReaded.substring(currentScreenConfig.getPosStart_SCut(), currentScreenConfig.getPosEnd_SCut());
+		if(m_StrReaded.length() == serialPort_M.getStrLength()){
+			String strWeight = m_StrReaded.substring(serialPort_M.getStartCutPos(), serialPort_M.getEndCutPos()).trim();
+			String strWeight_V = m_StrReaded.substring(serialPort_M.getScreenStartCutPos(), serialPort_M.getScreenEndCutPos());
 			//	Log
 			log.fine("strWeight=" + strWeight);
 			log.fine("strWeight_V=" + strWeight_V);
@@ -338,21 +339,4 @@ public class WGetWeight implements ICreateFrom, SerialPortEventListener {
 	public GridTab getGridTab() {
 		return gridTab;
 	}
-
-
-
-
-//	@Override
-//	public void info() {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//
-//	@Override
-//	public boolean save(IMiniTable miniTable, String trxName) {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
-
 }
