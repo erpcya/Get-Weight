@@ -24,9 +24,11 @@ import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Grid;
 import org.adempiere.webui.component.GridFactory;
+import org.adempiere.webui.component.Label;
 import org.adempiere.webui.component.Panel;
 import org.adempiere.webui.component.Row;
 import org.adempiere.webui.component.Rows;
+import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.model.GridTab;
@@ -47,7 +49,7 @@ import org.zkoss.zkex.zul.South;
  * @author Yamel Senih
  *
  */
-public class WGetWeightUI extends WGetWeight implements EventListener {
+public class WGetWeightUI extends GetWeight implements EventListener {
 	
 	/**
 	 * *** Constructor de la Clase ***
@@ -77,14 +79,12 @@ public class WGetWeightUI extends WGetWeight implements EventListener {
 					FDialog.error(p_WindowNo, window, "Error", getMessage());
 					return;
 				}
-			setInitOK(true);
 			AEnv.positionCenterScreen(window);
 			}
 		}
 		catch(Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
-			setInitOK(false);
 		}
 		AEnv.showWindow(window);
 		
@@ -100,6 +100,10 @@ public class WGetWeightUI extends WGetWeight implements EventListener {
 	private Borderlayout mainLayout = new Borderlayout();
 	private Grid parameterLayout = GridFactory.newGridLayout();
 	private Panel parameterPanel = new Panel();
+	/**	Label Display				*/
+	private Label 		lDisplay 	= new Label();
+	/**	Display						*/
+	private Textbox 	fDisplay 	= new Textbox();
 	/**
 	 *  Dynamic Init
 	 *  @throws Exception if Lookups cannot be initialized
@@ -188,7 +192,6 @@ public class WGetWeightUI extends WGetWeight implements EventListener {
 		//	
 //		dialog.getContentPane().app(mainPanel);    	
 		//	
-		weight = Env.ZERO;
 	}
 
 	/**
@@ -290,6 +293,11 @@ public class WGetWeightUI extends WGetWeight implements EventListener {
 			if(!ok)
 				FDialog.error(p_WindowNo, window, "Error", getMessage());
 		}
+	}
+	
+	@Override
+	public void refreshDisplay(String value) {
+		fDisplay.setText(value);
 	}
 	
 }

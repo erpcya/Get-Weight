@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add support to Device handler" ReleaseNo="3.8.0#002" SeqNo="193">
+    <Comments>@See: https://github.com/erpcya/Get-Weight/issues/1</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="105" Action="U" Record_ID="53279" Table="AD_Window">
+        <Data AD_Column_ID="568" Column="IsActive" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="116" Action="U" Record_ID="53630" Table="AD_Menu">
+        <Data AD_Column_ID="598" Column="IsActive" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="53593" Table="AD_Table">
+        <Data AD_Column_ID="543" Column="IsActive" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="105" Action="U" Record_ID="53212" Table="AD_Window">
+        <Data AD_Column_ID="568" Column="IsActive" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="116" Action="U" Record_ID="53488" Table="AD_Menu">
+        <Data AD_Column_ID="230" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="598" Column="IsActive" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="53457" Table="AD_Table">
+        <Data AD_Column_ID="543" Column="IsActive" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="105" Action="U" Record_ID="53280" Table="AD_Window">
+        <Data AD_Column_ID="568" Column="IsActive" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="116" Action="U" Record_ID="53629" Table="AD_Menu">
+        <Data AD_Column_ID="598" Column="IsActive" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="53594" Table="AD_Table">
+        <Data AD_Column_ID="543" Column="IsActive" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="53459" Table="AD_Table">
+        <Data AD_Column_ID="543" Column="IsActive" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="53940" Table="AD_Table">
+        <Data AD_Column_ID="543" Column="IsActive" oldValue="true">false</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

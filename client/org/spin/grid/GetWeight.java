@@ -17,32 +17,29 @@ package org.spin.grid;
 
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
-import gnu.io.SerialPortEvent;
-import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.TooManyListenersException;
-import java.util.logging.Level;
 
-import org.compiere.grid.ICreateFrom;
 import org.compiere.model.GridTab;
-import org.compiere.swing.CLabel;
-import org.compiere.swing.CTextField;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
-import org.spin.model.I_AD_Device;
 import org.spin.model.MADDevice;
-import org.spin.util.SerialPortManager;
+import org.spin.model.X_AD_DeviceConfigUse;
+import org.spin.model.X_AD_DeviceType;
+import org.spin.util.DeviceEvent;
+import org.spin.util.DeviceEventListener;
+import org.spin.util.DeviceTypeHandler;
+import org.spin.util.IDeviceTypeHandler;
 
 /**
  * @author Yamel Senih
  *
  */
-public abstract class GetWeight implements ICreateFrom, SerialPortEventListener {
+public abstract class GetWeight implements DeviceEventListener {
 	
 	/**
 	 * *** Constructor de la Clase ***
@@ -52,40 +49,61 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	public GetWeight(GridTab gridTab) {
 		this.gridTab = gridTab;
 		log.info(gridTab.toString());
+		weight = Env.ZERO;
 	}	//	GetWeight
 
 	/**	Logger			*/
 	protected CLogger log = CLogger.getCLogger(getClass());
 	private String title;
-
-	private boolean initOK = false;
+	
 	private GridTab gridTab;
 	
 	
-	private InputStream 				i_Stream 				= null;
 	private boolean 					started 				= false;
-	private boolean						read					= false;
 	private MADDevice[] 				arrayWS					= null;
 	private MADDevice 					currentDevice 			= null;
-	private StringBuffer				m_StrReaded				= new StringBuffer();
-	private StringBuffer				m_AsciiReaded			= new StringBuffer();
-	private SerialPortManager 			serialPort_M			= null;
-	/**	Label Display				*/
-	public CLabel 			lDisplay 	= new CLabel();
-	/**	Display						*/
-	public CTextField 		fDisplay 	= new CTextField();
-	/**	Weight Result				*/
-	public BigDecimal 		weight		= Env.ZERO;
-	/**	Message						*/
-	public String			message 	= null;
+	private DeviceTypeHandler 			handler					= null;
 	
+	/**	Weight Result				*/
+	private BigDecimal 		weight		= Env.ZERO;
+	/**	Message						*/
+	private String			message 	= null;
+	
+	/**
+	 * Init
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 20, 2016, 4:41:04 PM
+	 * @return
+	 * @throws Exception
+	 * @return boolean
+	 */
 	public abstract boolean dynInit() throws Exception;
 	
+	/**
+	 * Refresh Display
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 20, 2016, 10:27:13 PM
+	 * @param value
+	 * @return void
+	 */
+	public abstract void refreshDisplay(String value);
 	
+	/**
+	 * Save
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 19, 2016, 11:54:10 PM
+	 * @param trxName
+	 * @return
+	 * @return boolean
+	 */
 	public boolean save(String trxName) {
 		log.fine("save(String)");
-		processStr();
-		return true;
+		boolean isOk = false;
+		try {
+			processStr();
+			isOk = true;
+		} catch(Exception e) {
+			log.severe(e.getMessage());
+		}
+		//	Default return
+		return isOk;
 	}
 	
 	/**
@@ -96,18 +114,18 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	protected boolean startService() {
 		log.fine("startService()");
 		//	verify if exists configuration
-		if(currentDevice == null){
+		if(currentDevice == null) {
 			message = Msg.translate(Env.getCtx(), "@PortNotConfiguredForUser@");
 			return false;
 		}
+		//	Already started
+		if(started) {
+			return true;
+		}
 		//	
 		try {
-			if(serialPort_M == null)
-				serialPort_M = new SerialPortManager(currentDevice);
-			serialPort_M.connect();
-			i_Stream = serialPort_M.getInput();
-			serialPort_M.addPortListener(this);
-			serialPort_M.getSerialPort().notifyOnDataAvailable(true);
+			handler = currentDevice.getDeviceHandler();
+			handler.connect();
 			started = true;
 		} catch (NoSuchPortException e) {
 			message = Msg.translate(Env.getCtx(), "NoSuchPortException") + "\n" + e.getMessage();
@@ -156,10 +174,7 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	 */
 	protected void loadWeightScale() throws Exception {
 		log.fine("loadSerialPortConfig()");
-		serialPort_M = new SerialPortManager();
-		arrayWS = MADDevice.getDeviceList(Env.getCtx(), 
-				I_AD_Device.COLUMNNAME_AD_Org_ID + " IN(0, " + Env.getAD_Org_ID(Env.getCtx()) + ")", null);
-		arrayWS = serialPort_M.getAvailableDevices(arrayWS);
+		arrayWS = DeviceTypeHandler.getAvailableDevices(Env.getCtx(), X_AD_DeviceType.DEVICETYPE_WeightScale);
 		//	Set Current Serial Port Configuration
 		setDevice(0);
 	}
@@ -174,7 +189,6 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 		if(arrayWS != null
 				&& arrayWS.length != 0) {
 			currentDevice = arrayWS[0];
-			serialPort_M.serMADDevice(currentDevice);
 		}
 	}
 	
@@ -206,58 +220,11 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	 * Get Current Serial Port Configuration
 	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 02:11:58
 	 * @return
-	 * @return MFTAWeightScale
+	 * @return MADDevice
 	 */
 	protected MADDevice getCurrentWeightScale(){
 		return currentDevice;
 	}
-	
-	@Override
-	public void serialEvent(SerialPortEvent ev) {
-		if(ev.getEventType() == SerialPortEvent.DATA_AVAILABLE){
-			//	Read Port
-			log.info("SerialPortEvent.DATA_AVAILABLE");
-			readPort();
-		}
-	}
-	
-	/**
-	 * Read the port and set an Display field
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 28/03/2013, 03:47:25
-	 * @return void
-	 */
-	private void readPort(){
-		log.fine("readPort()");
-		try {
-			while(i_Stream.available() > 0) {
-				int bit = i_Stream.read();
-				if(bit == serialPort_M.getStartCharacter() 
-						&& read == false){
-					read = true;
-					m_StrReaded = new StringBuffer();
-					m_AsciiReaded = new StringBuffer();
-				}
-				if(read) {
-					m_StrReaded.append((char)bit);
-					m_AsciiReaded.append("[" + (int)bit + "]");
-				}
-				if(read 
-						&& (bit == serialPort_M.getEndCharacter() 
-						|| m_StrReaded.length() == serialPort_M.getStrLength())){
-					read = false;
-					try {
-						processStr();
-						
-					} catch (Exception e) {
-						log.warning("Error in processStr(): " + e.getLocalizedMessage());
-					}
-				} 
-			}
-        } catch( IOException e ) {
-        	message = Msg.translate(Env.getCtx(), "IOException") + "\n" + e.getMessage();
-        	log.log(Level.SEVERE, "", e);
-        }
-	}	//	readPort
 	
 	/**
 	 * Stop Service and close port
@@ -269,7 +236,7 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 		if(started){
 			log.fine("Port Started " + started);
 			try {
-				serialPort_M.close();
+				handler.close();
 				started = false;
 				log.fine("Port Started " + started);
 			} catch (IOException e) {
@@ -288,51 +255,38 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 28/03/2013, 04:52:51
 	 * @return
 	 * @return String
+	 * @throws Exception 
 	 */
-	protected boolean processStr() {
+	protected boolean processStr() throws Exception {
 		log.fine("processStr()");
-		log.fine("Ascii Readed = {" + m_AsciiReaded.toString() + "}");
-		if(m_StrReaded.length() == serialPort_M.getStrLength()){
-			log.fine("Lenght String " + m_StrReaded.length());
-			String strWeight = m_StrReaded.substring(serialPort_M.getStartCutPos(), serialPort_M.getEndCutPos()).trim();
-			String strWeight_V = m_StrReaded.substring(serialPort_M.getScreenStartCutPos(), serialPort_M.getScreenEndCutPos());
+		String value = (String) handler.read();
+		int startCutPos = handler.getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_START_CUT_POS);
+		int endCutPos = handler.getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_END_CUT_POS);
+		int screenEndCutPos = handler.getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_SCREEN_START_CUT_POS);
+		int screenStartCutPos = handler.getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_SCREEN_END_CUT_POS);
+		if(value != null) {
+			log.fine("Lenght String " + value.length());
+			String strWeight = value.substring(startCutPos, endCutPos).trim();
+			String strWeight_V = value.substring(screenEndCutPos, screenStartCutPos);
 
 			//	Log
 			log.fine("strWeight=" + strWeight);
 			log.fine("strWeight_V=" + strWeight_V);
 			
 			if(strWeight != null
-					&& strWeight.length() != 0)
+					&& strWeight.length() != 0) {
 				weight = new BigDecimal(strWeight);
-			else
+			} else {
 				weight = Env.ZERO;
-			fDisplay.setText(strWeight_V);
+			}
+			refreshDisplay(strWeight_V);
 			return true;
-		}else{
+		} else {
 			message = Msg.translate(Env.getCtx(), "IncompleteStr");
 			log.fine("message=" + message);
 			return false;
 		}
 	}	//	processStr
-
-	@Override
-	public boolean isInitOK() {
-		return initOK;
-	}
-
-	@Override
-	public void showWindow() {
-		
-	}
-
-	@Override
-	public void closeWindow() {
-		
-	}
-	
-	public void setInitOK(boolean initOK) {
-		this.initOK = initOK;
-	}
 	
 	public String getTitle() {
 		return title;
@@ -345,5 +299,35 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	public GridTab getGridTab() {
 		return gridTab;
 	}
+	
+	@Override
+	public void deviceEvent(DeviceEvent ev) {
+		if(ev.getEventType() == DeviceEvent.READ_DATA) {
+			try {
+				processStr();
+			} catch(Exception e) {
+				log.severe(e.getMessage());
+			}
+		}
+	}
 
+	/**
+	 * Get Weight
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 20, 2016, 10:35:49 PM
+	 * @return
+	 * @return BigDecimal
+	 */
+	public BigDecimal getWeight() {
+		return weight;
+	}
+	
+	/**
+	 * Get message
+	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 20, 2016, 10:36:15 PM
+	 * @return
+	 * @return String
+	 */
+	public String getMsg() {
+		return message;
+	}
 }

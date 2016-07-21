@@ -31,11 +31,13 @@ import org.compiere.apps.ADialog;
 import org.compiere.apps.AEnv;
 import org.compiere.apps.AppsAction;
 import org.compiere.apps.ConfirmPanel;
+import org.compiere.grid.ICreateFrom;
 import org.compiere.model.GridTab;
 import org.compiere.model.MSysConfig;
 import org.compiere.plaf.CompiereColor;
 import org.compiere.swing.CButton;
 import org.compiere.swing.CDialog;
+import org.compiere.swing.CLabel;
 import org.compiere.swing.CPanel;
 import org.compiere.swing.CTextField;
 import org.compiere.util.CLogger;
@@ -49,7 +51,7 @@ import org.spin.model.MADDevice;
  * @author Yamel Senih
  *
  */
-public abstract class VGetWeightUI extends GetWeight implements ActionListener {
+public abstract class VGetWeightUI extends GetWeight implements ICreateFrom, ActionListener {
 	
 	/**
 	 * *** Constructor de la Clase ***
@@ -90,7 +92,6 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 					return;
 				}
 			}
-			setInitOK(true);
 			AEnv.positionCenterWindow(Env.getWindow(p_WindowNo), dialog);
 		} catch (Exception e) {
 			ADialog.error(p_WindowNo, Env.getWindow(p_WindowNo), "Error", getMessage());
@@ -100,12 +101,16 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 	}
 	
 	/** Window No		*/
-	protected int 		p_WindowNo;
+	protected int 			p_WindowNo;
 	/**	Dialog			*/
-	protected CDialog 	dialog;
+	protected CDialog 		dialog;
 	/**	Logger			*/
-	private CLogger 	log = CLogger.getCLogger(getClass());
-	//	
+	private CLogger 		log = CLogger.getCLogger(getClass());
+	/**	Label Display	*/
+	private CLabel 			lDisplay 	= new CLabel();
+	/**	Display			*/
+	private CTextField 		fDisplay 	= new CTextField();
+	/**	Confirm Panel	*/
 	private ConfirmPanel 	confirmPanel = new ConfirmPanel(true);
 
 	/**
@@ -116,13 +121,11 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 	@Override
 	public boolean dynInit() throws Exception {
 		log.config("dynInit()");
-		
+		//	
 		jbInit();
-		
 		confirmPanel.addActionListener(this);
 		dialog.setTitle(getTitle());
-		
-		
+		//	
 		return true;
 	}
 	
@@ -168,9 +171,7 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 		mainPanel.add(displayPane, BorderLayout.NORTH);
 		mainPanel.add(southPanel, BorderLayout.SOUTH);
 		//	
-		dialog.getContentPane().add(mainPanel, BorderLayout.CENTER);    	
-		//	
-		weight = Env.ZERO;
+		dialog.getContentPane().add(mainPanel, BorderLayout.CENTER);
 	}
 
 	/**
@@ -200,32 +201,25 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		log.info("actionPerformed(ActionEvent e) " + e);
-		if (e.getActionCommand().equals(ConfirmPanel.A_OK))
-		{
+		if (e.getActionCommand().equals(ConfirmPanel.A_OK)) {
 			log.fine("Action Comand OK");
-			try
-			{
-				Trx.run(new TrxRunnable()
-				{
-					public void run(String trxName)
-					{
-						if (save(trxName))
-						{	
+			try {
+				Trx.run(new TrxRunnable() {
+					public void run(String trxName) {
+						if (save(trxName)) {	
 							log.fine("save(" + trxName + ")");
 							processValue(trxName);
 							log.fine("Stop Service After processing the value");
-							stopService();
 							dialog.dispose();
 						} else {
 							log.fine("In Case of Error I stop the connection to the port");
-							stopService();
 							ADialog.error(p_WindowNo, dialog, "Error", getMessage());
 						}
+						//	Stop
+						stopService();
 					}
 				});
-			}
-			catch (Exception ex)
-			{
+			} catch (Exception ex) {
 				log.fine("In Case of Error I stop the connection to the port");
 				stopService();
 				ADialog.error(p_WindowNo, dialog, "Error", ex.getLocalizedMessage());
@@ -251,10 +245,12 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 		}
 	}
 	
+	@Override
 	public void showWindow() {
 		dialog.setVisible(true);
 	}
 	
+	@Override
 	public void closeWindow() {
 		log.fine("Closed Window");
 		stopService();
@@ -269,5 +265,16 @@ public abstract class VGetWeightUI extends GetWeight implements ActionListener {
 	 * @return boolean
 	 */
 	public abstract boolean processValue(String trxName);
-	
+
+
+	@Override
+	public boolean isInitOK() {
+		return true;
+	}
+
+
+	@Override
+	public void refreshDisplay(String value) {
+		fDisplay.setText(value);
+	}
 }

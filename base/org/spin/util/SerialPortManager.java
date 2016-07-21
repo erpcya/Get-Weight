@@ -18,79 +18,47 @@ package org.spin.util;
 
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
+import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.TooManyListenersException;
 
-import org.adempiere.exceptions.AdempiereException;
 import org.compiere.Adempiere;
 import org.compiere.util.CLogger;
 import org.spin.model.MADDevice;
-import org.spin.model.MADDeviceConfig;
 import org.spin.model.X_AD_DeviceConfigUse;
 
 /**
  * @author Yamel Senih
  *
  */
-public class SerialPortManager extends DeviceTypeManagement {
+public class SerialPortManager extends DeviceTypeHandler implements SerialPortEventListener {
 	
 	public SerialPortManager(MADDevice device) {
 		super(device);
 	}
-	
-	public SerialPortManager() {
-		super();
-	}
 
-	/**	Port Identifier						*/
-	private CommPortIdentifier 		PortID;
-	/**	Port List							*/
-	private Enumeration<?> 			portList;
 	/**	Serial Port							*/
 	private SerialPort 				serialPort;
 	/**	Input Stream						*/
 	private InputStream 			i_Stream;
 	/**	Output Stream						*/
 	private OutputStream 			o_Stream;
-	/**	Connection attributes				*/
-	private MADDeviceConfig 		connectionConfig = null;
-	/**	Read Configuration					*/
-	private MADDeviceConfig 		readConfig = null;
-	/**	Keys of Attributes					*/
-	public static final String		KEY_PORT = "Port";
-	public static final String		KEY_SPEED = "Speed";
-	public static final String		KEY_PARITY = "Parity";
-	public static final String		KEY_DATA_BITS = "DataBits";
-	public static final String		KEY_STOP_BITS = "StopBits";
-	public static final String		KEY_FLOW_CONTROL = "FlowControl";
-	public static final String		KEY_STR_LENGTH = "StrLength";
-	public static final String		KEY_START_CHR = "StartChr";
-	public static final String		KEY_END_CHR = "EndChr";
-	public static final String		KEY_START_CUT_POS = "StartCutPos";
-	public static final String		KEY_END_CUT_POS = "EndCutPos";
-	public static final String		KEY_SCREEN_START_CUT_POS = "Screen_StartCutPos";
-	public static final String		KEY_SCREEN_END_CUT_POS = "Screen_EndCutPos";
-	
+	/**	Stream read						*/
+	private StringBuffer 			dataRead;
+	/**	Ascii read						*/
+	private StringBuffer 			asciiRead;
+	/**	Start Character					*/
+	private int 					startChr;
+	/**	End Character					*/
+	private int 					endChr;
+	/**	Length							*/
+	private int 					length;
 	
 	/**	Logger						*/
 	private static CLogger log = CLogger.getCLogger(SerialPortManager.class);
-
-	
-	/**
-	 * Add Port Listener
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 28/03/2013, 03:07:37
-	 * @param env
-	 * @return void
-	 * @throws TooManyListenersException 
-	 */
-	public void addPortListener(SerialPortEventListener env) throws TooManyListenersException{
-		serialPort.addEventListener(env);
-	}
 	
 	/**
 	 * Get Serial Port
@@ -102,180 +70,128 @@ public class SerialPortManager extends DeviceTypeManagement {
 		return serialPort;
 	}
 	
-	/**
-	 * Get Input Stream
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 28/03/2013, 03:26:25
-	 * @return
-	 * @return InputStream
-	 */
-	public InputStream getInput(){
-		return i_Stream;
-	}
-	
-	/**
-	 * Get Output Stream
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 28/03/2013, 03:27:07
-	 * @return
-	 * @return OutputStream
-	 */
-	public OutputStream getOutput(){
-		return o_Stream;
-	}
-	
 	@Override
-	public MADDevice[] getAvailableDevices(MADDevice[] currentDevices) throws Exception {
-		System.setProperty("gnu.io.rxtx.SerialPorts", "/dev/pts/7");
-		ArrayList<MADDevice> availableDevices = new ArrayList<MADDevice>();
-		portList = CommPortIdentifier.getPortIdentifiers();
+	public boolean isAvailable() throws Exception {
+		String port = getConfigValueAsString(X_AD_DeviceConfigUse.CONFIGTYPE_Connection, KEY_PORT);
+		//	Validate
+		if(port == null
+				|| port.length() == 0) {
+			return false;
+		}
+		//	Add support to RXTX
+		System.setProperty("gnu.io.rxtx.SerialPorts", port);
+		Enumeration<?> portList = CommPortIdentifier.getPortIdentifiers();
 		while (portList.hasMoreElements()) {
-			PortID = (CommPortIdentifier) portList.nextElement();
+			CommPortIdentifier PortID = (CommPortIdentifier) portList.nextElement();
 			if(PortID.getPortType() == CommPortIdentifier.PORT_SERIAL) {
 				//	Verify
-				for(MADDevice device : currentDevices) {
-					MADDeviceConfig config = device.getDeviceConfig(X_AD_DeviceConfigUse.CONFIGTYPE_Connection);
-					if(config == null)
-						continue;
-					if(PortID.getName().equals(config.getConfigValueAsString(KEY_PORT))) {
-						log.info("Located " + config.getConfigValueAsString(KEY_PORT));
-						availableDevices.add(device);
-					}
+				if(PortID.getName().equals(port)) {
+					log.info("Located " + port);
+					return true;
 				}
 			}
 		}
-		//	Convert to array
-		return availableDevices.toArray(new MADDevice[availableDevices.size()]);
+		//	Default
+		return false;
 	}
 
 	@Override
-	protected Object connect(MADDeviceConfig config) throws Exception {
-		connectionConfig = config;
+	public Object connect() throws Exception {
+		//	get configuration values
+		String port = getConfigValueAsString(X_AD_DeviceConfigUse.CONFIGTYPE_Connection, KEY_PORT);
+		int speed = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Connection, KEY_SPEED);
+		int dataBits = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Connection, KEY_DATA_BITS);
+		int stopBits = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Connection, KEY_STOP_BITS);
+		int parity = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Connection, KEY_PARITY);
+		startChr = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, KEY_START_CHR);
+		endChr = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, KEY_END_CHR);
+		length = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, KEY_STR_LENGTH);
 		//	Set support
-		System.setProperty("gnu.io.rxtx.SerialPorts", config.getConfigValueAsString(KEY_PORT));
-		PortID = CommPortIdentifier.getPortIdentifier(config.getConfigValueAsString(KEY_PORT));
-		log.info("Opening " + config.getConfigValueAsString(KEY_PORT) + " ...");
+		System.setProperty("gnu.io.rxtx.SerialPorts", port);
+		CommPortIdentifier PortID = CommPortIdentifier.getPortIdentifier(port);
+		log.info("Opening " + port + " ...");
 		serialPort = (SerialPort) PortID.open(Adempiere.NAME + "...", 2000);
 		log.info("Parameterizing Port...");
-		serialPort.setSerialPortParams(config.getConfigValueAsInt(KEY_SPEED),
-				config.getConfigValueAsInt(KEY_DATA_BITS),
-				config.getConfigValueAsInt(KEY_STOP_BITS),
-				config.getConfigValueAsInt(KEY_PARITY));
+		serialPort.setSerialPortParams(speed, dataBits, stopBits, parity);
 		log.info("Port Ready ...");
 		i_Stream = serialPort.getInputStream();
 		o_Stream = serialPort.getOutputStream();
+		serialPort.addEventListener(this);
+		serialPort.notifyOnDataAvailable(true);
 		return serialPort;
 	}
 
 	@Override
-	public void close(MADDeviceConfig config) throws Exception {
-		if(serialPort != null){
+	public void close() throws Exception {
+		if(serialPort != null) {
+			serialPort.removeEventListener();
+			serialPort.close();
 			i_Stream.close();
 			o_Stream.close();
-			serialPort.close();
-			log.info("Closed " + connectionConfig.getConfigValueAsString(KEY_PORT));
+			log.info("Closed");
 		}
 	}
 
 	@Override
-	protected Object read(MADDeviceConfig config, Object[]... value)
-			throws Exception {
-		readConfig = config;
-		return null;
+	public Object read() throws Exception {
+		return dataRead.toString();
 	}
 
 	@Override
-	protected Object write(MADDeviceConfig config, Object[]... value)
+	public Object write(Object... value)
 			throws Exception {
 		return null;
 	}
 
 	@Override
-	protected boolean isCheckOk() {
+	public boolean isCheckOk() {
 		return serialPort != null;
 	}
-	
-	/**
-	 * Get read Configuration
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 18, 2016, 4:36:50 PM
-	 * @return
-	 * @return MADDeviceConfig
-	 */
-	public MADDeviceConfig getReadConfig() {
-		if(readConfig == null)
-			readConfig = getDeviceConfig(X_AD_DeviceConfigUse.CONFIGTYPE_Read, false);
-		//	Validate
-		if(readConfig == null)
-			throw new AdempiereException("@AD_DeviceConfig_ID@ @NotFound@");
-		//	Default Return
-		return readConfig;
+
+	@Override
+	public InputStream getInputStream() {
+		return i_Stream;
 	}
-	
-	/**
-	 * Get Start Character
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 18, 2016, 4:40:39 PM
-	 * @return
-	 * @return int
-	 */
-	public int getStartCharacter() {
-		return getReadConfig().getConfigValueAsInt(KEY_START_CHR);
+
+	@Override
+	public OutputStream getOutputStream() {
+		return o_Stream;
 	}
-	
-	/**
-	 * Get End Character
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 18, 2016, 4:41:19 PM
-	 * @return
-	 * @return int
-	 */
-	public int getEndCharacter() {
-		return getReadConfig().getConfigValueAsInt(KEY_END_CHR);
-	}
-	
-	/**
-	 * Get Stream length
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 18, 2016, 4:45:40 PM
-	 * @return
-	 * @return int
-	 */
-	public int getStrLength() {
-		return getReadConfig().getConfigValueAsInt(KEY_STR_LENGTH);
-	}
-	
-	/**
-	 * Get Start cut position
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 18, 2016, 4:45:50 PM
-	 * @return
-	 * @return int
-	 */
-	public int getStartCutPos() {
-		return getReadConfig().getConfigValueAsInt(KEY_START_CUT_POS);
-	}
-	
-	/**
-	 * Get end cut position
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 18, 2016, 4:46:04 PM
-	 * @return
-	 * @return int
-	 */
-	public int getEndCutPos() {
-		return getReadConfig().getConfigValueAsInt(KEY_END_CUT_POS);
-	}
-	
-	/**
-	 * Get screen start cut position
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 18, 2016, 4:46:08 PM
-	 * @return
-	 * @return int
-	 */
-	public int getScreenStartCutPos() {
-		return getReadConfig().getConfigValueAsInt(KEY_SCREEN_END_CUT_POS);
-	}
-	
-	/**
-	 * Get Screen End cut position
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 18, 2016, 4:46:18 PM
-	 * @return
-	 * @return int
-	 */
-	public int getScreenEndCutPos() {
-		return getReadConfig().getConfigValueAsInt(KEY_SCREEN_END_CUT_POS);
+
+	@Override
+	public void serialEvent(SerialPortEvent ev) {
+		if(ev.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
+			try {
+				//	Read Port
+				log.info("SerialPortEvent.DATA_AVAILABLE");
+				boolean read = false;
+				//	Iterate
+				while(i_Stream.available() > 0) {
+					int bit = i_Stream.read();
+					if(bit == startChr
+							&& read == false){
+						read = true;
+						dataRead = new StringBuffer();
+						asciiRead = new StringBuffer();
+					}
+					//	Read
+					if(read) {
+						dataRead.append((char)bit);
+						asciiRead.append("[" + (int)bit + "]");
+					}
+					//	Already read
+					if(read 
+							&& (bit == endChr
+							|| dataRead.length() == length)){
+						read = false;
+						log.fine("String read [" + dataRead + "]");
+						log.fine("Ascii read [" + asciiRead + "]");
+						fireDeviceEvent(DeviceEvent.READ_DATA);
+					} 
+				}
+			} catch (Exception e) {
+				log.warning("Error in processStr(): " + e.getLocalizedMessage());
+			}
+		}
 	}
 }

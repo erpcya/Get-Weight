@@ -18,8 +18,6 @@ package test;
 
 import org.compiere.apps.ADialog;
 import org.compiere.model.GridTab;
-import org.compiere.model.MOrderLine;
-import org.compiere.util.Env;
 import org.spin.grid.VGetWeightUI;
 
 /**
@@ -39,11 +37,7 @@ public class VTestGetWeightUI extends VGetWeightUI {
 
 	@Override
 	public boolean processValue(String trxName) {
-		int m_C_OrderLine_ID = getGridTab().getRecord_ID();
-		MOrderLine oLine = new MOrderLine(Env.getCtx(), m_C_OrderLine_ID, trxName);
-		oLine.setQty(weight);
-		oLine.save();
-		ADialog.info(p_WindowNo, dialog, "Weight", weight.toString());
+		ADialog.info(p_WindowNo, dialog, "Weight", getWeight().toString());
 		return false;
-	}	
+	}
 }
