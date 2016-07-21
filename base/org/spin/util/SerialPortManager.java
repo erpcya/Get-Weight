@@ -99,13 +99,13 @@ public class SerialPortManager extends DeviceTypeHandler implements SerialPortEv
 	public Object connect() throws Exception {
 		//	get configuration values
 		String port = getConfigValueAsString(X_AD_DeviceConfigUse.CONFIGTYPE_Connection, KEY_PORT);
-		int speed = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Connection, KEY_SPEED);
-		int dataBits = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Connection, KEY_DATA_BITS);
-		int stopBits = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Connection, KEY_STOP_BITS);
-		int parity = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Connection, KEY_PARITY);
-		startChr = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, KEY_START_CHR);
-		endChr = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, KEY_END_CHR);
-		length = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, KEY_STR_LENGTH);
+		int speed = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Connection, KEY_RS232SPEED);
+		int dataBits = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Connection, KEY_RS232DATABITS);
+		int stopBits = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Connection, KEY_RS232STOPBITS);
+		int parity = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Connection, KEY_RS232PARITY);
+		startChr = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, KEY_STARTCHR);
+		endChr = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, KEY_ENDCHR);
+		length = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, KEY_STRLENGTH);
 		//	Set support
 		System.setProperty("gnu.io.rxtx.SerialPorts", port);
 		CommPortIdentifier PortID = CommPortIdentifier.getPortIdentifier(port);

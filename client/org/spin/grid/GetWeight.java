@@ -260,10 +260,10 @@ public abstract class GetWeight implements DeviceEventListener {
 	protected boolean processStr() throws Exception {
 		log.fine("processStr()");
 		String value = (String) handler.read();
-		int startCutPos = handler.getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_START_CUT_POS);
-		int endCutPos = handler.getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_END_CUT_POS);
-		int screenEndCutPos = handler.getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_SCREEN_START_CUT_POS);
-		int screenStartCutPos = handler.getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_SCREEN_END_CUT_POS);
+		int startCutPos = handler.getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_STARTCUTPOS);
+		int endCutPos = handler.getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_ENDCUTPOS);
+		int screenEndCutPos = handler.getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_SCREENSTARTCUTPOS);
+		int screenStartCutPos = handler.getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_SCREENENDCUTPOS);
 		if(value != null) {
 			log.fine("Lenght String " + value.length());
 			String strWeight = value.substring(startCutPos, endCutPos).trim();
