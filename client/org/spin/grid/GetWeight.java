@@ -28,12 +28,11 @@ import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.spin.model.MADDevice;
-import org.spin.model.X_AD_DeviceConfigUse;
 import org.spin.model.X_AD_DeviceType;
 import org.spin.util.DeviceEvent;
 import org.spin.util.DeviceEventListener;
 import org.spin.util.DeviceTypeHandler;
-import org.spin.util.IDeviceTypeHandler;
+import org.spin.util.WeightScaleHandler;
 
 /**
  * @author Yamel Senih
@@ -62,7 +61,7 @@ public abstract class GetWeight implements DeviceEventListener {
 	private boolean 					started 				= false;
 	private MADDevice[] 				arrayWS					= null;
 	private MADDevice 					currentDevice 			= null;
-	private DeviceTypeHandler 			handler					= null;
+	private WeightScaleHandler 			handler					= null;
 	
 	/**	Weight Result				*/
 	private BigDecimal 		weight		= Env.ZERO;
@@ -87,26 +86,6 @@ public abstract class GetWeight implements DeviceEventListener {
 	public abstract void refreshDisplay(String value);
 	
 	/**
-	 * Save
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 19, 2016, 11:54:10 PM
-	 * @param trxName
-	 * @return
-	 * @return boolean
-	 */
-	public boolean save(String trxName) {
-		log.fine("save(String)");
-		boolean isOk = false;
-		try {
-			processStr();
-			isOk = true;
-		} catch(Exception e) {
-			log.severe(e.getMessage());
-		}
-		//	Default return
-		return isOk;
-	}
-	
-	/**
 	 * Open the port and set Listeners
 	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 28/03/2013, 03:50:44
 	 * @return boolean
@@ -124,7 +103,7 @@ public abstract class GetWeight implements DeviceEventListener {
 		}
 		//	
 		try {
-			handler = currentDevice.getDeviceHandler();
+			handler = (WeightScaleHandler) currentDevice.getDeviceHandler();
 			handler.connect();
 			started = true;
 		} catch (NoSuchPortException e) {
@@ -250,44 +229,6 @@ public abstract class GetWeight implements DeviceEventListener {
 		return !started;
 	}	//	stopService
 	
-	/**
-	 * Process Str and return the getter value
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 28/03/2013, 04:52:51
-	 * @return
-	 * @return String
-	 * @throws Exception 
-	 */
-	protected boolean processStr() throws Exception {
-		log.fine("processStr()");
-		String value = (String) handler.read();
-		int startCutPos = handler.getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_STARTCUTPOS);
-		int endCutPos = handler.getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_ENDCUTPOS);
-		int screenEndCutPos = handler.getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_SCREENSTARTCUTPOS);
-		int screenStartCutPos = handler.getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_SCREENENDCUTPOS);
-		if(value != null) {
-			log.fine("Lenght String " + value.length());
-			String strWeight = value.substring(startCutPos, endCutPos).trim();
-			String strWeight_V = value.substring(screenEndCutPos, screenStartCutPos);
-
-			//	Log
-			log.fine("strWeight=" + strWeight);
-			log.fine("strWeight_V=" + strWeight_V);
-			
-			if(strWeight != null
-					&& strWeight.length() != 0) {
-				weight = new BigDecimal(strWeight);
-			} else {
-				weight = Env.ZERO;
-			}
-			refreshDisplay(strWeight_V);
-			return true;
-		} else {
-			message = Msg.translate(Env.getCtx(), "IncompleteStr");
-			log.fine("message=" + message);
-			return false;
-		}
-	}	//	processStr
-	
 	public String getTitle() {
 		return title;
 	}
@@ -304,7 +245,8 @@ public abstract class GetWeight implements DeviceEventListener {
 	public void deviceEvent(DeviceEvent ev) {
 		if(ev.getEventType() == DeviceEvent.READ_DATA) {
 			try {
-				processStr();
+				weight = handler.getWeight();
+				refreshDisplay(handler.getDisplayWeight());
 			} catch(Exception e) {
 				log.severe(e.getMessage());
 			}

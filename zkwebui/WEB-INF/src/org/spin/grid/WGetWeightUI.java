@@ -252,27 +252,17 @@ public class WGetWeightUI extends GetWeight implements EventListener {
 	public void onEvent(Event e) throws Exception {
 		log.info("actionPerformed(ActionEvent e) " + e);
 
-		if (e.getTarget().getId().equals(ConfirmPanel.A_OK))
-		{
+		if (e.getTarget().getId().equals(ConfirmPanel.A_OK)) {
 			log.fine("Action Comand OK");
-			try
-			{
-				Trx.run(new TrxRunnable()
-				{
-					public void run(String trxName)
-					{
-						if (save(trxName))
-						{	
-							log.fine("save(" + trxName + ")");
-							processValue(trxName);
-							window.dispose();
-						} else 
-							FDialog.error(p_WindowNo, window, "Error", getMessage());
+			try {
+				Trx.run(new TrxRunnable() {
+					public void run(String trxName) {
+						processValue(trxName);
+						//	Stop
+						stopService();
 					}
 				});
-			}
-			catch (Exception ex)
-			{
+			} catch (Exception ex) {
 				FDialog.error(p_WindowNo, window, "Error", ex.getLocalizedMessage());
 			}
 		}

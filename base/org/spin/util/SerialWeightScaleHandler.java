@@ -17,16 +17,23 @@
 package org.spin.util;
 
 import gnu.io.CommPortIdentifier;
+import gnu.io.NoSuchPortException;
+import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
+import gnu.io.UnsupportedCommOperationException;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.Enumeration;
+import java.util.TooManyListenersException;
 
 import org.compiere.Adempiere;
 import org.compiere.util.CLogger;
+import org.compiere.util.Env;
 import org.spin.model.MADDevice;
 import org.spin.model.X_AD_DeviceConfigUse;
 
@@ -34,9 +41,9 @@ import org.spin.model.X_AD_DeviceConfigUse;
  * @author Yamel Senih
  *
  */
-public class SerialPortManager extends DeviceTypeHandler implements SerialPortEventListener {
+public class SerialWeightScaleHandler extends WeightScaleHandler implements SerialPortEventListener {
 	
-	public SerialPortManager(MADDevice device) {
+	public SerialWeightScaleHandler(MADDevice device) {
 		super(device);
 	}
 
@@ -50,6 +57,10 @@ public class SerialPortManager extends DeviceTypeHandler implements SerialPortEv
 	private StringBuffer 			dataRead;
 	/**	Ascii read						*/
 	private StringBuffer 			asciiRead;
+	/**	Weight							*/
+	private BigDecimal 				weight;
+	/**	Display Weight					*/
+	private String 					displayWeight;
 	/**	Start Character					*/
 	private int 					startChr;
 	/**	End Character					*/
@@ -58,7 +69,7 @@ public class SerialPortManager extends DeviceTypeHandler implements SerialPortEv
 	private int 					length;
 	
 	/**	Logger						*/
-	private static CLogger log = CLogger.getCLogger(SerialPortManager.class);
+	private static CLogger log = CLogger.getCLogger(SerialWeightScaleHandler.class);
 	
 	/**
 	 * Get Serial Port
@@ -108,16 +119,31 @@ public class SerialPortManager extends DeviceTypeHandler implements SerialPortEv
 		length = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, KEY_STRLENGTH);
 		//	Set support
 		System.setProperty("gnu.io.rxtx.SerialPorts", port);
-		CommPortIdentifier PortID = CommPortIdentifier.getPortIdentifier(port);
-		log.info("Opening " + port + " ...");
-		serialPort = (SerialPort) PortID.open(Adempiere.NAME + "...", 2000);
-		log.info("Parameterizing Port...");
-		serialPort.setSerialPortParams(speed, dataBits, stopBits, parity);
-		log.info("Port Ready ...");
-		i_Stream = serialPort.getInputStream();
-		o_Stream = serialPort.getOutputStream();
-		serialPort.addEventListener(this);
-		serialPort.notifyOnDataAvailable(true);
+		try {
+			CommPortIdentifier PortID = CommPortIdentifier.getPortIdentifier(port);
+			log.info("Opening " + port + " ...");
+			serialPort = (SerialPort) PortID.open(Adempiere.NAME + "...", 2000);
+			log.info("Parameterizing Port...");
+			serialPort.setSerialPortParams(speed, dataBits, stopBits, parity);
+			log.info("Port Ready ...");
+			i_Stream = serialPort.getInputStream();
+			o_Stream = serialPort.getOutputStream();
+			serialPort.addEventListener(this);
+			serialPort.notifyOnDataAvailable(true);
+		} catch (NoSuchPortException e) {
+			throw e;
+		} catch (PortInUseException e) {
+			throw e;
+		} catch (UnsupportedCommOperationException e) {
+			close();
+			throw e;
+		} catch (IOException e) {
+			close();
+			throw e;
+		} catch (TooManyListenersException e) {
+			close();
+			throw e;
+		}
 		return serialPort;
 	}
 
@@ -126,8 +152,14 @@ public class SerialPortManager extends DeviceTypeHandler implements SerialPortEv
 		if(serialPort != null) {
 			serialPort.removeEventListener();
 			serialPort.close();
-			i_Stream.close();
-			o_Stream.close();
+			//	Valid null input stream
+			if(i_Stream != null) {
+				i_Stream.close();
+			}
+			//	Valid null ouput stream
+			if(o_Stream != null) {
+				o_Stream.close();
+			}
 			log.info("Closed");
 		}
 	}
@@ -184,6 +216,7 @@ public class SerialPortManager extends DeviceTypeHandler implements SerialPortEv
 							&& (bit == endChr
 							|| dataRead.length() == length)){
 						read = false;
+						processStr();
 						log.fine("String read [" + dataRead + "]");
 						log.fine("Ascii read [" + asciiRead + "]");
 						fireDeviceEvent(DeviceEvent.READ_DATA);
@@ -194,4 +227,55 @@ public class SerialPortManager extends DeviceTypeHandler implements SerialPortEv
 			}
 		}
 	}
+
+	@Override
+	public BigDecimal getWeight() {
+		return weight;
+	}
+
+	@Override
+	public String getDisplayWeight() {
+		return displayWeight;
+	}
+	
+	/**
+	 * Process Str and return the getter value
+	 * @throws Exception
+	 * @return void
+	 */
+	private void processStr() throws Exception {
+		log.fine("processStr()");
+		int startCutPos = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_STARTCUTPOS);
+		int endCutPos = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_ENDCUTPOS);
+		int screenEndCutPos = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_SCREENSTARTCUTPOS);
+		int screenStartCutPos = getConfigValueAsInt(X_AD_DeviceConfigUse.CONFIGTYPE_Read, IDeviceTypeHandler.KEY_SCREENENDCUTPOS);
+		String strWeight = null;
+		if(dataRead != null) {
+			log.fine("Lenght String " + dataRead.length());
+			//	Validate length for weight
+			if(dataRead.length() > startCutPos
+					&& dataRead.length() >= endCutPos) {
+				strWeight = dataRead.substring(startCutPos, endCutPos).trim();
+			}
+			//	Validate length for display weight
+			if(dataRead.length() > screenEndCutPos
+					&& dataRead.length() >= screenStartCutPos) {
+				displayWeight = dataRead.substring(screenEndCutPos, screenStartCutPos);
+			}
+			//	Log
+			log.fine("strWeight=" + strWeight);
+			log.fine("strWeight_V=" + displayWeight);
+			
+			if(strWeight != null
+					&& strWeight.length() != 0) {
+				weight = new BigDecimal(strWeight);
+			} else {
+				weight = Env.ZERO;
+				displayWeight = null;
+			}
+		} else {
+			weight = Env.ZERO;
+			displayWeight = null;
+		}
+	}	//	processStr
 }
