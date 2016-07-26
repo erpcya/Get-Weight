@@ -176,11 +176,6 @@ public class SerialWeightScaleHandler extends WeightScaleHandler implements Seri
 	}
 
 	@Override
-	public boolean isCheckOk() {
-		return serialPort != null;
-	}
-
-	@Override
 	public InputStream getInputStream() {
 		return i_Stream;
 	}

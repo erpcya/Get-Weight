@@ -153,7 +153,7 @@ public abstract class GetWeight implements DeviceEventListener {
 	 */
 	protected void loadWeightScale() throws Exception {
 		log.fine("loadSerialPortConfig()");
-		arrayWS = DeviceTypeHandler.getAvailableDevices(Env.getCtx(), X_AD_DeviceType.DEVICETYPE_WeightScale);
+		arrayWS = DeviceTypeHandler.getDevices(Env.getCtx(), X_AD_DeviceType.DEVICETYPE_WeightScale, true);
 		//	Set Current Serial Port Configuration
 		setDevice(0);
 	}
