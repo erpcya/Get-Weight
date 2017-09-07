@@ -286,8 +286,8 @@ public abstract class GetWeight implements ICreateFrom, SerialPortEventListener 
 	protected boolean processStr() {
 		log.fine("processStr()");
 		log.fine("Ascii Readed = {" + m_AsciiReaded.toString() + "}");
+		log.fine("Lenght String " + m_StrReaded.length());
 		if(m_StrReaded.length() == currentScreenConfig.getStrLength()){
-			log.fine("Lenght String " + m_StrReaded.length());
 			String strWeight = m_StrReaded.substring(currentScreenConfig.getPosStartCut(), currentScreenConfig.getPosEndCut()).trim();
 			String strWeight_V = m_StrReaded.substring(currentScreenConfig.getPosStart_SCut(), currentScreenConfig.getPosEnd_SCut());
 
