@@ -13,10 +13,7 @@
   <property name="client" value="${basedir}/client"/>
   <property name="base" value="${basedir}/base"/>
   <property name="test" value="${basedir}/test"/>
-  <property name="zksrc" value="${basedir}/zkwebui/WEB-INF/src"/>
-  <property name="zkclasses" value="${dist}/zkclass/WEB-INF/classes"/>
   <property name="class" value="${dist}/class"/>
-  <property name="zkjar" value="${dist}/zkclass"/>
   
   <!-- @author Carlos Parada Set Path --> 
   <path id="compile.classpath">
@@ -46,23 +43,11 @@
       <include name="*.jar"/>
     </fileset>
 
-    <fileset dir="${adempiere.trunk}/zkwebui/dist">
-      <include name="*.war"/>
-    </fileset>
-    
   </path>
 	
   	
 	
-  <!-- @author Carlos Parada Compile ZK Directory --> 
-  <target name="zkcompile" depends="init_zk"
-        description="compile the source " >
-    <!-- Compile the zk java code from ${src} into ${zkclasses} -->
-    <javac srcdir="${zksrc}" destdir="${zkclasses}" includeantruntime="false" >
-      <classpath refid="compilezk.classpath"/>
-    </javac>
-    <jar jarfile="${project.trunk}/zkpackages/${project.name}/lib/${project.name}.jar" basedir="${zkjar}"/>
-  </target>
+ 
 
   <!-- @author Carlos Parada Compile Class Directory --> 	
   <target name="compile" depends="init_class"
@@ -77,13 +62,13 @@
   
 	
   <!-- @author Carlos Parada Compile All Class Directory --> 
-  <target name="compileall" depends="compile,zkcompile" >
+  <target name="compileall" depends="compile" >
     <echo message="Compile All Project"/>
   	<echo message="Compile All Project"/>
   </target>
 	
   <!-- @author Carlos Parada Remove All Class Directory --> 
-  <target name="clean" depends="clean_class,clean_zk"
+  <target name="clean" depends="clean_class"
         description="clean up" >
   	<echo message="Remove Classes Directory"/>
   </target>
@@ -94,11 +79,6 @@
   	<delete dir="${class}"/>
   </target>
 	
-  <!-- @author Carlos Parada Remove Class ZK Directory -->
-  <target name="clean_zk" description="clean up class" >
-	<echo message="Remove Class ZK Directory"/>
-  	<delete dir="${zkjar}"/>
-  </target>
 	
   <!-- @author Carlos Parada Create Class Directory -->
   <target name="init_class" depends="clean_class" description="clean up class" >
@@ -108,18 +88,10 @@
 	<mkdir dir="${class}"/>
   </target>
 	
-  <!-- @author Carlos Parada Create ZK Directory -->
-  <target name="init_zk" depends="clean_zk" description="clean up class" >
-	<echo message="Create Class ZK Directory"/>
-  	<!-- Create the classes directory structure used by compile -->
-	<mkdir dir="${dist}"/>
-	<mkdir dir="${zkjar}"/>
-  	<mkdir dir="${zkjar}/WEB-INF"/>
-  	<mkdir dir="${zkclasses}"/>
-  </target>	
+
   
   <!-- @author Carlos Parada Create Class And ZK Directory -->
-  <target name="init" depends="clean,init_class,init_zk">
+  <target name="init" depends="clean,init_class">
 	<echo message="Initialize Folders "/>
   </target>
 	
