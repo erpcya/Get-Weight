@@ -11,8 +11,8 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=Get-Weight/client"/>
-        <javaElement handleIdentifier="=Get-Weight/test"/>
         <javaElement handleIdentifier="=Get-Weight/base"/>
+        <javaElement handleIdentifier="=Get-Weight/test"/>
+        <javaElement handleIdentifier="=Get-Weight/client"/>
     </selectedElements>
 </jardesc>
