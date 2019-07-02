@@ -5,8 +5,8 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="zkwebui/WEB-INF/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/adempiere_380"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/DeviceManagement"/>
 	<classpathentry kind="lib" path="lib/RXTXcomm.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/adempiereFork"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
