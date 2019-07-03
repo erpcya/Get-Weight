@@ -16,7 +16,7 @@
         <Data AD_Column_ID="4597" Column="AD_Client_ID">0</Data>
         <Data AD_Column_ID="4596" Column="AD_Form_ID">53083</Data>
         <Data AD_Column_ID="4598" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="7708" Column="EntityType">ECA02</Data>
+        <Data AD_Column_ID="7708" Column="EntityType">ECA06</Data>
         <Data AD_Column_ID="4603" Column="UpdatedBy">100</Data>
         <Data AD_Column_ID="4601" Column="CreatedBy">100</Data>
         <Data AD_Column_ID="84325" Column="UUID">9a0e84d4-9d11-11e9-8d3d-0242ac110002</Data>
@@ -58,7 +58,7 @@
         <Data AD_Column_ID="228" Column="AD_Menu_ID">54480</Data>
         <Data AD_Column_ID="400" Column="AD_Org_ID">0</Data>
         <Data AD_Column_ID="6297" Column="AD_Workbench_ID" isNewNull="true"/>
-        <Data AD_Column_ID="7721" Column="EntityType">ECA02</Data>
+        <Data AD_Column_ID="7721" Column="EntityType">ECA06</Data>
         <Data AD_Column_ID="234" Column="AD_Workflow_ID" isNewNull="true"/>
         <Data AD_Column_ID="233" Column="AD_Window_ID" isNewNull="true"/>
         <Data AD_Column_ID="600" Column="CreatedBy">100</Data>
@@ -122,7 +122,7 @@
         <Data AD_Column_ID="11834" Column="AD_Workflow_ID" isNewNull="true"/>
         <Data AD_Column_ID="2813" Column="ProcedureName" isNewNull="true"/>
         <Data AD_Column_ID="63488" Column="AD_Browse_ID" isNewNull="true"/>
-        <Data AD_Column_ID="6485" Column="EntityType">ECA02</Data>
+        <Data AD_Column_ID="6485" Column="EntityType">ECA06</Data>
         <Data AD_Column_ID="50182" Column="JasperReport" isNewNull="true"/>
         <Data AD_Column_ID="2805" Column="Created">2019-07-02 21:00:54.569</Data>
         <Data AD_Column_ID="2807" Column="Updated">2019-07-02 21:00:54.569</Data>

@@ -65,6 +65,7 @@ public class VGetWeight extends GetWeight implements FormPanel, ActionListener {
 		frame.setTitle(Msg.translate(Env.getCtx(), "GetWeightFromScale"));
 		this.frame = frame;
 		try {
+			setFromPO(frame.getProcessInfo());
 			loadWeightScale();
 			if (!dynInit()) {
 				return;
@@ -203,7 +204,7 @@ public class VGetWeight extends GetWeight implements FormPanel, ActionListener {
 			try {
 				Trx.run(new TrxRunnable() {
 					public void run(String transactionName) {
-						processValue(transactionName);
+						processValue();
 						//	Stop
 						stopService();
 					}

@@ -25,6 +25,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.TooManyListenersException;
 
+import org.compiere.model.MTable;
+import org.compiere.model.PO;
+import org.compiere.process.ProcessInfo;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
@@ -55,11 +58,25 @@ public abstract class GetWeight implements DeviceEventListener {
 	private List<MADDevice> weightScaleList = null;
 	private MADDevice currentDevice = null;
 	private WeightScaleHandler handler = null;
-	
+	private PO poFrom = null;	
 	/**	Weight Result				*/
 	private BigDecimal weight = Env.ZERO;
 	/**	Message						*/
 	private StringBuffer message = new StringBuffer();
+	private final String COLUMNNAME_WeightRegistered = "WeightRegistered";
+	
+	/**
+	 * Set from PO
+	 * @param processInfo
+	 */
+	public void setFromPO(ProcessInfo processInfo) {
+		if(processInfo != null
+				&& processInfo.getTable_ID() > 0
+				&& processInfo.getRecord_ID() > 0) {
+			poFrom = MTable.get(Env.getCtx(), processInfo.getTable_ID())
+				.getPO(processInfo.getRecord_ID(), null);
+		}
+	}
 	
 	/**
 	 * Init
@@ -248,10 +265,12 @@ public abstract class GetWeight implements DeviceEventListener {
 	
 	/**
 	 * Process value from display
-	 * @param transactionName
 	 * @return void
 	 */
-	protected void processValue(String transactionName) {
-		
+	protected void processValue() {
+		if(poFrom != null) {
+			poFrom.set_ValueOfColumn(COLUMNNAME_WeightRegistered, getWeight());
+			poFrom.saveEx();
+		}
 	}
 }
