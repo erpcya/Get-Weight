@@ -11,9 +11,9 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                            *
  * For the text or an alternative of this public license, you may reach us           *
  * Copyright (C) 2012-2013 E.R.P. Consultores y Asociados, S.A. All Rights Reserved. *
- * Contributor(s): Yamel Senih www.erpconsultoresyasociados.com                      *
+ * Contributor(s): Yamel Senih www.erpya.com                                         *
  *************************************************************************************/
-package org.spin.grid;
+package org.spin.app.form;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -23,20 +23,20 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 import javax.swing.BorderFactory;
 
 import org.compiere.apps.ADialog;
-import org.compiere.apps.AEnv;
 import org.compiere.apps.AppsAction;
 import org.compiere.apps.ConfirmPanel;
-import org.compiere.grid.ICreateFrom;
-import org.compiere.model.GridTab;
+import org.compiere.apps.form.FormFrame;
+import org.compiere.apps.form.FormPanel;
 import org.compiere.model.MSysConfig;
 import org.compiere.plaf.CompiereColor;
 import org.compiere.swing.CButton;
-import org.compiere.swing.CDialog;
 import org.compiere.swing.CLabel;
 import org.compiere.swing.CPanel;
 import org.compiere.swing.CTextField;
@@ -45,73 +45,66 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Trx;
 import org.compiere.util.TrxRunnable;
+import org.compiere.util.Util;
 import org.spin.model.MADDevice;
 
 /**
- * @author Yamel Senih
- *
+ * Get Weight dialog
+ * @author Yamel Senih, ysenih@erpya.com, ERPCyA http://www.erpya.com
  */
-public abstract class VGetWeightUI extends GetWeight implements ICreateFrom, ActionListener {
+public class VGetWeight extends GetWeight implements FormPanel, ActionListener {
+	
 	
 	/**
-	 * *** Constructor de la Clase ***
-	 * @author Yamel Senih 25/03/2013, 19:08:33
-	 * @param gridTab
+	 *	Initialize Panel
+	 *  @param windowNo window
+	 *  @param frame frame
 	 */
-	public VGetWeightUI(GridTab gridTab) {
-		super(gridTab);
-		log.fine("VGetWeightUI()");
-		log.info(getGridTab().toString());
-		
-		setTitle(Msg.translate(Env.getCtx(), "GetWeightFromScale") + " .. ");
-		
-		p_WindowNo = getGridTab().getWindowNo();
-		
-		dialog = new CDialog(Env.getWindow(p_WindowNo), true){
-			
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -4983526002441762410L;
-
-			public void dispose(){
-				super.dispose();
-			}
-		};
-		
+	public void init (int windowNo, FormFrame frame) {
+		this.windowNo = windowNo;
+		frame.setTitle(Msg.translate(Env.getCtx(), "GetWeightFromScale"));
+		this.frame = frame;
 		try {
 			loadWeightScale();
-			if (!dynInit())
+			if (!dynInit()) {
 				return;
-			
+			}
+			//	
 			boolean sys = MSysConfig.getBooleanValue("OPEN_PORT_AUTOMATIC_IN_GETWEIGHT", true, 
 					Env.getAD_Client_ID(Env.getCtx()));
 			if(sys) {
-				if(!startService()) {
-					ADialog.error(p_WindowNo, Env.getWindow(p_WindowNo), "Error", getMessage());
-					return;
-				}
+				startService();
 			}
-			AEnv.positionCenterWindow(Env.getWindow(p_WindowNo), dialog);
 		} catch (Exception e) {
-			ADialog.error(p_WindowNo, Env.getWindow(p_WindowNo), "Error", getMessage());
+			if(Util.isEmpty(getMessage())) {
+				addMessage(e.getMessage());
+			}
 			log.log(Level.SEVERE, getMessage());
+		} finally {
+			String message = getMessage();
+			if(!Util.isEmpty(message)) {
+				String translatedMessage  = getTranslatedMessage();
+				if(!Util.isEmpty(translatedMessage)) {
+					message = translatedMessage;
+				}
+				//	
+				ADialog.warn(windowNo, frame.getContainer(), "Error", message);
+			}
 		}
-		
-	}
+	}	//	init
 	
 	/** Window No		*/
-	protected int 			p_WindowNo;
-	/**	Dialog			*/
-	protected CDialog 		dialog;
+	protected int 			windowNo;
 	/**	Logger			*/
 	private CLogger 		log = CLogger.getCLogger(getClass());
 	/**	Label Display	*/
-	private CLabel 			lDisplay 	= new CLabel();
+	private CLabel 			displayLabel 	= new CLabel();
 	/**	Display			*/
-	private CTextField 		fDisplay 	= new CTextField();
+	private CTextField 		displayField 	= new CTextField();
 	/**	Confirm Panel	*/
 	private ConfirmPanel 	confirmPanel = new ConfirmPanel(true);
+	/**	Main panel		*/
+	private FormFrame 		frame = null;
 
 	/**
 	 *  Dynamic Init
@@ -124,15 +117,21 @@ public abstract class VGetWeightUI extends GetWeight implements ICreateFrom, Act
 		//	
 		jbInit();
 		confirmPanel.addActionListener(this);
-		dialog.setTitle(getTitle());
 		//	
 		return true;
 	}
 	
+	/**
+	 * Get Message translated
+	 * @return
+	 * @return String
+	 */
+	private String getTranslatedMessage() {
+		return Msg.parseTranslation(Env.getCtx(), getMessage());
+	}
 	
 	/**
 	 * Create UI Panel
-	 * @author Yamel Senih 25/03/2013, 19:11:08
 	 * @throws Exception
 	 * @return void
 	 */
@@ -145,16 +144,18 @@ public abstract class VGetWeightUI extends GetWeight implements ICreateFrom, Act
 		GridBagLayout displayLayout = new GridBagLayout();
 		displayPane.setLayout(displayLayout);
 		//	
-		lDisplay.setText(Msg.translate(Env.getCtx(), "Weight"));
-		lDisplay.setFont(new Font("Tahoma", Font.PLAIN, 42));
-		fDisplay.setReadWrite(false);
-		fDisplay.setFont(new Font("Tahoma", Font.PLAIN, 42));
-		fDisplay.setHorizontalAlignment(CTextField.RIGHT);
-		fDisplay.setText("- - - - - - - - - - -  ");
+		displayLabel.setText(Msg.translate(Env.getCtx(), "Weight"));
+		displayLabel.setFont(new Font("Tahoma", Font.PLAIN, 42));
+		displayField.setReadWrite(false);
+		displayField.setFont(new Font("Tahoma", Font.PLAIN, 42));
+		displayField.setHorizontalAlignment(CTextField.RIGHT);
+		String defaulText = "- - - - - - - - - - -";
+		
+		displayField.setText(defaulText);
 		//	
-		displayPane.add(lDisplay,    new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0
+		displayPane.add(displayLabel,    new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0
 			,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 12, 5, 5), 0, 0));
-		displayPane.add(fDisplay,    new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0
+		displayPane.add(displayField,    new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0
 			,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 5, 12), 0, 0));
 		
 		//	Add Pane
@@ -163,15 +164,14 @@ public abstract class VGetWeightUI extends GetWeight implements ICreateFrom, Act
     	southPanel.setLayout(southLayout);
     	southPanel.add(confirmPanel, BorderLayout.CENTER);
     	//	
-		CPanel mainPanel = new CPanel();
 		BorderLayout manLayout = new BorderLayout();
+		CPanel mainPanel = new CPanel();
 		mainPanel.setLayout(manLayout);
 		mainPanel.setBorder(BorderFactory.createRaisedBevelBorder());
 		CompiereColor.setBackground(mainPanel);
 		mainPanel.add(displayPane, BorderLayout.NORTH);
 		mainPanel.add(southPanel, BorderLayout.SOUTH);
-		//	
-		dialog.getContentPane().add(mainPanel, BorderLayout.CENTER);
+		frame.getContainer().add(mainPanel, BorderLayout.CENTER);
 	}
 
 	/**
@@ -182,20 +182,17 @@ public abstract class VGetWeightUI extends GetWeight implements ICreateFrom, Act
 	 */
 	private void loadButtons() throws Exception{
 		log.info("loadButtons()");
-		MADDevice[] arrayWS = getArrayWeightScale();
-		if(arrayWS == null
-				|| arrayWS.length == 0)
-			throw new Exception(Msg.translate(Env.getCtx(), "@WeightScaleNotConfigForUser@"));
-		//	
-		for(int i = 0; i < arrayWS.length; i++){
-			MADDevice weightScale = arrayWS[i];
-			AppsAction aa = new AppsAction(String.valueOf(i), null, weightScale.getName());
-			aa.setDelegate(this);
-			CButton b = (CButton)aa.getButton(); 
-			confirmPanel.addComponent(b);
+		List<MADDevice> weightScaleList = getWeightScaleList();
+//		throw new Exception(Msg.translate(Env.getCtx(), "@WeightScaleNotConfigForUser@"));
+		//
+		AtomicInteger actionCounter = new AtomicInteger(0);
+		weightScaleList.stream().forEach(weightScale -> {
+			AppsAction action = new AppsAction(String.valueOf(actionCounter.getAndIncrement()), null, weightScale.getName());
+			action.setDelegate(this);
+			CButton button = (CButton) action.getButton(); 
+			confirmPanel.addComponent(button);
 			log.fine("MFTAWeightScale " + weightScale.toString());
-		}
-		
+		});
 	}
 
 	@Override
@@ -205,23 +202,20 @@ public abstract class VGetWeightUI extends GetWeight implements ICreateFrom, Act
 			log.fine("Action Comand OK");
 			try {
 				Trx.run(new TrxRunnable() {
-					public void run(String trxName) {
-						processValue(trxName);
+					public void run(String transactionName) {
+						processValue(transactionName);
 						//	Stop
 						stopService();
 					}
 				});
 			} catch (Exception ex) {
-				log.fine("In Case of Error I stop the connection to the port");
-				stopService();
-				ADialog.error(p_WindowNo, dialog, "Error", ex.getLocalizedMessage());
+				dispose();
 			}
 		}
 		//  Cancel
 		else if (e.getActionCommand().equals(ConfirmPanel.A_CANCEL)) {
 			log.fine("Action Comand CANCEL");
-			stopService();
-			dialog.dispose();
+			dispose();
 		}
 		//	Serial Port Configuration
 		else {
@@ -231,40 +225,21 @@ public abstract class VGetWeightUI extends GetWeight implements ICreateFrom, Act
 			stopService();
 			boolean ok = startService();
 			Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-			if(!ok)
-				ADialog.error(p_WindowNo, dialog, "Error", getMessage());
+			if(!ok) {
+				dispose();
+			}
 		}
 	}
 	
 	@Override
-	public void showWindow() {
-		dialog.setVisible(true);
-	}
-	
-	@Override
-	public void closeWindow() {
+	public void dispose() {
 		log.fine("Closed Window");
 		stopService();
-		dialog.dispose();
-	}
-	
-	/**
-	 * Process Value in the child
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 15:12:28
-	 * @param trxName
-	 * @return
-	 * @return boolean
-	 */
-	public abstract boolean processValue(String trxName);
-
-
-	@Override
-	public boolean isInitOK() {
-		return true;
+		frame.dispose();
 	}
 	
 	@Override
 	public void refreshDisplay(String value) {
-		fDisplay.setText(value);
+		displayField.setText(value);
 	}
 }

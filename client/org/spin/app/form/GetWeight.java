@@ -13,7 +13,7 @@
  * Copyright (C) 2012-2013 E.R.P. Consultores y Asociados, S.A. All Rights Reserved. *
  * Contributor(s): Yamel Senih www.erpconsultoresyasociados.com                      *
  *************************************************************************************/
-package org.spin.grid;
+package org.spin.app.form;
 
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
@@ -21,12 +21,14 @@ import gnu.io.UnsupportedCommOperationException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 import java.util.TooManyListenersException;
 
-import org.compiere.model.GridTab;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.Util;
 import org.spin.model.MADDevice;
 import org.spin.model.X_AD_DeviceType;
 import org.spin.util.DeviceEvent;
@@ -35,42 +37,32 @@ import org.spin.util.DeviceTypeHandler;
 import org.spin.util.WeightScaleHandler;
 
 /**
+ * Controller for get weight
  * @author Yamel Senih
- *
  */
 public abstract class GetWeight implements DeviceEventListener {
 	
-	/**
-	 * *** Constructor de la Clase ***
-	 * @author Yamel Senih 25/03/2013, 19:01:45
-	 * @param gridTab
-	 */
-	public GetWeight(GridTab gridTab) {
-		this.gridTab = gridTab;
-		log.info(gridTab.toString());
+	
+	public GetWeight() {
+		log.info("");
 		weight = Env.ZERO;
 	}	//	GetWeight
 
 	/**	Logger			*/
 	protected CLogger log = CLogger.getCLogger(getClass());
-	private String title;
 	
-	private GridTab gridTab;
-	
-	
-	private boolean 					started 				= false;
-	private MADDevice[] 				arrayWS					= null;
-	private MADDevice 					currentDevice 			= null;
-	private WeightScaleHandler 			handler					= null;
+	private boolean started = false;
+	private List<MADDevice> weightScaleList = null;
+	private MADDevice currentDevice = null;
+	private WeightScaleHandler handler = null;
 	
 	/**	Weight Result				*/
-	private BigDecimal 		weight		= Env.ZERO;
+	private BigDecimal weight = Env.ZERO;
 	/**	Message						*/
-	private String			message 	= null;
+	private StringBuffer message = new StringBuffer();
 	
 	/**
 	 * Init
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 20, 2016, 4:41:04 PM
 	 * @return
 	 * @throws Exception
 	 * @return boolean
@@ -79,7 +71,6 @@ public abstract class GetWeight implements DeviceEventListener {
 	
 	/**
 	 * Refresh Display
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 20, 2016, 10:27:13 PM
 	 * @param value
 	 * @return void
 	 */
@@ -94,7 +85,7 @@ public abstract class GetWeight implements DeviceEventListener {
 		log.fine("startService()");
 		//	verify if exists configuration
 		if(currentDevice == null) {
-			message = Msg.translate(Env.getCtx(), "@PortNotConfiguredForUser@");
+			message.append(Msg.translate(Env.getCtx(), "@PortNotConfiguredForUser@"));
 			return false;
 		}
 		//	Already started
@@ -107,73 +98,81 @@ public abstract class GetWeight implements DeviceEventListener {
 			handler.connect();
 			started = true;
 		} catch (NoSuchPortException e) {
-			message = Msg.translate(Env.getCtx(), "NoSuchPortException") + "\n" + e.getMessage();
-			//e.printStackTrace();
+			message.append("@NoSuchPortException@"+ " (" + e.getMessage() + ")");
 		} catch (PortInUseException e) {
-			message = Msg.translate(Env.getCtx(), "PortInUseException") + "\n" + e.getMessage();
-			//e.printStackTrace();
+			message.append("@PortInUseException@"+ " (" + e.getMessage() + ")");
 		} catch (UnsupportedCommOperationException e) {
-			message = Msg.translate(Env.getCtx(), "UnsupportedCommOperationException") + "\n" + e.getMessage();
-			//e.printStackTrace();
+			message.append("@UnsupportedCommOperationException@"+ " (" + e.getMessage() + ")");
 		} catch (IOException e) {
-			message = Msg.translate(Env.getCtx(), "IOException") + "\n" + e.getMessage();
-			//e.printStackTrace();
+			message.append("@IOException@"+ " (" + e.getMessage() + ")");
 		} catch (TooManyListenersException e) {
 			stopService();
-			message = Msg.translate(Env.getCtx(), "TooManyListenersException") + "\n" + e.getMessage();
-			//e.printStackTrace();
+			message.append("@TooManyListenersException@"+ " (" + e.getMessage() + ")");
 		} catch (NoClassDefFoundError e) {
-			message = Msg.translate(Env.getCtx(), "NoClassDefFoundError") + "\n" + e.getMessage();
-			//e.printStackTrace();
+			message.append("@NoClassDefFoundError@"+ " (" + e.getMessage() + ")");
 		} catch (UnsatisfiedLinkError e) {
-			message = Msg.translate(Env.getCtx(), "UnsatisfiedLinkError") + "\n" + e.getMessage();
-			//e.printStackTrace();
+			message.append("@UnsatisfiedLinkError@"+ " (" + e.getMessage() + ")");
 		} catch (Exception e) {
-			message = e.getMessage();
-			//e.printStackTrace();
+			message.append(e.getMessage());
 		}
 		return started;
 	}
 
 	/**
 	 * Get Operation Message
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 02:01:26
 	 * @return
 	 * @return String
 	 */
-	protected String getMessage(){
-		return message;
+	protected String getMessage() {
+		if(message.length() == 0) {
+			return null;
+		}
+		//	
+		return message.toString();
+	}
+	
+	/**
+	 * Add Message to queue
+	 * @param message
+	 * @return void
+	 */
+	protected void addMessage(String message) {
+		if(Util.isEmpty(message)) {
+			return;
+		}
+		//	
+		if(this.message.length() > 0) {
+			this.message.append(Env.NL);
+		}
+		this.message.append(message);
 	}
 	
 	/**
 	 * Load List Weight Scale
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 03:37:06
 	 * @return void
 	 * @throws Exception 
 	 */
 	protected void loadWeightScale() throws Exception {
 		log.fine("loadSerialPortConfig()");
-		arrayWS = DeviceTypeHandler.getDevices(Env.getCtx(), X_AD_DeviceType.DEVICETYPE_WeightScale, true);
+		weightScaleList = Arrays.asList(DeviceTypeHandler.getDevices(Env.getCtx(), X_AD_DeviceType.DEVICETYPE_WeightScale, true));
 		//	Set Current Serial Port Configuration
 		setDevice(0);
 	}
 	
 	/**
 	 * Set device
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 18, 2016, 4:29:32 PM
 	 * @param index
 	 * @return void
 	 */
 	private void setDevice(int index) {
-		if(arrayWS != null
-				&& arrayWS.length != 0) {
-			currentDevice = arrayWS[0];
+		if(weightScaleList != null
+				&& !weightScaleList.isEmpty()) {
+			currentDevice = weightScaleList.stream().findFirst().get();
 		}
 	}
 	
 	/**
 	 * Set Current Weight Scale
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 03:38:20
 	 * @param index
 	 * @return void
 	 */
@@ -181,23 +180,21 @@ public abstract class GetWeight implements DeviceEventListener {
 		setDevice(index);
 		//	Dixon Martinez 2015-02-03
 		//	Set value of Weight Scale
-		Env.setContext(currentDevice.getCtx(), "AD_Device_ID", currentDevice.get_ID());
+		Env.setContext(currentDevice.getCtx(), "AD_Device_ID", currentDevice.getAD_Device_ID());
 		//	End Dixon Martinez
 	}
 	
 	/**
 	 * Get Array of Serial Port Configuration
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 02:10:47
 	 * @return
-	 * @return MADDevice[]
+	 * @return List<MADDevice>
 	 */
-	protected MADDevice[] getArrayWeightScale(){
-		return arrayWS;
+	protected List<MADDevice> getWeightScaleList(){
+		return weightScaleList;
 	}
 	
 	/**
 	 * Get Current Serial Port Configuration
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> 29/03/2013, 02:11:58
 	 * @return
 	 * @return MADDevice
 	 */
@@ -219,27 +216,15 @@ public abstract class GetWeight implements DeviceEventListener {
 				started = false;
 				log.fine("Port Started " + started);
 			} catch (IOException e) {
-				message = Msg.translate(Env.getCtx(), "IOException") + "\n" + e.getMessage();
+				message.append(Msg.translate(Env.getCtx(), "IOException") + "\n" + e.getMessage());
 				e.printStackTrace();
 			} catch (Exception e) {
-				message = e.getMessage();
+				message.append(e.getMessage());
 				e.printStackTrace();
 			}
 		}
 		return !started;
 	}	//	stopService
-	
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
-	public GridTab getGridTab() {
-		return gridTab;
-	}
 	
 	@Override
 	public void deviceEvent(DeviceEvent ev) {
@@ -255,8 +240,6 @@ public abstract class GetWeight implements DeviceEventListener {
 
 	/**
 	 * Get Weight
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 20, 2016, 10:35:49 PM
-	 * @return
 	 * @return BigDecimal
 	 */
 	public BigDecimal getWeight() {
@@ -264,12 +247,11 @@ public abstract class GetWeight implements DeviceEventListener {
 	}
 	
 	/**
-	 * Get message
-	 * @author <a href="mailto:yamelsenih@gmail.com">Yamel Senih</a> Jul 20, 2016, 10:36:15 PM
-	 * @return
-	 * @return String
+	 * Process value from display
+	 * @param transactionName
+	 * @return void
 	 */
-	public String getMsg() {
-		return message;
+	protected void processValue(String transactionName) {
+		
 	}
 }
