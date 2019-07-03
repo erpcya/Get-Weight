@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add Form for Get Weight" ReleaseNo="3.9.3" SeqNo="4740">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="376" Action="I" Record_ID="53083" Table="AD_Form">
+        <Data AD_Column_ID="12738" Column="IsBetaFunctionality">false</Data>
+        <Data AD_Column_ID="4602" Column="Updated">2019-07-02 21:00:51.67</Data>
+        <Data AD_Column_ID="4600" Column="Created">2019-07-02 21:00:51.67</Data>
+        <Data AD_Column_ID="4599" Column="IsActive">true</Data>
+        <Data AD_Column_ID="4605" Column="Description">Get Weight (From Scale)</Data>
+        <Data AD_Column_ID="5791" Column="AccessLevel">3</Data>
+        <Data AD_Column_ID="4607" Column="Classname">org.spin.app.form.VGetWeight</Data>
+        <Data AD_Column_ID="4606" Column="Help">Get Weight from a external device like Scale</Data>
+        <Data AD_Column_ID="13022" Column="JSPURL" isNewNull="true"/>
+        <Data AD_Column_ID="4604" Column="Name">Get Weight (From Scale)</Data>
+        <Data AD_Column_ID="4597" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="4596" Column="AD_Form_ID">53083</Data>
+        <Data AD_Column_ID="4598" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="7708" Column="EntityType">ECA02</Data>
+        <Data AD_Column_ID="4603" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="4601" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="84325" Column="UUID">9a0e84d4-9d11-11e9-8d3d-0242ac110002</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="377" Action="I" Record_ID="53083" Table="AD_Form_Trl">
+        <Data AD_Column_ID="4615" Column="Updated">2019-07-02 21:00:52.948</Data>
+        <Data AD_Column_ID="4613" Column="Created">2019-07-02 21:00:52.948</Data>
+        <Data AD_Column_ID="4612" Column="IsActive">true</Data>
+        <Data AD_Column_ID="4620" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="4617" Column="Name">Leer Peso (Desde Báscula)</Data>
+        <Data AD_Column_ID="4619" Column="Help">Obtiene el peso desde un dispositivo externo como una Báscula</Data>
+        <Data AD_Column_ID="4610" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="4611" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="4608" Column="AD_Form_ID">53083</Data>
+        <Data AD_Column_ID="4609" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="4614" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="4616" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84327" Column="UUID">9a1343e8-9d11-11e9-8d3d-0242ac110002</Data>
+        <Data AD_Column_ID="4618" Column="Description">Leer Peso (Desde Báscula)</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="116" Action="I" Record_ID="54480" Table="AD_Menu">
+        <Data AD_Column_ID="598" Column="IsActive">true</Data>
+        <Data AD_Column_ID="57960" Column="AD_Browse_ID" isNewNull="true"/>
+        <Data AD_Column_ID="229" Column="Name">Get Weight (From Scale)</Data>
+        <Data AD_Column_ID="599" Column="Created">2019-07-02 21:00:53.157</Data>
+        <Data AD_Column_ID="601" Column="Updated">2019-07-02 21:00:53.157</Data>
+        <Data AD_Column_ID="235" Column="AD_Task_ID" isNewNull="true"/>
+        <Data AD_Column_ID="1169" Column="IsSummary">false</Data>
+        <Data AD_Column_ID="4426" Column="IsSOTrx">false</Data>
+        <Data AD_Column_ID="6651" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="59134" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="230" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="232" Column="Action">X</Data>
+        <Data AD_Column_ID="399" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="228" Column="AD_Menu_ID">54480</Data>
+        <Data AD_Column_ID="400" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6297" Column="AD_Workbench_ID" isNewNull="true"/>
+        <Data AD_Column_ID="7721" Column="EntityType">ECA02</Data>
+        <Data AD_Column_ID="234" Column="AD_Workflow_ID" isNewNull="true"/>
+        <Data AD_Column_ID="233" Column="AD_Window_ID" isNewNull="true"/>
+        <Data AD_Column_ID="600" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="4621" Column="AD_Form_ID">53083</Data>
+        <Data AD_Column_ID="602" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="3375" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="84344" Column="UUID">1f22ab1c-9d2d-11e9-a2f9-0242ac110002</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="120" Action="I" Record_ID="54480" Table="AD_Menu_Trl">
+        <Data AD_Column_ID="248" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="636" Column="IsActive">true</Data>
+        <Data AD_Column_ID="639" Column="Updated">2019-07-02 21:00:54.103</Data>
+        <Data AD_Column_ID="637" Column="Created">2019-07-02 21:00:54.103</Data>
+        <Data AD_Column_ID="640" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="247" Column="Name">Get Weight (From Scale)</Data>
+        <Data AD_Column_ID="249" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="1194" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="1195" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="638" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="245" Column="AD_Menu_ID">54480</Data>
+        <Data AD_Column_ID="246" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84345" Column="UUID">1f29602e-9d2d-11e9-a2f9-0242ac110002</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="452" Action="I" Record_ID="54480" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="6153" Column="Updated">2019-07-02 21:00:54.37</Data>
+        <Data AD_Column_ID="84442" Column="UUID">1f2c5d2e-9d2d-11e9-a2f9-0242ac110002</Data>
+        <Data AD_Column_ID="6150" Column="IsActive">true</Data>
+        <Data AD_Column_ID="6151" Column="Created">2019-07-02 21:00:54.37</Data>
+        <Data AD_Column_ID="6162" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="6149" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6161" Column="Node_ID">54480</Data>
+        <Data AD_Column_ID="6155" Column="Parent_ID">0</Data>
+        <Data AD_Column_ID="6154" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="6152" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="284" Action="I" Record_ID="54254" Table="AD_Process">
+        <Data AD_Column_ID="5790" Column="AccessLevel">3</Data>
+        <Data AD_Column_ID="4374" Column="AD_ReportView_ID" isNewNull="true"/>
+        <Data AD_Column_ID="84383" Column="UUID">ca2f748e-9d11-11e9-8d3d-0242ac110002</Data>
+        <Data AD_Column_ID="4656" Column="Classname" isNewNull="true"/>
+        <Data AD_Column_ID="2811" Column="Help">Get Weight from a external device like Scale</Data>
+        <Data AD_Column_ID="12458" Column="IsBetaFunctionality">false</Data>
+        <Data AD_Column_ID="3371" Column="IsReport">false</Data>
+        <Data AD_Column_ID="6653" Column="Statistic_Seconds">0</Data>
+        <Data AD_Column_ID="6652" Column="Statistic_Count">0</Data>
+        <Data AD_Column_ID="2809" Column="Name">Get Weight (From Scale)</Data>
+        <Data AD_Column_ID="2810" Column="Description">Get Weight (From Scale)</Data>
+        <Data AD_Column_ID="2808" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2806" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2801" Column="AD_Process_ID">54254</Data>
+        <Data AD_Column_ID="2802" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2803" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="11834" Column="AD_Workflow_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2813" Column="ProcedureName" isNewNull="true"/>
+        <Data AD_Column_ID="63488" Column="AD_Browse_ID" isNewNull="true"/>
+        <Data AD_Column_ID="6485" Column="EntityType">ECA02</Data>
+        <Data AD_Column_ID="50182" Column="JasperReport" isNewNull="true"/>
+        <Data AD_Column_ID="2805" Column="Created">2019-07-02 21:00:54.569</Data>
+        <Data AD_Column_ID="2807" Column="Updated">2019-07-02 21:00:54.569</Data>
+        <Data AD_Column_ID="4214" Column="IsDirectPrint">false</Data>
+        <Data AD_Column_ID="57920" Column="CopyFromProcess">N</Data>
+        <Data AD_Column_ID="2804" Column="IsActive">true</Data>
+        <Data AD_Column_ID="50181" Column="ShowHelp">N</Data>
+        <Data AD_Column_ID="4023" Column="Value">GetWeightFromScale</Data>
+        <Data AD_Column_ID="11563" Column="WorkflowValue" isNewNull="true"/>
+        <Data AD_Column_ID="56515" Column="AD_Form_ID">53083</Data>
+        <Data AD_Column_ID="14084" Column="IsServerProcess">false</Data>
+        <Data AD_Column_ID="78843" Column="GenerateClass">N</Data>
+        <Data AD_Column_ID="7752" Column="AD_PrintFormat_ID" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="287" Action="I" Record_ID="0" Table="AD_Process_Trl">
+        <Data AD_Column_ID="2847" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2850" Column="Updated">2019-07-02 21:00:55.776</Data>
+        <Data AD_Column_ID="2848" Column="Created">2019-07-02 21:00:55.776</Data>
+        <Data AD_Column_ID="2853" Column="Description">Leer Peso (Desde Báscula)</Data>
+        <Data AD_Column_ID="2854" Column="Help">Obtiene el peso desde un dispositivo externo como una Báscula</Data>
+        <Data AD_Column_ID="2855" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2852" Column="Name">Leer Peso (Desde Báscula)</Data>
+        <Data AD_Column_ID="2846" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2845" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2851" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2844" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2843" Column="AD_Process_ID">54254</Data>
+        <Data AD_Column_ID="2849" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="84387" Column="UUID">ca32acee-9d11-11e9-8d3d-0242ac110002</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="452" Action="U" Record_ID="552" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="6161" Column="Node_ID" oldValue="552">552</Data>
+        <Data AD_Column_ID="6155" Column="Parent_ID" oldValue="218">54081</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo" oldValue="7">0</Data>
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID" oldValue="10">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="452" Action="U" Record_ID="54086" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="6161" Column="Node_ID" oldValue="54086">54086</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo" oldValue="0">1</Data>
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID" oldValue="10">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="452" Action="U" Record_ID="54091" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="6161" Column="Node_ID" oldValue="54091">54091</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo" oldValue="0">2</Data>
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID" oldValue="10">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="452" Action="U" Record_ID="54085" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="6161" Column="Node_ID" oldValue="54085">54085</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo" oldValue="1">3</Data>
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID" oldValue="10">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="452" Action="U" Record_ID="54084" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="6161" Column="Node_ID" oldValue="54084">54084</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo" oldValue="2">4</Data>
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID" oldValue="10">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="452" Action="U" Record_ID="54083" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="6161" Column="Node_ID" oldValue="54083">54083</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo" oldValue="3">5</Data>
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID" oldValue="10">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="452" Action="U" Record_ID="54082" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="6161" Column="Node_ID" oldValue="54082">54082</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo" oldValue="4">6</Data>
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID" oldValue="10">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="452" Action="U" Record_ID="54480" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="6161" Column="Node_ID" oldValue="54480">54480</Data>
+        <Data AD_Column_ID="6155" Column="Parent_ID" oldValue="0">54081</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo" oldValue="0">3</Data>
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID" oldValue="10">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="452" Action="U" Record_ID="54085" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="6161" Column="Node_ID" oldValue="54085">54085</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo" oldValue="3">4</Data>
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID" oldValue="10">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="452" Action="U" Record_ID="54084" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="6161" Column="Node_ID" oldValue="54084">54084</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo" oldValue="4">5</Data>
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID" oldValue="10">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="452" Action="U" Record_ID="54083" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="6161" Column="Node_ID" oldValue="54083">54083</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo" oldValue="5">6</Data>
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID" oldValue="10">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="452" Action="U" Record_ID="54082" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="6161" Column="Node_ID" oldValue="54082">54082</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo" oldValue="6">7</Data>
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID" oldValue="10">10</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
