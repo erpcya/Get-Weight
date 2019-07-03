@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add GetWeight column" ReleaseNo="3.9.3" SeqNo="4770">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="276" Action="I" Record_ID="61112" Table="AD_Element">
+        <Data AD_Column_ID="2600" Column="Updated">2019-07-02 22:30:36.446</Data>
+        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2603" Column="Name">Get Weight (From Scale)</Data>
+        <Data AD_Column_ID="2604" Column="Description">Get Weight from a external device like Scale</Data>
+        <Data AD_Column_ID="2598" Column="Created">2019-07-02 22:30:36.446</Data>
+        <Data AD_Column_ID="2602" Column="ColumnName">GetWeightFromScale</Data>
+        <Data AD_Column_ID="2605" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="4299" Column="PrintName">Get Weight (From Scale)</Data>
+        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="58589" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="58588" Column="AD_Reference_ID">28</Data>
+        <Data AD_Column_ID="2594" Column="AD_Element_ID">61112</Data>
+        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="6484" Column="EntityType">ECA06</Data>
+        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84316" Column="UUID">8aaf6a8e-9d3a-11e9-b5a7-0242ac110002</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="0" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2642" Column="Created">2019-07-02 22:30:37.462</Data>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">61112</Data>
+        <Data AD_Column_ID="84317" Column="UUID">8ad8cd02-9d3a-11e9-b5a7-0242ac110002</Data>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2019-07-02 22:30:37.462</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2646" Column="Name">Get Weight (From Scale)</Data>
+        <Data AD_Column_ID="2647" Column="Description">Get Weight from a external device like Scale</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="4300" Column="PrintName">Get Weight (From Scale)</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="277" Action="U" Record_ID="0" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="2646" Column="Name" oldValue="Get Weight (From Scale)">Leer Peso (Desde Báscula)</Data>
+        <Data AD_Column_ID="2647" Column="Description" oldValue="Get Weight from a external device like Scale">Obtiene el peso desde un dispositivo externo como una Báscula</Data>
+        <Data AD_Column_ID="4300" Column="PrintName" oldValue="Get Weight (From Scale)">Leer Peso (Desde Báscula)</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="61112">61112</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
