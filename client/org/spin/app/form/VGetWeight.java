@@ -71,9 +71,8 @@ public class VGetWeight extends GetWeight implements FormPanel, ActionListener {
 				return;
 			}
 			//	
-			boolean sys = MSysConfig.getBooleanValue("OPEN_PORT_AUTOMATIC_IN_GETWEIGHT", true, 
-					Env.getAD_Client_ID(Env.getCtx()));
-			if(sys) {
+			boolean openPortAutomacically = MSysConfig.getBooleanValue("OPEN_PORT_AUTOMATIC_IN_GETWEIGHT", true, Env.getAD_Client_ID(Env.getCtx()));
+			if(openPortAutomacically) {
 				startService();
 			}
 		} catch (Exception e) {
@@ -184,7 +183,6 @@ public class VGetWeight extends GetWeight implements FormPanel, ActionListener {
 	private void loadButtons() throws Exception{
 		log.info("loadButtons()");
 		List<MADDevice> weightScaleList = getWeightScaleList();
-//		throw new Exception(Msg.translate(Env.getCtx(), "@WeightScaleNotConfigForUser@"));
 		//
 		AtomicInteger actionCounter = new AtomicInteger(0);
 		weightScaleList.stream().forEach(weightScale -> {

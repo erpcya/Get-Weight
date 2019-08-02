@@ -58,7 +58,7 @@ public abstract class GetWeight implements DeviceEventListener {
 	private List<MADDevice> weightScaleList = null;
 	private MADDevice currentDevice = null;
 	private WeightScaleHandler handler = null;
-	private PO poFrom = null;	
+	private PO currentEntity = null;	
 	/**	Weight Result				*/
 	private BigDecimal weight = Env.ZERO;
 	/**	Message						*/
@@ -73,7 +73,7 @@ public abstract class GetWeight implements DeviceEventListener {
 		if(processInfo != null
 				&& processInfo.getTable_ID() > 0
 				&& processInfo.getRecord_ID() > 0) {
-			poFrom = MTable.get(Env.getCtx(), processInfo.getTable_ID())
+			currentEntity = MTable.get(Env.getCtx(), processInfo.getTable_ID())
 				.getPO(processInfo.getRecord_ID(), null);
 		}
 	}
@@ -195,10 +195,7 @@ public abstract class GetWeight implements DeviceEventListener {
 	 */
 	protected void setCurrentWeightScale(int index){
 		setDevice(index);
-		//	Dixon Martinez 2015-02-03
-		//	Set value of Weight Scale
 		Env.setContext(currentDevice.getCtx(), "AD_Device_ID", currentDevice.getAD_Device_ID());
-		//	End Dixon Martinez
 	}
 	
 	/**
@@ -268,9 +265,9 @@ public abstract class GetWeight implements DeviceEventListener {
 	 * @return void
 	 */
 	protected void processValue() {
-		if(poFrom != null) {
-			poFrom.set_ValueOfColumn(COLUMNNAME_WeightRegistered, getWeight());
-			poFrom.saveEx();
+		if(currentEntity != null) {
+			currentEntity.set_ValueOfColumn(COLUMNNAME_WeightRegistered, getWeight());
+			currentEntity.saveEx();
 		}
 	}
 }
