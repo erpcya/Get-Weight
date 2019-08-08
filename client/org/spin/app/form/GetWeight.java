@@ -112,6 +112,7 @@ public abstract class GetWeight implements DeviceEventListener {
 		//	
 		try {
 			handler = (WeightScaleHandler) currentDevice.getDeviceHandler();
+			handler.addDeviceListener(this);
 			handler.connect();
 			started = true;
 		} catch (NoSuchPortException e) {
@@ -227,6 +228,7 @@ public abstract class GetWeight implements DeviceEventListener {
 			log.fine("Port Started " + started);
 			try {
 				handler.close();
+				handler.removeDeviceListener(this);
 				started = false;
 				log.fine("Port Started " + started);
 			} catch (IOException e) {
