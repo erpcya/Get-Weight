@@ -205,9 +205,11 @@ public class VGetWeight extends GetWeight implements FormPanel, ActionListener {
 						processValue();
 						//	Stop
 						stopService();
+						dispose();
 					}
 				});
 			} catch (Exception ex) {
+				log.severe(ex.getLocalizedMessage());
 				dispose();
 			}
 		}
