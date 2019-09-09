@@ -50,9 +50,9 @@ public class SerialWeightScaleHandler extends WeightScaleHandler implements Seri
 	/**	Serial Port							*/
 	private SerialPort 				serialPort;
 	/**	Input Stream						*/
-	private InputStream 			i_Stream;
+	private InputStream 			inputStream;
 	/**	Output Stream						*/
-	private OutputStream 			o_Stream;
+	private OutputStream 			outputStream;
 	/**	Stream read						*/
 	private StringBuffer 			dataRead;
 	/**	Ascii read						*/
@@ -126,8 +126,8 @@ public class SerialWeightScaleHandler extends WeightScaleHandler implements Seri
 			log.info("Parameterizing Port...");
 			serialPort.setSerialPortParams(speed, dataBits, stopBits, parity);
 			log.info("Port Ready ...");
-			i_Stream = serialPort.getInputStream();
-			o_Stream = serialPort.getOutputStream();
+			inputStream = serialPort.getInputStream();
+			outputStream = serialPort.getOutputStream();
 			serialPort.addEventListener(this);
 			serialPort.notifyOnDataAvailable(true);
 		} catch (NoSuchPortException e) {
@@ -153,12 +153,12 @@ public class SerialWeightScaleHandler extends WeightScaleHandler implements Seri
 			serialPort.removeEventListener();
 			serialPort.close();
 			//	Valid null input stream
-			if(i_Stream != null) {
-				i_Stream.close();
+			if(inputStream != null) {
+				inputStream.close();
 			}
 			//	Valid null ouput stream
-			if(o_Stream != null) {
-				o_Stream.close();
+			if(outputStream != null) {
+				outputStream.close();
 			}
 			log.info("Closed");
 		}
@@ -177,12 +177,12 @@ public class SerialWeightScaleHandler extends WeightScaleHandler implements Seri
 
 	@Override
 	public InputStream getInputStream() {
-		return i_Stream;
+		return inputStream;
 	}
 
 	@Override
 	public OutputStream getOutputStream() {
-		return o_Stream;
+		return outputStream;
 	}
 
 	@Override
@@ -193,8 +193,8 @@ public class SerialWeightScaleHandler extends WeightScaleHandler implements Seri
 				log.info("SerialPortEvent.DATA_AVAILABLE");
 				boolean read = false;
 				//	Iterate
-				while(i_Stream.available() > 0) {
-					int bit = i_Stream.read();
+				while(inputStream.available() > 0) {
+					int bit = inputStream.read();
 					if(bit == startChr
 							&& read == false){
 						read = true;
