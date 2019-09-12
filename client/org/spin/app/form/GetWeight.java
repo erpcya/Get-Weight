@@ -64,6 +64,7 @@ public abstract class GetWeight implements DeviceEventListener {
 	/**	Message						*/
 	private StringBuffer message = new StringBuffer();
 	private final String COLUMNNAME_WeightRegistered = "WeightRegistered";
+	private final String COLUMNNAME_AD_Device_ID = "AD_Device_ID";
 	
 	/**
 	 * Set from PO
@@ -269,6 +270,10 @@ public abstract class GetWeight implements DeviceEventListener {
 	protected void processValue() {
 		if(currentEntity != null) {
 			currentEntity.set_ValueOfColumn(COLUMNNAME_WeightRegistered, getWeight());
+			if(currentDevice != null
+					&& currentDevice.getAD_Device_ID() != 0) {
+				currentEntity.set_ValueOfColumn(COLUMNNAME_AD_Device_ID, currentDevice.getAD_Device_ID());
+			}
 			currentEntity.saveEx();
 		}
 	}
