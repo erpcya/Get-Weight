@@ -1,0 +1,31 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    jcenter()
+    flatDir {
+       dirs 'dependences', 'lib'
+	}
+}
+
+sourceSets {
+    main {
+         java {
+            srcDirs = ['base', 'client's]
+         }
+    }
+}
+
+dependencies {
+    implementation name: 'Adempiere'
+    implementation name: 'DeviceManagement'
+    implementation name: 'RXTXcomm'
+}
+
+jar {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                   'Implementation-Version': project.version)
+    }
+}
