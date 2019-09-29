@@ -39,7 +39,7 @@ import org.spin.model.X_AD_DeviceConfigUse;
 
 /**
  * @author Yamel Senih
- *
+ * See: http://fizzed.com/oss/rxtx-for-java
  */
 public class SerialWeightScaleHandler extends WeightScaleHandler implements SerialPortEventListener {
 	
