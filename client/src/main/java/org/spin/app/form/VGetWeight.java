@@ -222,8 +222,8 @@ public class VGetWeight extends GetWeight implements FormPanel, ActionListener {
 		else {
 			log.fine("Action Comand Any");
 			Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
-			setCurrentWeightScale(Integer.parseInt(e.getActionCommand()));
 			stopService();
+			setCurrentWeightScale(Integer.parseInt(e.getActionCommand()));
 			boolean ok = startService();
 			Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 			if(!ok) {
