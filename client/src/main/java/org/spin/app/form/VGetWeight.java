@@ -24,7 +24,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 import javax.swing.BorderFactory;
@@ -184,9 +183,8 @@ public class VGetWeight extends GetWeight implements FormPanel, ActionListener {
 		log.info("loadButtons()");
 		List<MADDevice> weightScaleList = getWeightScaleList();
 		//
-		AtomicInteger actionCounter = new AtomicInteger(0);
 		weightScaleList.stream().forEach(weightScale -> {
-			AppsAction action = new AppsAction(String.valueOf(actionCounter.getAndIncrement()), null, weightScale.getName());
+			AppsAction action = new AppsAction(weightScale.get_UUID(), null, weightScale.getName());
 			action.setDelegate(this);
 			CButton button = (CButton) action.getButton(); 
 			confirmPanel.addComponent(button);
@@ -195,9 +193,9 @@ public class VGetWeight extends GetWeight implements FormPanel, ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		log.info("actionPerformed(ActionEvent e) " + e);
-		if (e.getActionCommand().equals(ConfirmPanel.A_OK)) {
+	public void actionPerformed(ActionEvent event) {
+		log.info("actionPerformed(ActionEvent e) " + event);
+		if (event.getActionCommand().equals(ConfirmPanel.A_OK)) {
 			log.fine("Action Comand OK");
 			try {
 				Trx.run(new TrxRunnable() {
@@ -214,7 +212,7 @@ public class VGetWeight extends GetWeight implements FormPanel, ActionListener {
 			}
 		}
 		//  Cancel
-		else if (e.getActionCommand().equals(ConfirmPanel.A_CANCEL)) {
+		else if (event.getActionCommand().equals(ConfirmPanel.A_CANCEL)) {
 			log.fine("Action Comand CANCEL");
 			dispose();
 		}
@@ -223,7 +221,7 @@ public class VGetWeight extends GetWeight implements FormPanel, ActionListener {
 			log.fine("Action Comand Any");
 			Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
 			stopService();
-			setCurrentWeightScale(Integer.parseInt(e.getActionCommand()));
+			setCurrentWeightScale(event.getActionCommand());
 			boolean ok = startService();
 			Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 			if(!ok) {

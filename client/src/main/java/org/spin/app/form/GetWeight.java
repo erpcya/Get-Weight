@@ -175,7 +175,7 @@ public abstract class GetWeight implements DeviceEventListener {
 		log.fine("loadSerialPortConfig()");
 		weightScaleList = Arrays.asList(DeviceTypeHandler.getDevices(Env.getCtx(), X_AD_DeviceType.DEVICETYPE_WeightScale, true));
 		//	Set Current Serial Port Configuration
-		setDevice(0);
+		setDevice(null);
 	}
 	
 	/**
@@ -183,10 +183,16 @@ public abstract class GetWeight implements DeviceEventListener {
 	 * @param index
 	 * @return void
 	 */
-	private void setDevice(int index) {
+	private void setDevice(String deviceUuid) {
 		if(weightScaleList != null
 				&& !weightScaleList.isEmpty()) {
-			currentDevice = weightScaleList.stream().findFirst().get();
+			if(Util.isEmpty(deviceUuid)) {
+				currentDevice = weightScaleList.stream().findFirst().get();
+			} else {
+				currentDevice = weightScaleList.stream()
+						.filter(weightScale -> !Util.isEmpty(weightScale.get_UUID()) && weightScale.get_UUID().equals(deviceUuid))
+						.findFirst().get();
+			}
 		}
 	}
 	
@@ -195,8 +201,8 @@ public abstract class GetWeight implements DeviceEventListener {
 	 * @param index
 	 * @return void
 	 */
-	protected void setCurrentWeightScale(int index){
-		setDevice(index);
+	protected void setCurrentWeightScale(String deviceUuid){
+		setDevice(deviceUuid);
 		Env.setContext(currentDevice.getCtx(), "AD_Device_ID", currentDevice.getAD_Device_ID());
 	}
 	
