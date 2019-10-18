@@ -216,6 +216,7 @@ public class SerialWeightScaleHandler extends WeightScaleHandler implements Seri
 						log.fine("Ascii read [" + asciiRead + "]");
 						fireDeviceEvent(DeviceEvent.READ_DATA);
 					} 
+					log.fine("Weight Measured =" + dataRead);
 				}
 			} catch (Exception e) {
 				log.warning("Error in processStr(): " + e.getLocalizedMessage());
