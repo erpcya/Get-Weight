@@ -188,38 +188,51 @@ public class SerialWeightScaleHandler extends WeightScaleHandler implements Seri
 	@Override
 	public void serialEvent(SerialPortEvent ev) {
 		if(ev.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
-			try {
-				//	Read Port
-				log.info("SerialPortEvent.DATA_AVAILABLE");
-				boolean read = false;
-				//	Iterate
-				while(inputStream.available() > 0) {
-					int bit = inputStream.read();
-					if(bit == startChr
-							&& read == false){
-						read = true;
-						dataRead = new StringBuffer();
-						asciiRead = new StringBuffer();
+			//	Read Port
+			log.info("SerialPortEvent.DATA_AVAILABLE");
+			boolean reading = false;
+			while (!reading) {
+				try {
+					InputStream inputStream = getInputStream();
+		            if(inputStream == null) {
+		                continue;
+		            }
+					boolean read = false;
+					//	Iterate
+					if(inputStream.available() > 0) {
+						log.info("Waiting Stream...");
+						reading = true;
+						Thread.sleep(200);
+	                    log.info("Reading Stream");
+	                    do {
+	                    	int bit = inputStream.read();
+	    					if(bit == startChr
+	    							&& read == false){
+	    						read = true;
+	    						dataRead = new StringBuffer();
+	    						asciiRead = new StringBuffer();
+	    					}
+	    					//	Read
+	    					if(read) {
+	    						dataRead.append((char)bit);
+	    						asciiRead.append("[" + (int)bit + "]");
+	    					}
+	    					//	Already read
+	    					if(read 
+	    							&& (bit == endChr
+	    							|| dataRead.length() == length)){
+	    						read = false;
+	    						processStr();
+	    						log.fine("String read [" + dataRead + "]");
+	    						log.fine("Ascii read [" + asciiRead + "]");
+	    						fireDeviceEvent(DeviceEvent.READ_DATA);
+	    					} 
+	    					log.fine("Weight Measured =" + dataRead); 
+	                    } while(inputStream.available() > 0);
 					}
-					//	Read
-					if(read) {
-						dataRead.append((char)bit);
-						asciiRead.append("[" + (int)bit + "]");
-					}
-					//	Already read
-					if(read 
-							&& (bit == endChr
-							|| dataRead.length() == length)){
-						read = false;
-						processStr();
-						log.fine("String read [" + dataRead + "]");
-						log.fine("Ascii read [" + asciiRead + "]");
-						fireDeviceEvent(DeviceEvent.READ_DATA);
-					} 
-					log.fine("Weight Measured =" + dataRead); 
+				} catch (Exception e) {
+					log.warning("Error in processStr(): " + e.getLocalizedMessage());
 				}
-			} catch (Exception e) {
-				log.warning("Error in processStr(): " + e.getLocalizedMessage());
 			}
 		}
 	}
